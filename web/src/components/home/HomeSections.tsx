@@ -12,6 +12,7 @@ import { ProgramCard, type ProgramCardData } from '~/components/cards/ProgramCar
 import { EventCard, type EventCardData } from '~/components/cards/EventCard'
 import { ArticleCard, type ArticleCardData } from '~/components/cards/ArticleCard'
 import { TeacherCard, type TeacherCardData } from '~/components/cards/TeacherCard'
+import type { InstagramFeed } from '~/lib/instagram'
 
 type LinkData = { label: string; href: string } | null | undefined
 
@@ -339,6 +340,66 @@ export function LatestArticles({ articles }: { articles: ArticleCardData[] }) {
           <ArticleCard key={a._id} article={a} />
         ))}
       </div>
+    </Section>
+  )
+}
+
+/* 10. Newest Instagram photos (Behold feed). Hidden until a feed link is set in the Studio. */
+export function InstagramSection({
+  feed,
+  heading,
+}: {
+  feed: InstagramFeed | null
+  heading: string | null | undefined
+}) {
+  if (!feed?.posts.length) return null
+  const profileUrl = feed.username ? `https://www.instagram.com/${encodeURIComponent(feed.username)}/` : null
+  return (
+    <Section labelledBy="instagram-title">
+      <SectionHeading
+        id="instagram-title"
+        eyebrow={feed.username ? `Instagram · @${feed.username}` : 'Instagram'}
+        title={clean(heading) || 'Follow us on Instagram'}
+        action={
+          profileUrl ? (
+            <ButtonLink href={profileUrl} variant="outline">
+              Follow on Instagram
+            </ButtonLink>
+          ) : undefined
+        }
+      />
+      <ul className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-4" aria-label="Newest Instagram posts">
+        {feed.posts.map((post) => (
+          <li key={post.id}>
+            <a
+              href={post.permalink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block aspect-square overflow-hidden rounded-md bg-cream-100 sm:rounded-card"
+            >
+              <img
+                src={post.src}
+                srcSet={post.srcSet || undefined}
+                sizes="(min-width: 1280px) 400px, 33vw"
+                alt={post.alt}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              {post.isVideo && (
+                <svg
+                  viewBox="0 0 24 24"
+                  className="absolute right-2 top-2 h-5 w-5 text-white drop-shadow sm:h-6 sm:w-6"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M8 5.5v13l11-6.5z" />
+                </svg>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
     </Section>
   )
 }

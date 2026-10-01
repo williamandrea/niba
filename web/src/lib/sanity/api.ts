@@ -15,6 +15,7 @@ import {
   VENERABLES_QUERY,
 } from './queries'
 import { todayInMedan } from '../dates'
+import { fetchInstagramFeed } from '../instagram'
 
 /*
  * Server functions: Sanity is only called from the Worker, so @sanity/client
@@ -42,9 +43,10 @@ export const getSettings = createServerFn({ method: 'GET' }).handler(() =>
   fetchQuery(sanityClient.fetch(SETTINGS_QUERY)),
 )
 
-export const getHome = createServerFn({ method: 'GET' }).handler(() =>
-  fetchQuery(sanityClient.fetch(HOME_QUERY, { today: todayInMedan() })),
-)
+export const getHome = createServerFn({ method: 'GET' }).handler(async () => {
+  const data = await fetchQuery(sanityClient.fetch(HOME_QUERY, { today: todayInMedan() }))
+  return { ...data, instagram: await fetchInstagramFeed(data.home?.instagram?.feedUrl) }
+})
 
 export const getPostList = createServerFn({ method: 'GET' })
   .validator((data: { category?: string; q?: string; page?: number }) => data)

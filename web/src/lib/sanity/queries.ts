@@ -31,7 +31,8 @@ export const HOME_QUERY = defineQuery(`{
     intro{ heading, text, images, buttons[]{ label, href } },
     teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },
     programsIntro,
-    venerablesIntro
+    venerablesIntro,
+    instagram{ feedUrl, heading }
   },
   "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body[_type == "verse"]) > 0]
     | order(publishedAt desc)[0]{

@@ -205,6 +205,25 @@ Tips for admins:
   Dhammapada article's first verse is shown on the homepage.
 - Every photo needs **alt text**: a short description for people who cannot see it.
 
+### Instagram photos on the homepage
+
+The homepage can show the newest photos from Instagram (6 on Behold's free plan, up to 9 on a
+paid plan). It uses [Behold](https://behold.so), a free service that reads the Instagram feed.
+The section stays hidden until a feed link is added.
+
+1. **The Instagram account must be a Business or Creator account.** Meta only lets services read
+   those. To check: open the profile in the Instagram app. If you see "Professional dashboard",
+   it already is one. Switching (Settings → Account type and tools) is free and keeps all posts
+   and followers.
+2. Someone who can log in to the Instagram account signs up at [behold.so](https://behold.so)
+   (free plan), connects the account, and creates a feed of type **JSON**.
+3. Copy the feed link (like `https://feeds.behold.so/abc123`).
+4. Studio → **Homepage sections** → **Instagram** tab → paste it in **Behold feed link** → **Publish**.
+
+Behold's free plan updates once a day and allows 1,200 feed requests a month. The website keeps
+the feed in Cloudflare's cache for 6 hours, so it stays well under that. If Behold is down or the
+limit is reached, the section hides by itself and the rest of the page still works.
+
 ## Routes
 
 | Path                                                | Content                                           |
@@ -274,7 +293,11 @@ Choices made where the brief was open, or where the current docs required a chan
     - Article excerpts are the first real paragraph (WordPress excerpts were empty).
 17. **Search** uses GROQ `match` with word prefixes ("medit" finds "meditation"). 9 articles per page.
 18. **Studio "Vision" tab** is kept for the developer to test GROQ. Admins can ignore it.
-19. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
+19. **Instagram photos come from Behold, not Instagram's API directly.** Both need a Business or
+    Creator account, but Behold needs no Meta developer app and renews Instagram's 60-day access
+    key by itself. The free plan gives 6 posts. The feed link lives in the Studio, so it can be
+    changed without a deploy; the website only accepts `https://feeds.behold.so/…` links.
+20. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
     Cloudflare dashboard. GitHub Actions shows them on the PR, runs the code checks on every PR,
     and is free (2,000 minutes a month for private repos; a run takes about 2).
 

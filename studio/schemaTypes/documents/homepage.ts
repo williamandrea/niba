@@ -12,6 +12,7 @@ export const homepage = defineType({
     { name: 'intro', title: 'Introduction' },
     { name: 'quote', title: 'Teacher quote' },
     { name: 'sections', title: 'Other sections' },
+    { name: 'instagram', title: 'Instagram' },
   ],
   fields: [
     defineField({
@@ -90,6 +91,35 @@ export const homepage = defineType({
       rows: 3,
       group: 'sections',
       description: 'e.g. how devotees can offer dāna during the residency.',
+    }),
+    defineField({
+      name: 'instagram',
+      title: 'Instagram photos',
+      type: 'object',
+      group: 'instagram',
+      description:
+        'Shows the newest Instagram photos near the bottom of the homepage. Leave the feed link empty to hide this section.',
+      fields: [
+        defineField({
+          name: 'feedUrl',
+          title: 'Behold feed link',
+          type: 'url',
+          description:
+            'From behold.so (free): connect the Instagram account, create a "JSON" feed, and paste its link here. It looks like https://feeds.behold.so/abc123.',
+          validation: (rule) =>
+            rule.custom((url) =>
+              !url || /^https:\/\/feeds\.behold\.so\/[\w-]+\/?$/.test(url)
+                ? true
+                : 'Paste the feed link from Behold, e.g. https://feeds.behold.so/abc123',
+            ),
+        }),
+        defineField({
+          name: 'heading',
+          title: 'Heading',
+          type: 'string',
+          description: 'Optional. Default: "Follow us on Instagram".',
+        }),
+      ],
     }),
   ],
   preview: { prepare: () => ({ title: 'Homepage sections' }) },

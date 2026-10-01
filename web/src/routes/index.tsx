@@ -5,6 +5,7 @@ import {
   EventsSection,
   FeaturedVerse,
   Hero,
+  InstagramSection,
   Intro,
   LatestArticles,
   ProgramsSection,
@@ -46,6 +47,7 @@ function HomePage() {
       <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
       <TeachersSection teachers={data.teachers} />
       <LatestArticles articles={data.articles} />
+      <InstagramSection feed={data.instagram} heading={home?.instagram?.heading} />
     </>
   )
 }

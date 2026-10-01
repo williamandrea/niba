@@ -15,7 +15,9 @@
     "migrate": "pnpm --filter migration migrate",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm format:check"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

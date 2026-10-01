@@ -135,7 +135,7 @@ must stay the same. `web/wrangler.jsonc` has the required (empty) `previews` blo
 If a run fails, open the PR's **Checks** tab or the repo's **Actions** tab to read the log.
 To run it again without a code change, use **Re-run jobs** there.
 
-Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler login`).
+Manual deploy from your machine: `pnpm --filter web run deploy` (after `npx wrangler login`).
 
 ### Custom domain (nauyana.id)
 

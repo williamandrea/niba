@@ -107,7 +107,7 @@ requests get a preview URL.
    - **Build watch paths** (optional): include `web/*`, `pnpm-lock.yaml`.
 3. **Build variables** (Settings → Build → Variables): `SANITY_PROJECT_ID`, `SANITY_DATASET`,
    `SITE_URL=https://nauyana.id`. These are needed at build time, not runtime.
-4. The Worker name comes from `web/wrangler.jsonc` (`nauyana-web`).
+4. The Worker in the dashboard is named `niba`. The `name` in `web/wrangler.jsonc` must stay the same.
 
 Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler login`).
 
@@ -115,7 +115,7 @@ Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler
 
 1. Add `nauyana.id` to Cloudflare (Websites → Add a domain, free plan) and switch the domain's
    nameservers at your registrar to the two Cloudflare gives you. Wait until it shows **Active**.
-2. Workers & Pages → `nauyana-web` → **Settings → Domains & Routes → Add → Custom domain**:
+2. Workers & Pages → `niba` → **Settings → Domains & Routes → Add → Custom domain**:
    add `nauyana.id`, then `www.nauyana.id`. Cloudflare creates the DNS records and certificate.
 3. Redirect `www` to the bare domain: Rules → **Redirect Rules** → "Redirect from WWW to root" template.
 4. Remove the old WordPress DNS records for the root only after the Worker domain works.

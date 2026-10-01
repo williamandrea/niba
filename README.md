@@ -98,15 +98,17 @@ The site deploys with **Workers Builds** from GitHub: every push to `main` goes 
 requests get a preview URL.
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → pick this repo.
-2. Build settings:
-   - **Root directory:** `/` (the repo root, so pnpm sees the workspace)
+2. Worker → **Settings → Builds**, with the **Production** toggle selected:
    - **Build command:** `pnpm --filter web build`
    - **Deploy command:** `pnpm --filter web exec wrangler deploy`
-   - **Preview command (non-production branches):** `pnpm --filter web exec wrangler preview`
-   - **Production branch:** `main`. Turn on **builds for non-production branches** for PR previews.
-   - **Build watch paths** (optional): include `web/*`, `pnpm-lock.yaml`.
-3. **Build variables** (Settings → Build → Variables): `SANITY_PROJECT_ID`, `SANITY_DATASET`,
-   `SITE_URL=https://nauyana.id`. These are needed at build time, not runtime.
+   - **Root directory:** `/` (the repo root, so pnpm sees the workspace)
+   - **Branch control:** `main`
+   - **Variables and secrets** (build-time): `SANITY_PROJECT_ID`, `SANITY_DATASET=production`,
+     `SITE_URL=https://nauyana.id`
+3. PR previews: in the same **Builds** section, switch the toggle to **Previews Base** and set
+   the same build command, root directory, and variables, with
+   **Preview command:** `pnpm --filter web exec wrangler preview`. Make sure preview builds are
+   enabled. `web/wrangler.jsonc` has the required (empty) `previews` block.
 4. The Worker in the dashboard is named `niba`. The `name` in `web/wrangler.jsonc` must stay the same.
 
 Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler login`).

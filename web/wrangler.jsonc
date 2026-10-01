@@ -5,11 +5,14 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "src/server.ts",
   // Workers Caching: Cloudflare serves cached HTML without running the Worker.
-  // Our responses set Cache-Control headers (see src/start.ts).
+  // Our responses set Cache-Control headers (see src/server.ts).
   "cache": {
     "enabled": true,
   },
   "observability": {
     "enabled": true,
   },
+  // Settings for PR preview deployments (`wrangler preview`). Required, even when empty:
+  // the site has no bindings or runtime variables, so previews need nothing extra.
+  "previews": {},
 }

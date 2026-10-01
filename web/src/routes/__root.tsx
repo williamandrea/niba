@@ -49,7 +49,7 @@ function RootLayout() {
   const settings = Route.useLoaderData()
   return (
     <>
-      <SiteHeader siteName={settings.siteName} logo={settings.logo} menu={settings.menu} />
+      <SiteHeader siteName={settings.siteName} menu={settings.menu} />
       <main id="main" tabIndex={-1} className="outline-none">
         <Outlet />
       </main>

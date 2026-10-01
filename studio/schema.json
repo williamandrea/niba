@@ -45,7 +45,8 @@
         "heading": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeString"
           },
           "optional": true
         },
@@ -53,7 +54,7 @@
           "type": "objectAttribute",
           "value": {
             "type": "inline",
-            "name": "blockContent"
+            "name": "localeBlockContent"
           },
           "optional": true
         },
@@ -216,7 +217,8 @@
         "label": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeString"
           },
           "optional": false
         },
@@ -653,7 +655,8 @@
         "label": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeString"
           },
           "optional": false
         },
@@ -705,7 +708,8 @@
         "label": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeString"
           },
           "optional": false
         },
@@ -735,14 +739,16 @@
         "title": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeString"
           },
           "optional": true
         },
         "description": {
           "type": "objectAttribute",
           "value": {
-            "type": "string"
+            "type": "inline",
+            "name": "localeText"
           },
           "optional": true
         },
@@ -804,6 +810,98 @@
     }
   },
   {
+    "name": "localeBlockContent",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "localeBlockContent"
+          }
+        },
+        "en": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "blockContent"
+          },
+          "optional": true
+        },
+        "id": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "blockContent"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "localeText",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "localeText"
+          }
+        },
+        "en": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "id": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "localeString",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "localeString"
+          }
+        },
+        "en": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "id": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "page",
     "type": "document",
     "attributes": {
@@ -841,7 +939,8 @@
       "title": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": false
       },
@@ -856,7 +955,8 @@
       "intro": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
         },
         "optional": true
       },
@@ -1129,7 +1229,8 @@
       "name": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": false
       },
@@ -1151,7 +1252,8 @@
       "shortDescription": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
         },
         "optional": false
       },
@@ -1180,7 +1282,8 @@
       "scheduleNote": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": true
       },
@@ -1380,7 +1483,8 @@
       "title": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": false
       },
@@ -1547,7 +1651,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "blockContent"
+          "name": "localeBlockContent"
         },
         "optional": true
       },
@@ -1651,7 +1755,8 @@
       "title": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": false
       },
@@ -1728,7 +1833,8 @@
       "excerpt": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
         },
         "optional": true
       },
@@ -1743,7 +1849,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "blockContent"
+          "name": "localeBlockContent"
         },
         "optional": true
       },
@@ -1795,7 +1901,8 @@
       "title": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeString"
         },
         "optional": false
       },
@@ -1913,14 +2020,16 @@
             "meaning": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeText"
               },
               "optional": true
             },
             "tagline": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeString"
               },
               "optional": true
             },
@@ -1944,14 +2053,16 @@
             "heading": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeString"
               },
               "optional": true
             },
             "text": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeText"
               },
               "optional": true
             },
@@ -2057,7 +2168,8 @@
             "quote": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeText"
               },
               "optional": true
             },
@@ -2076,14 +2188,40 @@
       "programsIntro": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
         },
         "optional": true
       },
       "venerablesIntro": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
+        },
+        "optional": true
+      },
+      "instagram": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "feedUrl": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "heading": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            }
+          }
         },
         "optional": true
       }
@@ -2220,7 +2358,8 @@
       "bio": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "inline",
+          "name": "localeText"
         },
         "optional": true
       },
@@ -2373,14 +2512,16 @@
             "quote": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeText"
               },
               "optional": true
             },
             "quoteSource": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeString"
               },
               "optional": true
             },
@@ -2459,7 +2600,8 @@
             "nibaBlurb": {
               "type": "objectAttribute",
               "value": {
-                "type": "string"
+                "type": "inline",
+                "name": "localeText"
               },
               "optional": true
             },

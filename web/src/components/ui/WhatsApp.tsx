@@ -1,4 +1,5 @@
 import { clean, whatsappUrl } from '~/lib/text'
+import { useT } from '~/lib/i18n'
 
 function WhatsAppIcon({ className = 'h-5 w-5' }: { className?: string }) {
   return (
@@ -14,7 +15,7 @@ type Contact = { name: string | null; whatsapp: string | null }
 export function WhatsAppButtons({
   contacts,
   message,
-  label = (name) => `Chat with ${name}`,
+  label,
   tone = 'solid',
 }: {
   contacts: Contact[] | null | undefined
@@ -22,6 +23,7 @@ export function WhatsAppButtons({
   label?: (name: string) => string
   tone?: 'solid' | 'soft'
 }) {
+  const t = useT()
   const valid = (contacts ?? [])
     .map((c) => ({ name: clean(c.name), href: whatsappUrl(c.whatsapp, message) }))
     .filter((c): c is { name: string; href: string } => Boolean(c.name && c.href))
@@ -41,8 +43,8 @@ export function WhatsAppButtons({
             className={`inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-base font-semibold transition-colors ${style}`}
           >
             <WhatsAppIcon />
-            {label(c.name)}
-            <span className="sr-only">(opens WhatsApp)</span>
+            {(label ?? t.chatWith)(c.name)}
+            <span className="sr-only">{t.opensWhatsApp}</span>
           </a>
         </li>
       ))}

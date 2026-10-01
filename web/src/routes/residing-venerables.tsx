@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
+import { buildHead, breadcrumbs, headContext } from '~/lib/seo'
+import { langDeps, useLang, useT } from '~/lib/i18n'
 import { getVenerables } from '~/lib/sanity/api'
 import { formatDateRange } from '~/lib/dates'
 import { PageHeader } from '~/components/ui/PageHeader'
@@ -7,18 +8,19 @@ import { PageSections } from '~/components/page/PageSections'
 import { TeacherCard } from '~/components/cards/TeacherCard'
 
 export const Route = createFileRoute('/residing-venerables')({
-  loader: () => getVenerables(),
-  head: ({ matches, loaderData }) =>
-    buildHead({
-      title: loaderData?.page?.title || 'Residing Venerables',
-      description:
-        loaderData?.page?.intro ||
-        'Venerable monks residing with us in Medan, and how to offer dāna during their stay.',
+  loaderDeps: langDeps,
+  loader: ({ deps: { lang } }) => getVenerables({ data: { lang } }),
+  head: ({ matches, loaderData }) => {
+    const { settings, lang, t } = headContext(matches)
+    return buildHead({
+      title: loaderData?.page?.title || t.residingVenerablesTitle,
+      description: loaderData?.page?.intro || t.venerablesDescription,
       seo: loaderData?.page?.seo,
       path: '/residing-venerables/',
-      settings: rootSettings(matches),
-      jsonLd: [breadcrumbs([['Residing Venerables', '/residing-venerables/']])],
-    }),
+      settings,
+      jsonLd: [breadcrumbs([[t.residingVenerablesTitle, '/residing-venerables/']], lang)],
+    })
+  },
   component: VenerablesPage,
 })
 
@@ -31,23 +33,19 @@ function VenerablesPage() {
   const current = venerables.filter(isCurrent)
   const upcoming = venerables.filter((v) => v.residencyStart && v.residencyStart > today)
   const past = venerables.filter((v) => v.residencyEnd && v.residencyEnd < today)
+  const t = useT()
 
   return (
     <>
       <PageHeader
-        eyebrow="About"
-        title={page?.title || 'Residing Venerables'}
-        intro={page?.intro || 'Venerable monks who stay with us for the rains retreat and teaching periods.'}
+        eyebrow={t.about}
+        title={page?.title || t.residingVenerablesTitle}
+        intro={page?.intro || t.venerablesIntro}
       />
-      <Group
-        id="current"
-        title="Residing with us now"
-        items={current}
-        empty="No venerables are residing with us at the moment."
-      />
-      {upcoming.length > 0 && <Group id="upcoming" title="Coming soon" items={upcoming} warm />}
+      <Group id="current" title={t.residingNow} items={current} empty={t.noVenerables} />
+      {upcoming.length > 0 && <Group id="upcoming" title={t.upcomingResidency} items={upcoming} warm />}
       <PageSections sections={page?.body} />
-      {past.length > 0 && <Group id="past" title="Previous residencies" items={past} warm={upcoming.length === 0} />}
+      {past.length > 0 && <Group id="past" title={t.previousResidencies} items={past} warm={upcoming.length === 0} />}
     </>
   )
 }
@@ -65,7 +63,8 @@ function Group({
   empty?: string
   warm?: boolean
 }) {
-  const period = items[0]?.residencyStart ? formatDateRange(items[0].residencyStart, items[0].residencyEnd) : ''
+  const lang = useLang()
+  const period = items[0]?.residencyStart ? formatDateRange(items[0].residencyStart, items[0].residencyEnd, lang) : ''
   return (
     <section aria-labelledby={`${id}-title`} className={`py-section ${warm ? 'bg-cream-100' : ''}`}>
       <div className="mx-auto max-w-site px-4 sm:px-6">

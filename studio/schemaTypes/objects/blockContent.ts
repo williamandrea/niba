@@ -71,7 +71,7 @@ export const verse = defineType({
   name: 'verse',
   title: 'Pali verse',
   type: 'object',
-  description: 'A verse in Pali with its English meaning. Shown side by side on computers and stacked on phones.',
+  description: 'A verse in Pali with its meaning. Shown side by side on computers and stacked on phones.',
   fields: [
     defineField({
       name: 'pali',
@@ -83,10 +83,10 @@ export const verse = defineType({
     }),
     defineField({
       name: 'meaning',
-      title: 'English meaning',
+      title: 'Meaning',
       type: 'text',
       rows: 6,
-      description: 'Press Enter for each new line.',
+      description: 'In the language of this text. Press Enter for each new line.',
       validation: (rule) => rule.required(),
     }),
     defineField({

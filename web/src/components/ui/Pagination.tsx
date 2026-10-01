@@ -1,20 +1,22 @@
 import { Link } from '@tanstack/react-router'
+import { useT } from '~/lib/i18n'
 
 type Search = { q?: string; category?: string; page?: number }
 
 export function Pagination({ current, count, search }: { current: number; count: number; search: Search }) {
+  const t = useT()
   if (count <= 1) return null
   const pages = Array.from({ length: count }, (_, i) => i + 1)
   const base = 'inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 text-base font-semibold'
   return (
-    <nav aria-label="Pages" className="mt-12 flex flex-wrap items-center justify-center gap-2">
+    <nav aria-label={t.pages} className="mt-12 flex flex-wrap items-center justify-center gap-2">
       {current > 1 && (
         <Link
           to="/blog/"
           search={{ ...search, page: current - 1 === 1 ? undefined : current - 1 }}
           className={`${base} text-brown-900 hover:bg-saffron-100`}
         >
-          ← Newer
+          {t.newer}
         </Link>
       )}
       {pages.map((p) => (
@@ -34,7 +36,7 @@ export function Pagination({ current, count, search }: { current: number; count:
           search={{ ...search, page: current + 1 }}
           className={`${base} text-brown-900 hover:bg-saffron-100`}
         >
-          Older →
+          {t.older}
         </Link>
       )}
     </nav>

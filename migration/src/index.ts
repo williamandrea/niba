@@ -13,7 +13,17 @@ import { fileURLToPath } from 'node:url'
 import { createClient } from '@sanity/client'
 import { convertPost, excerptFrom } from './convert'
 import { LOCAL_IMAGES_DIR, baseName, loadImage, predictAssetId, uploadImage } from './images'
-import { ID, image, seedDocuments, type ImageRef, type SanityDoc, type SeedImages } from './seed'
+import {
+  ID,
+  image,
+  localeBlocks,
+  localeString,
+  localeText,
+  seedDocuments,
+  type ImageRef,
+  type SanityDoc,
+  type SeedImages,
+} from './seed'
 import { readWxr, type WxrItem } from './wxr'
 
 const dryRun = process.argv.includes('--dry-run')
@@ -183,18 +193,24 @@ async function main() {
     return {
       _id: `post-wp-${post.id}`,
       _type: 'post',
-      title: post.title.replace(/\s{2,}/g, ' '),
+      // WordPress articles are in English. Admins add the Indonesian text in the Studio.
+      title: localeString(post.title.replace(/\s{2,}/g, ' ')),
       slug: { _type: 'slug', current: post.slug },
       category: { _type: 'reference', _ref: categoryId },
       ...(cover ? { coverImage: image(cover) } : {}),
-      excerpt,
+      excerpt: localeText(excerpt),
       publishedAt: new Date(`${post.date.replace(' ', 'T')}Z`).toISOString(),
-      body: blocks,
+      body: localeBlocks(blocks),
     }
   }
 
   for (const [id, title] of categories) {
-    docs.unshift({ _id: id, _type: 'category', title, slug: { _type: 'slug', current: id.replace(/^category-/, '') } })
+    docs.unshift({
+      _id: id,
+      _type: 'category',
+      title: localeString(title, title),
+      slug: { _type: 'slug', current: id.replace(/^category-/, '') },
+    })
     report.imported.push(`Category "${title}"`)
   }
   if (!categories.has(ID.categoryDhammapada)) {
@@ -204,8 +220,7 @@ async function main() {
   // 3. Seed content
   const seed = seedDocuments(seedImages)
   docs.push(...seed)
-  for (const d of seed)
-    report.imported.push(`Seed ${d._type} "${String(d.title ?? d.name ?? d.fullName ?? d.siteName ?? d._id)}"`)
+  for (const d of seed) report.imported.push(`Seed ${d._type} "${docLabel(d)}"`)
   collectTodos(seed)
 
   // 4. Things we deliberately did not import
@@ -248,9 +263,8 @@ async function main() {
 function collectTodos(docs: SanityDoc[]) {
   const walk = (value: unknown, path: string, doc: SanityDoc) => {
     if (typeof value === 'string' && value.includes('TODO:')) {
-      const label = String(doc.title ?? doc.name ?? doc.fullName ?? doc.siteName ?? doc._id)
       report.todos.push(
-        `${doc._type} "${label}" → ${path.replace(/\.(\d+)/g, '[$1]')}: ${value.slice(value.indexOf('TODO:'))}`,
+        `${doc._type} "${docLabel(doc)}" → ${path.replace(/\.(\d+)/g, '[$1]')}: ${value.slice(value.indexOf('TODO:'))}`,
       )
     } else if (Array.isArray(value)) value.forEach((v, i) => walk(v, `${path}.${i}`, doc))
     else if (value && typeof value === 'object') {
@@ -258,6 +272,12 @@ function collectTodos(docs: SanityDoc[]) {
     }
   }
   for (const d of docs) walk(d, '', d)
+}
+
+/** A readable name for a document, from its English title. */
+function docLabel(doc: SanityDoc) {
+  const value = doc.title ?? doc.name ?? doc.fullName ?? doc.siteName ?? doc._id
+  return String(typeof value === 'object' && value && 'en' in value ? value.en : value)
 }
 
 function printReport() {

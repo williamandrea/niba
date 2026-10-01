@@ -1,6 +1,6 @@
-import { defineField, defineType } from 'sanity'
+import { defineType } from 'sanity'
 import { TagIcon } from '@sanity/icons/Tag'
-import { slugField } from '../../lib/fields'
+import { localeField, slugField } from '../../lib/fields'
 import { RESERVED_SLUGS } from '../../lib/paths'
 
 export const category = defineType({
@@ -9,10 +9,10 @@ export const category = defineType({
   type: 'document',
   icon: TagIcon,
   fields: [
-    defineField({ name: 'title', title: 'Name', type: 'string', validation: (rule) => rule.required() }),
+    localeField({ name: 'title', title: 'Name', required: true }),
     {
       ...slugField(
-        'title',
+        'title.en',
         'Used in article addresses, e.g. "dhammapada" makes /dhammapada/<article>/. Do not change it after publishing, or old links will break.',
       ),
       validation: (rule) =>
@@ -25,4 +25,5 @@ export const category = defineType({
           ),
     },
   ],
+  preview: { select: { title: 'title.en', subtitle: 'slug.current' } },
 })

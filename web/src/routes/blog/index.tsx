@@ -1,5 +1,6 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
+import { buildHead, breadcrumbs, headContext } from '~/lib/seo'
+import { parseLang, useT } from '~/lib/i18n'
 import { useState, type FormEvent } from 'react'
 import { getPostList } from '~/lib/sanity/api'
 import { ArticleCard } from '~/components/cards/ArticleCard'
@@ -17,19 +18,24 @@ export const Route = createFileRoute('/blog/')({
       page: Number.isInteger(page) && page > 1 ? page : undefined,
     }
   },
-  loaderDeps: ({ search }) => search,
+  loaderDeps: ({ search }) => ({
+    q: search.q,
+    category: search.category,
+    page: search.page,
+    lang: parseLang(search.lang),
+  }),
   loader: ({ deps }) => getPostList({ data: deps }),
-  head: ({ matches, loaderData }) =>
-    buildHead({
-      title: loaderData?.page?.title || 'Articles',
-      description:
-        loaderData?.page?.intro ||
-        'Stories and teachings from the Dhammapada and the Tipiṭaka, to read and reflect on.',
+  head: ({ matches, loaderData }) => {
+    const { settings, lang, t } = headContext(matches)
+    return buildHead({
+      title: loaderData?.page?.title || t.articles,
+      description: loaderData?.page?.intro || t.blogDescription,
       seo: loaderData?.page?.seo,
       path: '/blog/',
-      settings: rootSettings(matches),
-      jsonLd: [breadcrumbs([['Articles', '/blog/']])],
-    }),
+      settings,
+      jsonLd: [breadcrumbs([[t.articles, '/blog/']], lang)],
+    })
+  },
   component: BlogPage,
 })
 
@@ -38,6 +44,7 @@ function BlogPage() {
   const search = Route.useSearch()
   const navigate = useNavigate({ from: '/blog/' })
   const [query, setQuery] = useState(search.q ?? '')
+  const t = useT()
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
@@ -48,17 +55,15 @@ function BlogPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Resources"
-        title={data.page?.title || 'Articles'}
-        intro={
-          data.page?.intro || 'Stories and teachings from the Dhammapada and the Tipiṭaka, to read and reflect on.'
-        }
+        eyebrow={t.resources}
+        title={data.page?.title || t.articles}
+        intro={data.page?.intro || t.blogDescription}
       />
-      <section aria-label="Find articles" className="border-b border-gold-400/30 bg-cream-50">
+      <section aria-label={t.findArticles} className="border-b border-gold-400/30 bg-cream-50">
         <div className="mx-auto flex max-w-site flex-col gap-4 px-4 py-6 sm:px-6 md:flex-row md:items-center md:justify-between">
           <form role="search" onSubmit={submit} className="flex w-full max-w-md gap-2">
             <label htmlFor="blog-search" className="sr-only">
-              Search articles
+              {t.searchArticles}
             </label>
             <input
               id="blog-search"
@@ -66,21 +71,21 @@ function BlogPage() {
               name="q"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search articles…"
+              placeholder={t.searchPlaceholder}
               className="min-h-12 w-full min-w-0 rounded-full border-2 border-gold-400/50 bg-white px-5 text-base placeholder:text-ink/60 focus:border-saffron-600 focus:outline-none"
             />
             <button
               type="submit"
               className="min-h-12 shrink-0 rounded-full bg-saffron-600 px-5 font-semibold text-white hover:bg-brown-700"
             >
-              Search
+              {t.search}
             </button>
           </form>
           {data.categories.length > 0 && (
-            <nav aria-label="Categories">
+            <nav aria-label={t.categories}>
               <ul className="flex flex-wrap gap-2">
                 <li>
-                  <CategoryChip label="All" active={!search.category} search={{ q: search.q }} />
+                  <CategoryChip label={t.all} active={!search.category} search={{ q: search.q }} />
                 </li>
                 {data.categories.map((c) => (
                   <li key={c.slug}>
@@ -96,12 +101,10 @@ function BlogPage() {
           )}
         </div>
       </section>
-      <section aria-label="Articles" className="py-section">
+      <section aria-label={t.articles} className="py-section">
         <div className="mx-auto max-w-site px-4 sm:px-6">
           <p className="mb-6 text-ink/80" aria-live="polite">
-            {data.total === 0
-              ? 'No articles found.'
-              : `${data.total} article${data.total === 1 ? '' : 's'}${activeCategory ? ` in ${activeCategory.title}` : ''}${search.q ? ` matching “${search.q}”` : ''}`}
+            {data.total === 0 ? t.noArticles : t.articleCount(data.total, activeCategory?.title, search.q)}
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data.posts.map((post) => (

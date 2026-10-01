@@ -1,7 +1,7 @@
 import type { SanityImageSource } from '~/lib/sanity/image'
 import { dayName, formatTime } from '~/lib/dates'
-import { AUDIENCE_LABELS } from '~/lib/labels'
 import { clean } from '~/lib/text'
+import { useLang, useT } from '~/lib/i18n'
 import { ButtonLink } from '~/components/ui/Button'
 import { SanityImage } from '~/components/ui/SanityImage'
 import { WhatsAppButtons } from '~/components/ui/WhatsApp'
@@ -21,6 +21,8 @@ export type ProgramCardData = {
 }
 
 export function ScheduleList({ schedule, note }: { schedule: ProgramCardData['schedule']; note?: string | null }) {
+  const lang = useLang()
+  const t = useT()
   const text = clean(note)
   if (!schedule?.length && !text) return null
   return (
@@ -36,7 +38,7 @@ export function ScheduleList({ schedule, note }: { schedule: ProgramCardData['sc
             <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm.8 4v3.7l2.8 1.7-.8 1.3-3.6-2.2V6h1.6Z" />
           </svg>
           <span>
-            <span className="font-semibold">Every {dayName(s.day)}</span>, {formatTime(s.startTime)}–
+            <span className="font-semibold">{t.every(dayName(s.day, lang))}</span>, {formatTime(s.startTime)}–
             {formatTime(s.endTime)} WIB
           </span>
         </li>
@@ -47,13 +49,14 @@ export function ScheduleList({ schedule, note }: { schedule: ProgramCardData['sc
 }
 
 export function AudienceBadge({ audience }: { audience: string | null | undefined }) {
+  const t = useT()
   if (!audience) return null
   const open = audience === 'public'
   return (
     <span
       className={`inline-flex items-center rounded-full px-3 py-1 text-base font-semibold ${open ? 'bg-forest-700/10 text-forest-700' : 'bg-saffron-100 text-brown-700'}`}
     >
-      {AUDIENCE_LABELS[audience] ?? audience}
+      {t.audience[audience] ?? audience}
     </span>
   )
 }
@@ -70,6 +73,7 @@ export function ProgramCard({
 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3'
   const photo = program.images?.[0]
+  const t = useT()
   return (
     <article
       id={program.slug}
@@ -109,7 +113,7 @@ export function ProgramCard({
           contacts={program.contacts}
           tone="soft"
           label={(name) => name}
-          message={`Hello, I'd like to ask about ${program.name}.`}
+          message={t.askAbout(program.name)}
         />
       </div>
     </article>

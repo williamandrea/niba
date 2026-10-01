@@ -1,4 +1,5 @@
 /** Site-wide defaults. Sanity values override these when present. */
+import type { Messages } from './messages'
 
 export type NavLink = { label: string; href: string }
 export type MenuItem = NavLink & { children?: NavLink[] }
@@ -7,53 +8,54 @@ export const SITE_NAME = 'Na Uyana Aranya Indonesia'
 export const SITE_SHORT_NAME = 'Na Uyana Indonesia'
 export const TIME_ZONE = 'Asia/Jakarta'
 
-export const DEFAULT_MENU: MenuItem[] = [
-  { label: 'Home', href: '/' },
-  {
-    label: 'About',
-    href: '/about/',
-    children: [
-      { label: 'About Us', href: '/about/' },
-      { label: 'Our Teachers', href: '/teachers/' },
-      { label: 'Residing Venerables', href: '/residing-venerables/' },
-    ],
-  },
-  {
-    label: 'NIBA',
-    href: '/niba/',
-    children: [
-      { label: 'About NIBA', href: '/niba/' },
-      { label: 'Registration', href: '/niba/registration/' },
-    ],
-  },
-  { label: 'Programs', href: '/programs/' },
-  {
-    label: 'Events',
-    href: '/events/',
-    children: [
-      { label: 'Upcoming', href: '/events/' },
-      { label: 'Past', href: '/events/past/' },
-    ],
-  },
-  {
-    label: 'Resources',
-    href: '/blog/',
-    children: [
-      { label: 'Articles', href: '/blog/' },
-      { label: 'Books', href: '/books/' },
-      { label: 'Chanting', href: '/chanting/' },
-    ],
-  },
-  { label: 'Contact', href: '/contact/' },
-]
+export function defaultMenu(t: Messages): MenuItem[] {
+  return [
+    { label: t.menuHome, href: '/' },
+    {
+      label: t.menuAbout,
+      href: '/about/',
+      children: [
+        { label: t.menuAboutUs, href: '/about/' },
+        { label: t.menuTeachers, href: '/teachers/' },
+        { label: t.menuVenerables, href: '/residing-venerables/' },
+      ],
+    },
+    {
+      label: 'NIBA',
+      href: '/niba/',
+      children: [
+        { label: t.menuAboutNiba, href: '/niba/' },
+        { label: t.menuRegistration, href: '/niba/registration/' },
+      ],
+    },
+    { label: t.menuPrograms, href: '/programs/' },
+    {
+      label: t.menuEvents,
+      href: '/events/',
+      children: [
+        { label: t.menuUpcoming, href: '/events/' },
+        { label: t.menuPast, href: '/events/past/' },
+      ],
+    },
+    {
+      label: t.menuResources,
+      href: '/blog/',
+      children: [
+        { label: t.menuArticles, href: '/blog/' },
+        { label: t.menuBooks, href: '/books/' },
+        { label: t.menuChanting, href: '/chanting/' },
+      ],
+    },
+    { label: t.menuContact, href: '/contact/' },
+  ]
+}
 
-export const DEFAULT_USEFUL_LINKS: NavLink[] = [
-  { label: 'About us', href: '/about/' },
-  { label: 'Our teachers', href: '/teachers/' },
-  { label: 'About NIBA', href: '/niba/' },
-  { label: 'Articles', href: '/blog/' },
-  { label: 'Books', href: '/books/' },
-]
-
-export const DEFAULT_DESCRIPTION =
-  'Na Uyana Aranya Indonesia is a Theravada Buddhist community in Medan. Join our Sunday Dhamma school for children (NIBA), weekly Dhamma and meditation programs, and retreats.'
+export function defaultUsefulLinks(t: Messages): NavLink[] {
+  return [
+    { label: t.linkAboutUs, href: '/about/' },
+    { label: t.linkTeachers, href: '/teachers/' },
+    { label: t.menuAboutNiba, href: '/niba/' },
+    { label: t.menuArticles, href: '/blog/' },
+    { label: t.menuBooks, href: '/books/' },
+  ]
+}

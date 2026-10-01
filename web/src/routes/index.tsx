@@ -1,10 +1,12 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
 import { buildHead, rootSettings } from '~/lib/seo'
+import { langDeps } from '~/lib/i18n'
 import { getHome } from '~/lib/sanity/api'
 import {
   EventsSection,
   FeaturedVerse,
   Hero,
+  InstagramSection,
   Intro,
   LatestArticles,
   ProgramsSection,
@@ -14,7 +16,8 @@ import {
 } from '~/components/home/HomeSections'
 
 export const Route = createFileRoute('/')({
-  loader: () => getHome(),
+  loaderDeps: langDeps,
+  loader: ({ deps: { lang } }) => getHome({ data: { lang } }),
   head: ({ matches }) => buildHead({ path: '/', settings: rootSettings(matches) }),
   component: HomePage,
 })
@@ -46,6 +49,7 @@ function HomePage() {
       <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
       <TeachersSection teachers={data.teachers} />
       <LatestArticles articles={data.articles} />
+      <InstagramSection feed={data.instagram} heading={home?.instagram?.heading} />
     </>
   )
 }

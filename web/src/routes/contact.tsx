@@ -1,5 +1,6 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
-import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
+import { buildHead, breadcrumbs, headContext } from '~/lib/seo'
+import { langDeps, useT } from '~/lib/i18n'
 import { getPage } from '~/lib/sanity/api'
 import { clean, formatPhone, whatsappUrl } from '~/lib/text'
 import { PageHeader } from '~/components/ui/PageHeader'
@@ -7,32 +8,36 @@ import { PageSections } from '~/components/page/PageSections'
 import { WhatsAppButtons, WhatsAppIcon } from '~/components/ui/WhatsApp'
 
 export const Route = createFileRoute('/contact')({
-  loader: () => getPage({ data: { slug: 'contact' } }),
-  head: ({ matches, loaderData: page }) =>
-    buildHead({
-      title: page?.title || 'Contact Us',
+  loaderDeps: langDeps,
+  loader: ({ deps: { lang } }) => getPage({ data: { slug: 'contact', lang } }),
+  head: ({ matches, loaderData: page }) => {
+    const { settings, lang, t } = headContext(matches)
+    return buildHead({
+      title: page?.title || t.contactUs,
       description: page?.intro,
       seo: page?.seo,
       image: page?.body?.[0]?.images?.[0],
       path: '/contact/',
-      settings: rootSettings(matches),
-      jsonLd: [breadcrumbs([['Contact', '/contact/']])],
-    }),
+      settings,
+      jsonLd: [breadcrumbs([[t.contact, '/contact/']], lang)],
+    })
+  },
   component: ContactPage,
 })
 
 function ContactPage() {
   const page = Route.useLoaderData()
   const { footer } = useLoaderData({ from: '__root__' })
-  const mainWa = whatsappUrl(footer.whatsapp, 'Hello Na Uyana, ')
+  const t = useT()
+  const mainWa = whatsappUrl(footer.whatsapp, t.whatsAppGreeting)
   return (
     <>
-      <PageHeader title={page?.title || 'Contact Us'} intro={page?.intro || 'We would love to hear from you.'} />
-      <section aria-label="Contact details" className="py-section">
+      <PageHeader title={page?.title || t.contactUs} intro={page?.intro || t.contactIntro} />
+      <section aria-label={t.contactDetails} className="py-section">
         <div className="mx-auto grid max-w-site gap-6 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-card border border-gold-400/30 bg-white/70 p-6 shadow-sm">
             <h2 className="text-h3">WhatsApp</h2>
-            <p className="mt-2">The quickest way to reach us.</p>
+            <p className="mt-2">{t.quickestWay}</p>
             {mainWa && footer.whatsapp && (
               <a
                 href={mainWa}
@@ -49,7 +54,7 @@ function ContactPage() {
             </div>
           </div>
           <div className="rounded-card border border-gold-400/30 bg-white/70 p-6 shadow-sm">
-            <h2 className="text-h3">Visit us</h2>
+            <h2 className="text-h3">{t.visitUs}</h2>
             {footer.address && <p className="mt-2 whitespace-pre-line">{clean(footer.address)}</p>}
             {footer.mapsUrl && (
               <a
@@ -58,12 +63,12 @@ function ContactPage() {
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex min-h-11 items-center font-semibold text-brown-700 underline underline-offset-4"
               >
-                Open in Google Maps
+                {t.openMaps}
               </a>
             )}
           </div>
           <div className="rounded-card border border-gold-400/30 bg-white/70 p-6 shadow-sm">
-            <h2 className="text-h3">Email & social media</h2>
+            <h2 className="text-h3">{t.emailAndSocial}</h2>
             {footer.email && (
               <a
                 href={`mailto:${footer.email}`}

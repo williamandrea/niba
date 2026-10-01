@@ -1,6 +1,7 @@
 import type { SanityImageSource } from '~/lib/sanity/image'
 import type { BlockContent } from '~/lib/sanity/sanity.types'
 import { clean } from '~/lib/text'
+import { useT } from '~/lib/i18n'
 import { PhotoCollage } from '~/components/ui/PhotoCollage'
 import { RichText, cleanBlocks } from '~/components/portable-text/RichText'
 
@@ -56,11 +57,10 @@ export function PageSections({ sections }: { sections: PageSectionData[] | null 
 
 /** Friendly message for pages that admins have not filled in yet. */
 export function ComingSoon() {
+  const t = useT()
   return (
     <div className="mx-auto max-w-site px-4 py-section sm:px-6">
-      <p className="max-w-xl text-lg">
-        We are still preparing this page. Please check back soon, or message us on WhatsApp.
-      </p>
+      <p className="max-w-xl text-lg">{t.comingSoon}</p>
     </div>
   )
 }

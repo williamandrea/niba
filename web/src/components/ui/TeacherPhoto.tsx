@@ -2,6 +2,7 @@ import type { SanityImageSource } from '~/lib/sanity/image'
 import { hasImage } from '~/lib/sanity/image'
 import { SanityImage } from './SanityImage'
 import { LotusMandala } from './LotusMandala'
+import { useT } from '~/lib/i18n'
 
 /** A teacher's photo, or a calm lotus placeholder when there is none yet. */
 export function TeacherPhoto({
@@ -15,6 +16,7 @@ export function TeacherPhoto({
   sizes: string
   className?: string
 }) {
+  const t = useT()
   if (hasImage(photo)) {
     return (
       <SanityImage
@@ -31,7 +33,7 @@ export function TeacherPhoto({
     <div
       className={`relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-saffron-100 to-cream-100 ${className}`}
       role="img"
-      aria-label={`${name} (photo coming soon)`}
+      aria-label={t.photoComingSoon(name)}
     >
       <LotusMandala className="h-3/4 w-3/4 text-saffron-500/40" />
     </div>

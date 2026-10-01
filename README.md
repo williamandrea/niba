@@ -111,6 +111,9 @@ requests get a preview URL.
    enabled. `web/wrangler.jsonc` has the required (empty) `previews` block.
 4. The Worker in the dashboard is named `niba`. The `name` in `web/wrangler.jsonc` must stay the same.
 
+After changing build settings, push a new commit. **Retry build** re-runs a build with the
+settings it was first created with, so it won't pick up your changes.
+
 Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler login`).
 
 ### Custom domain (nauyana.id)

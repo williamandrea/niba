@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { basename, extname, join } from 'node:path'
 import type { SanityClient } from '@sanity/client'
 import { imageSize } from 'image-size'
@@ -8,13 +8,40 @@ export const LOCAL_IMAGES_DIR = new URL('../images/', import.meta.url).pathname
 
 export type LoadedImage = { buffer: Buffer; filename: string; from: 'download' | 'local' }
 
-/** Names to look for in migration/images/ (the export sometimes has .jpeg and .webp copies). */
-function candidateNames(url: string) {
-  const name = decodeURIComponent(basename(new URL(url).pathname))
-  const stem = name.slice(0, -extname(name).length)
-  const stems = [stem, stem.replace(/-scaled$/, '')]
-  const exts = ['.webp', '.jpg', '.jpeg', '.png']
-  return [name, ...stems.flatMap((s) => exts.map((e) => s + e))]
+/**
+ * A file's "base name" for matching: lowercase, no extension, and without the
+ * suffixes WordPress adds to copies of the same photo. So these all match
+ * `hero-section.webp`:
+ *   hero-section-1024x683.webp   (resized copy the site shows)
+ *   hero-section-scaled.jpg      (large originals)
+ *   hero-section (1).webp        (saved twice by the browser)
+ */
+export function baseName(file: string) {
+  let name = decodeURIComponent(basename(file)).toLowerCase()
+  name = name.slice(0, name.length - extname(name).length)
+  let previous = ''
+  while (previous !== name) {
+    previous = name
+    name = name
+      .replace(/\s*\(\d+\)$/, '')
+      .replace(/-\d+x\d+$/, '')
+      .replace(/-(scaled|rotated)$/, '')
+      .replace(/-e\d{10,}$/, '')
+  }
+  return name
+}
+
+const IMAGE_EXT = /\.(webp|jpe?g|png|gif|avif)$/i
+
+/** Finds the photo in migration/images/. When there are several copies, takes the biggest file. */
+function findLocal(url: string) {
+  if (!existsSync(LOCAL_IMAGES_DIR)) return null
+  const wanted = baseName(new URL(url).pathname)
+  const matches = readdirSync(LOCAL_IMAGES_DIR)
+    .filter((f) => IMAGE_EXT.test(f) && baseName(f) === wanted)
+    .map((f) => ({ f, size: statSync(join(LOCAL_IMAGES_DIR, f)).size }))
+    .sort((a, b) => b.size - a.size)
+  return matches[0]?.f ?? null
 }
 
 /**
@@ -39,13 +66,8 @@ export async function loadImage(url: string): Promise<LoadedImage | null> {
   } catch {
     // Fall through to the local folder.
   }
-  if (!existsSync(LOCAL_IMAGES_DIR)) return null
-  const files = new Map(readdirSync(LOCAL_IMAGES_DIR).map((f) => [f.toLowerCase(), f]))
-  for (const name of candidateNames(url)) {
-    const found = files.get(name.toLowerCase())
-    if (found) return { buffer: readFileSync(join(LOCAL_IMAGES_DIR, found)), filename: found, from: 'local' }
-  }
-  return null
+  const found = findLocal(url)
+  return found ? { buffer: readFileSync(join(LOCAL_IMAGES_DIR, found)), filename: found, from: 'local' } : null
 }
 
 /** Sanity names image assets `image-<sha1>-<width>x<height>-<format>`, so the id is known before upload. */

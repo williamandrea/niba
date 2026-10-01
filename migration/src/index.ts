@@ -12,7 +12,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { createClient } from '@sanity/client'
 import { convertPost, excerptFrom } from './convert'
-import { LOCAL_IMAGES_DIR, loadImage, predictAssetId, uploadImage } from './images'
+import { LOCAL_IMAGES_DIR, baseName, loadImage, predictAssetId, uploadImage } from './images'
 import { ID, image, seedDocuments, type ImageRef, type SanityDoc, type SeedImages } from './seed'
 import { readWxr, type WxrItem } from './wxr'
 
@@ -95,9 +95,7 @@ async function main() {
     usedAttachments.add(id)
     const loaded = await loadImage(item.attachmentUrl)
     if (!loaded) {
-      report.missingImages.push(
-        decodeURIComponent(new URL(item.attachmentUrl).pathname.split('/').pop() ?? item.attachmentUrl),
-      )
+      report.missingImages.push(`${baseName(item.attachmentUrl)}  ("${item.title}")\n      ${item.attachmentUrl}`)
       imageCache.set(id, undefined)
       return undefined
     }
@@ -273,7 +271,16 @@ function printReport() {
   section('TODOs for admins', report.todos)
   section('Known issues to review', report.issues)
   if (report.missingImages.length) {
-    section(`Missing images – add these files to ${LOCAL_IMAGES_DIR} and run again`, report.missingImages)
+    section(`Missing images – save them into ${LOCAL_IMAGES_DIR} and run again`, report.missingImages)
+    console.log(
+      [
+        '',
+        '  How: open each link in your browser and save the image into that folder.',
+        '  Keep the name shown above. Suffixes WordPress adds are fine, and any image type works:',
+        '  for "hero-section", hero-section-1024x683.webp or hero-section-scaled.jpg both match.',
+        '  If you have several copies, the biggest file is used.',
+      ].join('\n'),
+    )
   } else {
     console.log('\nAll images found.')
   }

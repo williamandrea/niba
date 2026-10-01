@@ -82,8 +82,11 @@ The script imports the 3 published Dhammapada articles (same URLs: `/dhammapada/
 uploads the logo and homepage photos, creates starter content (settings, homepage, programs,
 events, teachers, residing venerables, contacts, pages), and prints a report.
 
-- **Images:** nauyana.id blocks bots, so downloads may fail. The report lists missing files.
-  Save them from the old site into `migration/images/` with the same names and run again.
+- **Images:** nauyana.id blocks bots, so downloads may fail. The report lists each missing
+  image with its link. Open the link in your browser, save the image into `migration/images/`,
+  and run again. The name must match the one in the report, but WordPress size suffixes are fine
+  (`hero-section-1024x683.webp` matches `hero-section`), and so is any image type (.webp, .jpg, .png).
+  If there are several copies, the biggest file is used.
 - **Re-running is safe:** every document has a fixed ID, so it updates instead of duplicating.
   But it **overwrites** those documents, including edits made in the Studio. Run it before admins
   start editing.

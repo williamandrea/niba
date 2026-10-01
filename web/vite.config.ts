@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite'
 const rootDir = fileURLToPath(new URL('..', import.meta.url))
 
 export default defineConfig(({ mode }) => {
-  // One .env file at the repo root (see .env.example). CI (Workers Builds)
+  // One .env file at the repo root (see .env.example). CI (GitHub Actions)
   // passes the same names as build variables, which land in process.env.
   const env = { ...loadEnv(mode, rootDir, ''), ...process.env }
 

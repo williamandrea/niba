@@ -94,25 +94,27 @@ events, teachers, residing venerables, contacts, pages), and prints a report.
 
 ## 4. Deploy the website (Cloudflare Workers)
 
-The site deploys with **Workers Builds** from GitHub: every push to `main` goes live, and pull
-requests get a preview URL.
+The site deploys with **GitHub Actions** (`.github/workflows/deploy.yml`). Every pull request
+gets checks (lint, types, format), a build, and a preview link posted on the PR. Every push to
+`main` does the same checks and build, then updates the live site.
 
-1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → pick this repo.
-2. Worker → **Settings → Builds**, with the **Production** toggle selected:
-   - **Build command:** `pnpm --filter web build`
-   - **Deploy command:** `pnpm --filter web exec wrangler deploy`
-   - **Root directory:** `/` (the repo root, so pnpm sees the workspace)
-   - **Branch control:** `main`
-   - **Variables and secrets** (build-time): `SANITY_PROJECT_ID`, `SANITY_DATASET=production`,
-     `SITE_URL=https://nauyana.id`
-3. PR previews: in the same **Builds** section, switch the toggle to **Previews Base** and set
-   the same build command, root directory, and variables, with
-   **Preview command:** `pnpm --filter web exec wrangler preview`. Make sure preview builds are
-   enabled. `web/wrangler.jsonc` has the required (empty) `previews` block.
-4. The Worker in the dashboard is named `niba`. The `name` in `web/wrangler.jsonc` must stay the same.
+One-time setup:
 
-After changing build settings, push a new commit. **Retry build** re-runs a build with the
-settings it was first created with, so it won't pick up your changes.
+1. Cloudflare → **My Profile → API Tokens → Create Token** → template **Edit Cloudflare
+   Workers** → create, then copy the token.
+2. GitHub repo → **Settings → Secrets and variables → Actions**:
+   - **Secrets** tab: `CLOUDFLARE_API_TOKEN` = the token.
+   - **Variables** tab: `SANITY_PROJECT_ID` = the Sanity project ID.
+3. If the repo was connected to Cloudflare **Workers Builds** before, disconnect it
+   (Workers & Pages → `niba` → **Settings → Builds → Disconnect**) so the code isn't built twice.
+
+`SANITY_DATASET` (`production`), `SITE_URL` (`https://nauyana.id`) and the Cloudflare account ID
+are set in the workflow file. The Worker is named `niba`, and the `name` in `web/wrangler.jsonc`
+must stay the same. `web/wrangler.jsonc` has the required (empty) `previews` block for
+`wrangler preview`.
+
+If a run fails, open the PR's **Checks** tab or the repo's **Actions** tab to read the log.
+To run it again without a code change, use **Re-run jobs** there.
 
 Manual deploy from your machine: `pnpm --filter web deploy` (after `npx wrangler login`).
 
@@ -136,8 +138,8 @@ Cloudflare-CDN-Cache-Control: max-age=300, stale-while-revalidate=86400
 
 `wrangler.jsonc` turns on **Workers Caching**, so Cloudflare serves cached pages without running
 the Worker. Admin edits appear within about 5 minutes. The cache belongs to each deployed
-version of the Worker, so a new deploy (for example **Retry build** on the latest build in
-Workers Builds) starts with an empty cache. Zone-level "Purge cache" in the dashboard does not
+version of the Worker, so a new deploy (for example **Re-run jobs** on the latest `main` run in
+GitHub Actions) starts with an empty cache. Zone-level "Purge cache" in the dashboard does not
 affect it.
 
 ### Bundle size
@@ -272,6 +274,9 @@ Choices made where the brief was open, or where the current docs required a chan
     - Article excerpts are the first real paragraph (WordPress excerpts were empty).
 17. **Search** uses GROQ `match` with word prefixes ("medit" finds "meditation"). 9 articles per page.
 18. **Studio "Vision" tab** is kept for the developer to test GROQ. Admins can ignore it.
+19. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
+    Cloudflare dashboard. GitHub Actions shows them on the PR, runs the code checks on every PR,
+    and is free (2,000 minutes a month for private repos; a run takes about 2).
 
 ## Known issues to review
 

@@ -1,0 +1,9 @@
+packages:
+  - web
+  - studio
+  - migration
+
+onlyBuiltDependencies:
+  - esbuild
+  - workerd
+  - sharp

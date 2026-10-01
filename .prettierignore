@@ -1,0 +1,11 @@
+node_modules
+dist
+.wrangler
+.sanity
+pnpm-lock.yaml
+**/routeTree.gen.ts
+**/sanity.types.ts
+**/schema.json
+migration/wordpress-export.xml
+migration/out
+web/public/fonts

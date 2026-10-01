@@ -1,14 +1,10 @@
 import { Link, useRouterState } from '@tanstack/react-router'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import type { MenuItem } from '~/lib/site'
-import type { SanityImageSource } from '~/lib/sanity/image'
-import { SanityImage } from '~/components/ui/SanityImage'
 import { SmartLink } from '~/components/ui/SmartLink'
-import { LotusMark } from '~/components/ui/LotusMandala'
 
 type Props = {
   siteName: string
-  logo: SanityImageSource | null | undefined
   menu: MenuItem[]
 }
 
@@ -17,7 +13,7 @@ function isActive(pathname: string, item: MenuItem) {
   return hrefs.some((href) => (href === '/' ? pathname === '/' : pathname.startsWith(href)))
 }
 
-export function SiteHeader({ siteName, logo, menu }: Props) {
+export function SiteHeader({ siteName, menu }: Props) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   // Remember which page the drawer was opened on, so it closes after navigating.
   const [drawerOpenOn, setDrawerOpenOn] = useState<string | null>(null)
@@ -34,13 +30,9 @@ export function SiteHeader({ siteName, logo, menu }: Props) {
           Skip to content
         </a>
         <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-4 px-4 sm:px-6 lg:h-20">
-          <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2.5" aria-label={`${siteName} – home`}>
-            {logo?.asset ? (
-              <SanityImage image={logo} sizes="56px" widths={[112, 168]} alt="" className="h-10 w-auto lg:h-12" />
-            ) : (
-              <LotusMark className="h-9 w-9 shrink-0 text-saffron-500" />
-            )}
-            <span className="font-serif text-base font-bold leading-tight text-brown-900 sm:text-lg">{siteName}</span>
+          <Link to="/" className="flex min-h-11 min-w-0 items-center" aria-label={`${siteName} – home`}>
+            {/* The logo image already shows the name and tagline. */}
+            <img src="/logo.webp" width={747} height={222} alt="" className="h-11 w-auto lg:h-14" />
           </Link>
 
           <DesktopNav menu={menu} pathname={pathname} />

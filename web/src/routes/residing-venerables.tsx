@@ -72,9 +72,12 @@ function Group({
         <h2 id={`${id}-title`}>{title}</h2>
         {period && <p className="mt-2 font-semibold text-brown-700">{period}</p>}
         {items.length ? (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          // Flex wrap, not grid, so a short last row (e.g. 3 + 2) sits centered.
+          <div className="mt-8 flex flex-wrap justify-center gap-6">
             {items.map((v) => (
-              <TeacherCard key={v._id} teacher={v} showBio />
+              <div key={v._id} className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
+                <TeacherCard teacher={v} showBio />
+              </div>
             ))}
           </div>
         ) : (

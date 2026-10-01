@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nauyana-web",
+  "compatibility_date": "2026-09-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "src/server.ts",
+  // Workers Caching: Cloudflare serves cached HTML without running the Worker.
+  // Our responses set Cache-Control headers (see src/start.ts).
+  "cache": {
+    "enabled": true,
+  },
+  "observability": {
+    "enabled": true,
+  },
+}

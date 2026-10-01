@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/libre-baskerville-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/libre-baskerville-italic-var.woff2') format('woff2');
+}
+
+@theme {
+  --color-saffron-500: #e85329;
+  --color-saffron-600: #d33f27;
+  --color-saffron-100: #fde8df;
+  --color-gold-400: #dda95a;
+  --color-gold-300: #fbe122;
+  --color-cream-50: #fdf8e1;
+  --color-cream-100: #f7f0e6;
+  --color-brown-700: #9b2211;
+  --color-brown-900: #3b1a12;
+  --color-forest-700: #1b4625;
+  --color-ink: #2b2420;
+
+  --font-serif: 'Libre Baskerville', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-h2: clamp(1.625rem, 1.3rem + 1.4vw, 2.25rem);
+  --text-h1: clamp(2rem, 1.5rem + 2.4vw, 3.25rem);
+  --text-verse: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+
+  --spacing-section: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  --radius-card: 1rem;
+  --container-site: 72rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-cream-50 font-sans text-body text-ink antialiased;
+    line-height: 1.65;
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-brown-900;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  h1 {
+    @apply text-h1;
+  }
+  h2 {
+    @apply text-h2;
+  }
+  h3 {
+    @apply text-h3;
+  }
+  a {
+    text-underline-offset: 0.2em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-saffron-600);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  /* Long-form text from Portable Text */
+  .prose-nu {
+    @apply text-body;
+    max-width: 42rem;
+  }
+  .prose-nu > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-nu h2 {
+    margin-top: 2em;
+  }
+  .prose-nu h3 {
+    margin-top: 1.6em;
+  }
+  .prose-nu a {
+    @apply text-brown-700 underline;
+  }
+  .prose-nu ul {
+    @apply list-disc pl-6;
+  }
+  .prose-nu ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-nu blockquote {
+    @apply border-l-4 border-gold-400 pl-4 font-serif italic;
+  }
+  .prose-nu hr {
+    @apply my-8 border-gold-400/50;
+  }
+}
+
+/* Gentle fade-in. Only runs when the user has not asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
+    animation: nu-fade-in 0.7s ease-out both;
+  }
+  @supports (animation-timeline: view()) {
+    .fade-in {
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes nu-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

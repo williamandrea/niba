@@ -1,1 +1,13 @@
 .env
+.env.*
+!.env.example
+node_modules/
+dist/
+.wrangler/
+.sanity/
+.dev.vars*
+*.log
+.DS_Store
+migration/out/
+migration/images/*
+!migration/images/README.md

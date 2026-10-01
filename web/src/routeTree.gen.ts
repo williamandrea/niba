@@ -10,33 +10,232 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SlugRouteImport } from './routes/$slug'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BooksRouteImport } from './routes/books'
+import { Route as ChantingRouteImport } from './routes/chanting'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ResidingVenerablesRouteImport } from './routes/residing-venerables'
+import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as EventsIndexRouteImport } from './routes/events/index'
+import { Route as EventsSlugRouteImport } from './routes/events/$slug'
+import { Route as EventsPastRouteImport } from './routes/events/past'
+import { Route as NibaIndexRouteImport } from './routes/niba/index'
+import { Route as NibaRegistrationRouteImport } from './routes/niba/registration'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlugRoute = SlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BooksRoute = BooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChantingRoute = ChantingRouteImport.update({
+  id: '/chanting',
+  path: '/chanting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsRoute = ProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResidingVenerablesRoute = ResidingVenerablesRouteImport.update({
+  id: '/residing-venerables',
+  path: '/residing-venerables',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeachersRoute = TeachersRouteImport.update({
+  id: '/teachers',
+  path: '/teachers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategorySlugRoute = CategorySlugRouteImport.update({
+  id: '/$category/$slug',
+  path: '/$category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsIndexRoute = EventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsSlugRoute = EventsSlugRouteImport.update({
+  id: '/events/$slug',
+  path: '/events/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsPastRoute = EventsPastRouteImport.update({
+  id: '/events/past',
+  path: '/events/past',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NibaIndexRoute = NibaIndexRouteImport.update({
+  id: '/niba/',
+  path: '/niba/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NibaRegistrationRoute = NibaRegistrationRouteImport.update({
+  id: '/niba/registration',
+  path: '/niba/registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/about': typeof AboutRoute
+  '/books': typeof BooksRoute
+  '/chanting': typeof ChantingRoute
+  '/contact': typeof ContactRoute
+  '/programs': typeof ProgramsRoute
+  '/residing-venerables': typeof ResidingVenerablesRoute
+  '/teachers': typeof TeachersRoute
+  '/$category/$slug': typeof CategorySlugRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/events/past': typeof EventsPastRoute
+  '/niba/registration': typeof NibaRegistrationRoute
+  '/blog/': typeof BlogIndexRoute
+  '/events/': typeof EventsIndexRoute
+  '/niba/': typeof NibaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/about': typeof AboutRoute
+  '/books': typeof BooksRoute
+  '/chanting': typeof ChantingRoute
+  '/contact': typeof ContactRoute
+  '/programs': typeof ProgramsRoute
+  '/residing-venerables': typeof ResidingVenerablesRoute
+  '/teachers': typeof TeachersRoute
+  '/$category/$slug': typeof CategorySlugRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/events/past': typeof EventsPastRoute
+  '/niba/registration': typeof NibaRegistrationRoute
+  '/blog': typeof BlogIndexRoute
+  '/events': typeof EventsIndexRoute
+  '/niba': typeof NibaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$slug': typeof SlugRoute
+  '/about': typeof AboutRoute
+  '/books': typeof BooksRoute
+  '/chanting': typeof ChantingRoute
+  '/contact': typeof ContactRoute
+  '/programs': typeof ProgramsRoute
+  '/residing-venerables': typeof ResidingVenerablesRoute
+  '/teachers': typeof TeachersRoute
+  '/$category/$slug': typeof CategorySlugRoute
+  '/events/$slug': typeof EventsSlugRoute
+  '/events/past': typeof EventsPastRoute
+  '/niba/registration': typeof NibaRegistrationRoute
+  '/blog/': typeof BlogIndexRoute
+  '/events/': typeof EventsIndexRoute
+  '/niba/': typeof NibaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/$slug'
+    | '/about'
+    | '/books'
+    | '/chanting'
+    | '/contact'
+    | '/programs'
+    | '/residing-venerables'
+    | '/teachers'
+    | '/$category/$slug'
+    | '/events/$slug'
+    | '/events/past'
+    | '/niba/registration'
+    | '/blog/'
+    | '/events/'
+    | '/niba/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/$slug'
+    | '/about'
+    | '/books'
+    | '/chanting'
+    | '/contact'
+    | '/programs'
+    | '/residing-venerables'
+    | '/teachers'
+    | '/$category/$slug'
+    | '/events/$slug'
+    | '/events/past'
+    | '/niba/registration'
+    | '/blog'
+    | '/events'
+    | '/niba'
+  id:
+    | '__root__'
+    | '/'
+    | '/$slug'
+    | '/about'
+    | '/books'
+    | '/chanting'
+    | '/contact'
+    | '/programs'
+    | '/residing-venerables'
+    | '/teachers'
+    | '/$category/$slug'
+    | '/events/$slug'
+    | '/events/past'
+    | '/niba/registration'
+    | '/blog/'
+    | '/events/'
+    | '/niba/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SlugRoute: typeof SlugRoute
+  AboutRoute: typeof AboutRoute
+  BooksRoute: typeof BooksRoute
+  ChantingRoute: typeof ChantingRoute
+  ContactRoute: typeof ContactRoute
+  ProgramsRoute: typeof ProgramsRoute
+  ResidingVenerablesRoute: typeof ResidingVenerablesRoute
+  TeachersRoute: typeof TeachersRoute
+  CategorySlugRoute: typeof CategorySlugRoute
+  EventsSlugRoute: typeof EventsSlugRoute
+  EventsPastRoute: typeof EventsPastRoute
+  NibaRegistrationRoute: typeof NibaRegistrationRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  EventsIndexRoute: typeof EventsIndexRoute
+  NibaIndexRoute: typeof NibaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +247,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$slug': {
+      id: '/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof SlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/books': {
+      id: '/books'
+      path: '/books'
+      fullPath: '/books'
+      preLoaderRoute: typeof BooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chanting': {
+      id: '/chanting'
+      path: '/chanting'
+      fullPath: '/chanting'
+      preLoaderRoute: typeof ChantingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs': {
+      id: '/programs'
+      path: '/programs'
+      fullPath: '/programs'
+      preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/residing-venerables': {
+      id: '/residing-venerables'
+      path: '/residing-venerables'
+      fullPath: '/residing-venerables'
+      preLoaderRoute: typeof ResidingVenerablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teachers': {
+      id: '/teachers'
+      path: '/teachers'
+      fullPath: '/teachers'
+      preLoaderRoute: typeof TeachersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$category/$slug': {
+      id: '/$category/$slug'
+      path: '/$category/$slug'
+      fullPath: '/$category/$slug'
+      preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/': {
+      id: '/events/'
+      path: '/events'
+      fullPath: '/events/'
+      preLoaderRoute: typeof EventsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/$slug': {
+      id: '/events/$slug'
+      path: '/events/$slug'
+      fullPath: '/events/$slug'
+      preLoaderRoute: typeof EventsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/past': {
+      id: '/events/past'
+      path: '/events/past'
+      fullPath: '/events/past'
+      preLoaderRoute: typeof EventsPastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/niba/': {
+      id: '/niba/'
+      path: '/niba'
+      fullPath: '/niba/'
+      preLoaderRoute: typeof NibaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/niba/registration': {
+      id: '/niba/registration'
+      path: '/niba/registration'
+      fullPath: '/niba/registration'
+      preLoaderRoute: typeof NibaRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SlugRoute: SlugRoute,
+  AboutRoute: AboutRoute,
+  BooksRoute: BooksRoute,
+  ChantingRoute: ChantingRoute,
+  ContactRoute: ContactRoute,
+  ProgramsRoute: ProgramsRoute,
+  ResidingVenerablesRoute: ResidingVenerablesRoute,
+  TeachersRoute: TeachersRoute,
+  CategorySlugRoute: CategorySlugRoute,
+  EventsSlugRoute: EventsSlugRoute,
+  EventsPastRoute: EventsPastRoute,
+  NibaRegistrationRoute: NibaRegistrationRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  EventsIndexRoute: EventsIndexRoute,
+  NibaIndexRoute: NibaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -26,6 +26,8 @@ export default defineCliConfig({
   },
   schemaExtraction: {
     path: './schema.json',
+    // Required fields become non-optional in the generated types.
+    enforceRequiredFields: true,
   },
   typegen: {
     path: '../web/src/**/*.{ts,tsx}',

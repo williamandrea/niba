@@ -6,7 +6,7 @@
     "dev": "sanity dev",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "typegen": "sanity schema extract && sanity typegen generate",
+    "typegen": "sanity schema extract --force && sanity typegen generate",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

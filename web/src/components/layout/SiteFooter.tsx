@@ -91,7 +91,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
           {data.nibaLink && (
             <SmartLink
               href={data.nibaLink.href}
-              className="mt-4 inline-flex min-h-11 items-center rounded-full bg-saffron-500 px-5 font-semibold text-white hover:bg-saffron-600"
+              className="mt-4 inline-flex min-h-11 items-center rounded-full bg-saffron-600 px-5 font-semibold text-white hover:bg-brown-700"
             >
               {data.nibaLink.label}
             </SmartLink>

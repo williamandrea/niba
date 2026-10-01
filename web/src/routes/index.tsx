@@ -1,14 +1,49 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { getHome } from '~/lib/sanity/api'
+import {
+  EventsSection,
+  FeaturedVerse,
+  Hero,
+  Intro,
+  LatestArticles,
+  ProgramsSection,
+  TeacherQuote,
+  TeachersSection,
+  VenerablesSection,
+} from '~/components/home/HomeSections'
 
 export const Route = createFileRoute('/')({
+  loader: () => getHome(),
   component: HomePage,
 })
 
 function HomePage() {
+  const data = Route.useLoaderData()
+  const { siteName } = useLoaderData({ from: '__root__' })
+  const home = data.home
   return (
-    <section className="mx-auto max-w-site px-4 py-section sm:px-6">
-      <h1>Na Uyana Aranya Indonesia</h1>
-      <p className="mt-4">Theruwan Saranai with Metta.</p>
-    </section>
+    <>
+      <Hero
+        siteName={siteName}
+        image={home?.hero?.image}
+        paliVerse={home?.hero?.paliVerse}
+        meaning={home?.hero?.meaning}
+        tagline={home?.hero?.tagline}
+        button={home?.hero?.button}
+      />
+      <Intro
+        heading={home?.intro?.heading}
+        text={home?.intro?.text}
+        images={home?.intro?.images}
+        buttons={home?.intro?.buttons}
+      />
+      <TeacherQuote quote={home?.teacherQuote?.quote} teacher={home?.teacherQuote?.teacher} />
+      <FeaturedVerse featured={data.featured} />
+      <ProgramsSection programs={data.programs} intro={home?.programsIntro} />
+      <EventsSection events={data.events} hasPastEvents={data.hasPastEvents} />
+      <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
+      <TeachersSection teachers={data.teachers} />
+      <LatestArticles articles={data.articles} />
+    </>
   )
 }

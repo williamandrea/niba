@@ -10,7 +10,7 @@ export function ErrorView({ error, reset }: ErrorComponentProps) {
         <button
           type="button"
           onClick={reset}
-          className="inline-flex min-h-11 items-center rounded-full bg-saffron-500 px-6 font-semibold text-white hover:bg-saffron-600"
+          className="inline-flex min-h-11 items-center rounded-full bg-saffron-600 px-6 font-semibold text-white hover:bg-brown-700"
         >
           Try again
         </button>

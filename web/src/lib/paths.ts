@@ -1,5 +1,5 @@
 /**
- * Where documents live on the website. Keep in sync with web/src/lib/paths.ts.
+ * Where documents live on the website. Keep in sync with studio/lib/paths.ts.
  */
 
 /** Page slugs that fill a special page on the site. */

@@ -25,48 +25,50 @@ export function SiteHeader({ siteName, logo, menu }: Props) {
   const closeDrawer = useCallback(() => setDrawerOpenOn(null), [])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gold-400/30 bg-cream-50/95 backdrop-blur supports-[backdrop-filter]:bg-cream-50/85">
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-brown-900 focus:px-4 focus:py-2 focus:text-cream-50"
-      >
-        Skip to content
-      </a>
-      <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-4 px-4 sm:px-6 lg:h-20">
-        <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2.5" aria-label={`${siteName} – home`}>
-          {logo?.asset ? (
-            <SanityImage image={logo} sizes="56px" widths={[112, 168]} alt="" className="h-10 w-auto lg:h-12" />
-          ) : (
-            <LotusMark className="h-9 w-9 shrink-0 text-saffron-500" />
-          )}
-          <span className="font-serif text-base font-bold leading-tight text-brown-900 sm:text-lg">{siteName}</span>
-        </Link>
-
-        <DesktopNav menu={menu} pathname={pathname} />
-
-        <button
-          type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-brown-900 hover:bg-saffron-100 lg:hidden"
-          aria-expanded={drawerOpen}
-          aria-controls="mobile-drawer"
-          onClick={() => setDrawerOpenOn(pathname)}
+    <>
+      <header className="sticky top-0 z-40 border-b border-gold-400/30 bg-cream-50/95 backdrop-blur supports-[backdrop-filter]:bg-cream-50/85">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-brown-900 focus:px-4 focus:py-2 focus:text-cream-50"
         >
-          <span className="sr-only">Open menu</span>
-          <svg
-            viewBox="0 0 24 24"
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-          </svg>
-        </button>
-      </div>
+          Skip to content
+        </a>
+        <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-4 px-4 sm:px-6 lg:h-20">
+          <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2.5" aria-label={`${siteName} – home`}>
+            {logo?.asset ? (
+              <SanityImage image={logo} sizes="56px" widths={[112, 168]} alt="" className="h-10 w-auto lg:h-12" />
+            ) : (
+              <LotusMark className="h-9 w-9 shrink-0 text-saffron-500" />
+            )}
+            <span className="font-serif text-base font-bold leading-tight text-brown-900 sm:text-lg">{siteName}</span>
+          </Link>
 
+          <DesktopNav menu={menu} pathname={pathname} />
+
+          <button
+            type="button"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-brown-900 hover:bg-saffron-100 lg:hidden"
+            aria-expanded={drawerOpen}
+            aria-controls="mobile-drawer"
+            onClick={() => setDrawerOpenOn(pathname)}
+          >
+            <span className="sr-only">Open menu</span>
+            <svg
+              viewBox="0 0 24 24"
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
+              <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      {/* Outside the header: its backdrop blur would trap a fixed-position drawer inside it. */}
       <MobileDrawer menu={menu} pathname={pathname} open={drawerOpen} onClose={closeDrawer} />
-    </header>
+    </>
   )
 }
 
@@ -112,7 +114,7 @@ function DesktopNav({ menu, pathname }: { menu: MenuItem[]; pathname: string }) 
       <ul className="flex items-center gap-1">
         {menu.map((item, index) => {
           const active = isActive(pathname, item)
-          const activeClass = active ? ' text-saffron-600' : ''
+          const activeClass = active ? ' text-brown-700' : ''
           if (!item.children?.length) {
             return (
               <li key={item.label}>
@@ -170,7 +172,7 @@ function DesktopNav({ menu, pathname }: { menu: MenuItem[]; pathname: string }) 
                       <li key={child.href + child.label}>
                         <SmartLink
                           href={child.href}
-                          className={`flex min-h-11 items-center rounded-lg px-3 text-base text-ink hover:bg-saffron-100 hover:text-brown-700${childActive ? ' font-semibold text-saffron-600' : ''}`}
+                          className={`flex min-h-11 items-center rounded-lg px-3 text-base text-ink hover:bg-saffron-100 hover:text-brown-700${childActive ? ' font-semibold text-brown-700' : ''}`}
                           aria-current={childActive ? 'page' : undefined}
                         >
                           {child.label}
@@ -282,7 +284,7 @@ function MobileDrawer({
                   <li key={item.label}>
                     <SmartLink
                       href={item.href}
-                      className={`flex min-h-12 items-center rounded-lg px-3 text-lg font-semibold hover:bg-saffron-100 ${active ? 'text-saffron-600' : 'text-brown-900'}`}
+                      className={`flex min-h-12 items-center rounded-lg px-3 text-lg font-semibold hover:bg-saffron-100 ${active ? 'text-brown-700' : 'text-brown-900'}`}
                       aria-current={active ? 'page' : undefined}
                     >
                       {item.label}
@@ -299,7 +301,7 @@ function MobileDrawer({
                     aria-expanded={isOpen}
                     aria-controls={subId}
                     onClick={() => setExpanded(isOpen ? null : index)}
-                    className={`flex min-h-12 w-full items-center justify-between rounded-lg px-3 text-left text-lg font-semibold hover:bg-saffron-100 ${active ? 'text-saffron-600' : 'text-brown-900'}`}
+                    className={`flex min-h-12 w-full items-center justify-between rounded-lg px-3 text-left text-lg font-semibold hover:bg-saffron-100 ${active ? 'text-brown-700' : 'text-brown-900'}`}
                   >
                     {item.label}
                     <svg
@@ -316,7 +318,7 @@ function MobileDrawer({
                       <li key={child.href + child.label}>
                         <SmartLink
                           href={child.href}
-                          className={`flex min-h-11 items-center rounded-lg px-3 text-base hover:bg-saffron-100 ${pathname === child.href ? 'font-semibold text-saffron-600' : 'text-ink'}`}
+                          className={`flex min-h-11 items-center rounded-lg px-3 text-base hover:bg-saffron-100 ${pathname === child.href ? 'font-semibold text-brown-700' : 'text-ink'}`}
                           aria-current={pathname === child.href ? 'page' : undefined}
                         >
                           {child.label}

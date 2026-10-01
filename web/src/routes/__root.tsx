@@ -5,15 +5,19 @@ import appCss from '~/styles/app.css?url'
 import { SiteHeader } from '~/components/layout/SiteHeader'
 import { SiteFooter } from '~/components/layout/SiteFooter'
 import { NotFound } from '~/components/layout/NotFound'
-import { DEFAULT_MENU, DEFAULT_USEFUL_LINKS, SITE_NAME } from '~/lib/site'
+import { getSettings } from '~/lib/sanity/api'
+import { resolveSettings } from '~/lib/settings'
 
 export const Route = createRootRoute({
-  head: () => ({
+  loader: async () => resolveSettings(await getSettings()),
+  // Settings change rarely; don't refetch them on every page change.
+  staleTime: 5 * 60_000,
+  head: ({ loaderData }) => ({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'theme-color', content: '#fdf8e1' },
-      { title: SITE_NAME },
+      { title: loaderData?.siteName },
     ],
     links: [
       {
@@ -40,20 +44,14 @@ export const Route = createRootRoute({
 })
 
 function RootLayout() {
+  const settings = Route.useLoaderData()
   return (
     <>
-      <SiteHeader siteName={SITE_NAME} logo={null} menu={DEFAULT_MENU} />
+      <SiteHeader siteName={settings.siteName} logo={settings.logo} menu={settings.menu} />
       <main id="main" tabIndex={-1} className="outline-none">
         <Outlet />
       </main>
-      <SiteFooter
-        data={{
-          siteName: SITE_NAME,
-          contacts: [],
-          usefulLinks: DEFAULT_USEFUL_LINKS,
-          socialLinks: [],
-        }}
-      />
+      <SiteFooter data={settings.footer} />
     </>
   )
 }

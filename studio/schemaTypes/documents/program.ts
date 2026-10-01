@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { RocketIcon } from '@sanity/icons/Rocket'
-import { imageField, slugField } from '../../lib/fields'
+import { imageField, localeField, slugField } from '../../lib/fields'
 import { AUDIENCES } from './event'
 
 export const program = defineType({
@@ -9,8 +9,8 @@ export const program = defineType({
   type: 'document',
   icon: RocketIcon,
   fields: [
-    defineField({ name: 'name', title: 'Name', type: 'string', validation: (rule) => rule.required() }),
-    slugField('name'),
+    localeField({ name: 'name', title: 'Name', required: true }),
+    slugField('name.en'),
     defineField({
       name: 'icon',
       title: 'Emoji',
@@ -18,13 +18,13 @@ export const program = defineType({
       description: 'One emoji shown on the program card, e.g. 📖 ☸️ 🤍',
       validation: (rule) => rule.max(4),
     }),
-    defineField({
+    localeField({
       name: 'shortDescription',
       title: 'Short description',
       type: 'text',
-      rows: 3,
       description: 'Two or three warm, simple sentences.',
-      validation: (rule) => rule.required().max(300),
+      required: true,
+      max: 300,
     }),
     defineField({
       name: 'schedule',
@@ -33,10 +33,9 @@ export const program = defineType({
       description: 'Add one line per weekly session. Times are in WIB (Medan time).',
       of: [defineArrayMember({ type: 'scheduleItem' })],
     }),
-    defineField({
+    localeField({
       name: 'scheduleNote',
       title: 'Schedule note',
-      type: 'string',
       description: 'Optional, e.g. "Except on public holidays".',
     }),
     defineField({
@@ -76,7 +75,7 @@ export const program = defineType({
   ],
   orderings: [{ title: 'Order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] }],
   preview: {
-    select: { name: 'name', icon: 'icon', media: 'images.0', audience: 'audience' },
+    select: { name: 'name.en', icon: 'icon', media: 'images.0', audience: 'audience' },
     prepare: ({ name, icon, media, audience }) => ({
       title: [icon, name].filter(Boolean).join(' '),
       subtitle: AUDIENCES.find((a) => a.value === audience)?.title,

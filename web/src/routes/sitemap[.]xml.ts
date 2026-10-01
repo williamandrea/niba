@@ -3,6 +3,7 @@ import { sanityClient } from '~/lib/sanity/client'
 import { SITEMAP_QUERY } from '~/lib/sanity/queries'
 import { PAGE_SLUG_PATHS } from '~/lib/paths'
 import { absoluteUrl } from '~/lib/seo'
+import { LANGS, LANG_TAGS } from '~/lib/i18n'
 
 const STATIC_PATHS = [
   '/',
@@ -33,13 +34,20 @@ export const Route = createFileRoute('/sitemap.xml')({
         for (const event of data.events) entries.set(`/events/${event.slug}/`, event._updatedAt)
         for (const page of data.pages) entries.set(PAGE_SLUG_PATHS[page.slug] ?? `/${page.slug}/`, page._updatedAt)
 
+        // Every page in both languages, each listing its translations.
         const urls = [...entries]
-          .map(
-            ([path, updated]) =>
-              `  <url><loc>${escapeXml(absoluteUrl(path))}</loc>${updated ? `<lastmod>${updated.slice(0, 10)}</lastmod>` : ''}</url>`,
-          )
+          .flatMap(([path, updated]) => {
+            const lastmod = updated ? `<lastmod>${updated.slice(0, 10)}</lastmod>` : ''
+            const alternates = LANGS.map(
+              (l) =>
+                `<xhtml:link rel="alternate" hreflang="${LANG_TAGS[l].html}" href="${escapeXml(absoluteUrl(path, l))}"/>`,
+            ).join('')
+            return LANGS.map(
+              (lang) => `  <url><loc>${escapeXml(absoluteUrl(path, lang))}</loc>${lastmod}${alternates}</url>`,
+            )
+          })
           .join('\n')
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`
         return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } })
       },
     },

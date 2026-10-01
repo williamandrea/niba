@@ -6,6 +6,8 @@ with a Sunday Dhamma school for children (NIBA), weekly programs, and retreats.
 - **Website:** TanStack Start (React, TypeScript) + Tailwind CSS v4, on Cloudflare Workers (free plan).
 - **Content:** Sanity (free plan). Volunteers edit everything in Sanity Studio, a separate app at
   `https://<name>.sanity.studio`.
+- **Two languages:** English at the usual addresses (`/about/`) and Indonesian under `/id/`
+  (`/id/about/`), with an EN | ID switch in the header. See [Languages](#languages-english-and-indonesian).
 - **No backend, database, or forms.** Contact and registration go through WhatsApp links.
 - **Cost:** $0. Everything runs on free tiers.
 
@@ -91,6 +93,23 @@ events, teachers, residing venerables, contacts, pages), and prints a report.
   But it **overwrites** those documents, including edits made in the Studio. Run it before admins
   start editing.
 - Anything unsure is marked `TODO:` in the Studio. The public site hides TODO notes automatically.
+- Starter content comes in English and Indonesian. The WordPress articles are English only;
+  admins add the Indonesian text in the Studio.
+
+### Upgrading content made before the two languages
+
+If the dataset already has content from before the language update (plain text instead of
+English + Indonesian), convert it once:
+
+```bash
+pnpm localize --dry-run   # lists every field it would change
+pnpm localize             # wraps plain text as English; Indonesian stays empty
+```
+
+It only touches text that is still plain, keeps every edit made in the Studio, and converts
+drafts too. Running it twice is safe. Order: deploy the new website first (its pages still load
+with the old content, though search and the homepage verse wait for the conversion), then run
+`pnpm localize`, then deploy the Studio (`pnpm deploy:studio`).
 
 ## 4. Deploy the website (Cloudflare Workers)
 
@@ -191,9 +210,9 @@ in there, add it the same way with `--credentials`.
 
 1. Open the Studio address (e.g. `https://nauyana.sanity.studio`) and log in.
 2. Pick a section on the left: **Settings**, **Homepage sections**, **Articles**, **Events**,
-   **Programs**, **Teachers**, **Contacts**, **Pages**.
-3. Edit, then press **Publish**. Use **Preview on site** (in the ⋯ / actions menu at the bottom)
-   to open the live page. Changes show on the site within about 5 minutes.
+   **Programs**, **Teachers**, **Contacts**, **Pages**, **Not yet in Indonesian**.
+3. Edit, then press **Publish**. Use **Preview on site (English)** or **(Indonesian)** (in the ⋯ /
+   actions menu at the bottom) to open the live page. Changes show on the site within about 5 minutes.
 4. Search the Studio for `TODO:` to find things that still need checking.
 
 Tips for admins:
@@ -204,6 +223,37 @@ Tips for admins:
 - **Pali verses** in articles: use the "Pali verse" block from the **+** menu. The newest
   Dhammapada article's first verse is shown on the homepage.
 - Every photo needs **alt text**: a short description for people who cannot see it.
+
+### Languages (English and Indonesian)
+
+Visitors switch with the **EN | ID** buttons in the header. Indonesian pages have the same
+address with `/id` in front: `/programs/` → `/id/programs/`.
+
+**For admins:** every text field has two boxes, **English** and **Bahasa Indonesia**.
+
+- English is required where the field is required. Indonesian is optional.
+- If the Indonesian box is empty, the Indonesian site shows the English text, so nothing is
+  ever blank. A yellow warning ("Not translated yet") marks those fields.
+- **Not yet in Indonesian** (bottom of the Studio menu) lists articles, events, pages, programs
+  and teachers whose main text has no Indonesian yet.
+- Articles and events have a separate rich text box per language. Add a "Pali verse" block in
+  each one. On the Indonesian homepage, the featured verse comes from the Indonesian article text
+  when it has one.
+- These stay the same in both languages: names of people, Pali verses on the homepage, addresses,
+  web addresses (slugs), dates, and photo alt text.
+- Links to site pages (like `/programs/`) open in the visitor's language by themselves.
+
+**For developers:**
+
+- Fixed texts (buttons, headings, labels, month names) are in `web/src/lib/messages.ts`.
+  Add a text to `en` and TypeScript asks for the Indonesian one.
+- Sanity stores translatable fields as `{ en, id }` (`studio/schemaTypes/objects/locale.ts`).
+  Add one with `localeField()` from `studio/lib/fields.ts`, then add it to the list in
+  `migration/src/localize.ts`. The server functions pick the language (`web/src/lib/sanity/localize.ts`),
+  so components and most queries never see `{ en, id }`.
+- The `/id/` prefix is handled by a router rewrite (`web/src/lib/i18n.ts`): routes keep their
+  English paths and read the language from a hidden `lang` search param. Use `useLang()` and
+  `useT()` in components, and `langDeps` as `loaderDeps` in routes that load data.
 
 ### Instagram photos on the homepage
 
@@ -236,7 +286,8 @@ limit is reached, the section hides by itself and the rest of the page still wor
 | `/programs/`, `/teachers/`, `/residing-venerables/` | Lists (optional intro from a page with that slug) |
 | `/events/`, `/events/past/`, `/events/<slug>/`      | Events (upcoming/past computed from dates)        |
 | `/<slug>/`                                          | Any other Sanity page                             |
-| `/sitemap.xml`, `/robots.txt`                       | Generated                                         |
+| `/id/…` (e.g. `/id/`, `/id/programs/`)              | The same pages in Indonesian                      |
+| `/sitemap.xml`, `/robots.txt`                       | Generated (sitemap lists both languages)          |
 
 Old WordPress links (`/?p=85`, `/?page_id=161`, `/?s=…`, `/feed/`, `/category/…`, `/page/2/`)
 redirect permanently to the closest page (`web/src/lib/legacy-redirects.ts`). URLs without a
@@ -300,6 +351,19 @@ Choices made where the brief was open, or where the current docs required a chan
 20. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
     Cloudflare dashboard. GitHub Actions shows them on the PR, runs the code checks on every PR,
     and is free (2,000 minutes a month for private repos; a run takes about 2).
+21. **Translations are per field, not per document.** Each text field holds English and
+    Indonesian side by side, so photos, dates, contacts and slugs are entered once, and a missing
+    translation falls back to English field by field. The other common way (a separate copy of each
+    document per language) suits sites with many languages but doubles the work for volunteers.
+22. **English keeps the old addresses; Indonesian is under `/id/`.** Old links and Google results
+    keep working. Pages list each other with `hreflang` tags and in the sitemap. Slugs are shared,
+    so `/dhammapada/<slug>/` becomes `/id/dhammapada/<slug>/`.
+23. **No automatic language choice from the browser.** Pages are cached at Cloudflare's edge per
+    address; choosing by browser language would need a redirect on every visit and break that.
+    Visitors pick with the switch, and links keep their choice.
+24. **Photo alt text is one language** (written in English). Two alt boxes on every photo would be a
+    lot of extra work for little gain. Rich text images inside the Indonesian article text have
+    their own alt text.
 
 ## Known issues to review
 

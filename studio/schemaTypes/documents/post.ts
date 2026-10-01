@@ -1,6 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { DocumentTextIcon } from '@sanity/icons/DocumentText'
-import { imageField, seoField, slugField } from '../../lib/fields'
+import { imageField, localeField, seoField, slugField } from '../../lib/fields'
 
 export const post = defineType({
   name: 'post',
@@ -12,13 +12,7 @@ export const post = defineType({
     { name: 'seo', title: 'Search & sharing' },
   ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    localeField({ name: 'title', title: 'Title', group: 'content', required: true }),
     { ...slugField(), group: 'content' },
     defineField({
       name: 'category',
@@ -30,14 +24,13 @@ export const post = defineType({
       validation: (rule) => rule.required(),
     }),
     imageField({ name: 'coverImage', title: 'Cover image', group: 'content' }),
-    defineField({
+    localeField({
       name: 'excerpt',
       title: 'Short summary',
       type: 'text',
-      rows: 3,
       group: 'content',
       description: 'One or two sentences shown on article cards.',
-      validation: (rule) => rule.max(300),
+      max: 300,
     }),
     defineField({
       name: 'publishedAt',
@@ -47,7 +40,7 @@ export const post = defineType({
       initialValue: () => new Date().toISOString(),
       validation: (rule) => rule.required(),
     }),
-    defineField({
+    localeField({
       name: 'body',
       title: 'Article text',
       type: 'blockContent',
@@ -59,7 +52,7 @@ export const post = defineType({
   ],
   orderings: [{ title: 'Newest first', name: 'publishedDesc', by: [{ field: 'publishedAt', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', category: 'category.title', date: 'publishedAt', media: 'coverImage' },
+    select: { title: 'title.en', category: 'category.title.en', date: 'publishedAt', media: 'coverImage' },
     prepare: ({ title, category, date, media }) => ({
       title,
       subtitle: [category, date?.slice(0, 10)].filter(Boolean).join(' · '),

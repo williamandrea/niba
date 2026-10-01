@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
-import { imageField } from '../../lib/fields'
+import { imageField, localeField } from '../../lib/fields'
 
 export const DAYS = [
   { title: 'Monday', value: 'monday' },
@@ -54,13 +54,7 @@ export const eventSession = defineType({
   title: 'Session',
   type: 'object',
   fields: [
-    defineField({
-      name: 'label',
-      title: 'Name',
-      type: 'string',
-      description: 'e.g. "Session 1"',
-      validation: (rule) => rule.required(),
-    }),
+    localeField({ name: 'label', title: 'Name', description: 'e.g. "Session 1"', required: true }),
     defineField({
       name: 'start',
       title: 'First day',
@@ -82,7 +76,7 @@ export const eventSession = defineType({
     }),
   ],
   preview: {
-    select: { title: 'label', start: 'start', end: 'end' },
+    select: { title: 'label.en', start: 'start', end: 'end' },
     prepare: ({ title, start, end }) => ({ title, subtitle: end && end !== start ? `${start} → ${end}` : start }),
   },
 })
@@ -123,8 +117,8 @@ export const pageSection = defineType({
   title: 'Section',
   type: 'object',
   fields: [
-    defineField({ name: 'heading', title: 'Heading', type: 'string', description: 'Optional.' }),
-    defineField({ name: 'content', title: 'Text', type: 'blockContent' }),
+    localeField({ name: 'heading', title: 'Heading', description: 'Optional.' }),
+    localeField({ name: 'content', title: 'Text', type: 'blockContent' }),
     defineField({
       name: 'images',
       title: 'Photos',
@@ -149,7 +143,7 @@ export const pageSection = defineType({
     }),
   ],
   preview: {
-    select: { title: 'heading', media: 'images.0' },
+    select: { title: 'heading.en', media: 'images.0' },
     prepare: ({ title, media }) => ({ title: title || 'Section without heading', media }),
   },
 })

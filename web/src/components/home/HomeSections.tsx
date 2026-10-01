@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import type { SanityImageSource } from '~/lib/sanity/image'
 import { clean } from '~/lib/text'
 import { formatDateRange } from '~/lib/dates'
+import { useLang, useT } from '~/lib/i18n'
 import { ButtonLink } from '~/components/ui/Button'
 import { LotusMandala } from '~/components/ui/LotusMandala'
 import { PhotoCollage } from '~/components/ui/PhotoCollage'
@@ -91,6 +92,7 @@ export function Intro({
   images: SanityImageSource[] | null | undefined
   buttons: { label: string; href: string }[] | null | undefined
 }) {
+  const t = useT()
   if (!heading && !text) return null
   return (
     <Section labelledBy="intro-title">
@@ -99,9 +101,7 @@ export function Intro({
           <PhotoCollage images={images ?? []} />
         </div>
         <div>
-          <p className="mb-2 text-base font-semibold uppercase tracking-widest text-brown-700">
-            NIBA · Sunday Dhamma School
-          </p>
+          <p className="mb-2 text-base font-semibold uppercase tracking-widest text-brown-700">{t.introEyebrow}</p>
           <h2 id="intro-title">{clean(heading)}</h2>
           {clean(text) && <p className="mt-4 whitespace-pre-line">{clean(text)}</p>}
           {buttons?.length ? (
@@ -128,12 +128,13 @@ export function TeacherQuote({
   teacher:
     { fullName: string; shortName: string | null; photo: SanityImageSource | null; slug: string } | null | undefined
 }) {
+  const t = useT()
   const text = clean(quote)
   if (!text) return null
   return (
     <Section tone="warm" labelledBy="quote-title">
       <h2 id="quote-title" className="sr-only">
-        From our teachers
+        {t.fromTeachers}
       </h2>
       <figure className="mx-auto grid max-w-4xl items-center gap-8 md:grid-cols-[12rem_1fr]">
         {teacher && (
@@ -171,15 +172,16 @@ export function FeaturedVerse({
     | null
     | undefined
 }) {
+  const t = useT()
   if (!featured?.verse) return null
   const { verse } = featured
   return (
     <section aria-labelledby="verse-title" className="relative isolate overflow-hidden bg-cream-50 py-section">
       <LotusMandala className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[38rem] w-[38rem] -translate-x-1/2 -translate-y-1/2 text-saffron-500 opacity-[0.07]" />
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <p className="text-base font-semibold uppercase tracking-widest text-brown-700">From the Dhammapada</p>
+        <p className="text-base font-semibold uppercase tracking-widest text-brown-700">{t.fromDhammapada}</p>
         <h2 id="verse-title" className="sr-only">
-          {clean(verse.reference) || 'Featured verse'}
+          {clean(verse.reference) || t.featuredVerse}
         </h2>
         <p lang="pi" className="mt-6 whitespace-pre-line font-serif text-verse italic leading-relaxed text-brown-900">
           {clean(verse.pali)}
@@ -192,7 +194,8 @@ export function FeaturedVerse({
           params={{ category: featured.category ?? 'dhammapada', slug: featured.slug }}
           className="mt-8 inline-flex min-h-11 items-center gap-2 font-semibold text-brown-700 underline-offset-4 hover:underline"
         >
-          Read the story<span className="sr-only">: {featured.title}</span> →
+          {t.readStory}
+          <span className="sr-only">: {featured.title}</span> →
         </Link>
       </div>
     </section>
@@ -207,17 +210,18 @@ export function ProgramsSection({
   programs: ProgramCardData[]
   intro: string | null | undefined
 }) {
+  const t = useT()
   if (!programs.length) return null
   return (
     <Section tone="warm" labelledBy="programs-title">
       <SectionHeading
         id="programs-title"
-        eyebrow="Weekly programs"
-        title="Learn and practise with us"
+        eyebrow={t.programsEyebrow}
+        title={t.programsTitle}
         intro={clean(intro)}
         action={
           <ButtonLink href="/programs/" variant="outline">
-            All programs
+            {t.allPrograms}
           </ButtonLink>
         }
       />
@@ -232,17 +236,18 @@ export function ProgramsSection({
 
 /* 6. Upcoming events. The whole section hides when there are none. */
 export function EventsSection({ events, hasPastEvents }: { events: EventCardData[]; hasPastEvents: boolean }) {
+  const t = useT()
   if (!events.length) return null
   return (
     <Section labelledBy="events-title">
       <SectionHeading
         id="events-title"
-        eyebrow="Events"
-        title="Upcoming events"
+        eyebrow={t.eventsEyebrow}
+        title={t.upcomingEvents}
         action={
           hasPastEvents ? (
             <ButtonLink href="/events/past/" variant="outline">
-              Past events
+              {t.pastEvents}
             </ButtonLink>
           ) : undefined
         }
@@ -264,32 +269,34 @@ export function VenerablesSection({
   venerables: (TeacherCardData & { residencyStart: string | null; residencyEnd: string | null })[]
   intro: string | null | undefined
 }) {
+  const t = useT()
+  const lang = useLang()
   if (!venerables.length) return null
   const first = venerables[0]
-  const period = first?.residencyStart ? formatDateRange(first.residencyStart, first.residencyEnd) : ''
+  const period = first?.residencyStart ? formatDateRange(first.residencyStart, first.residencyEnd, lang) : ''
   return (
     <Section tone="warm" labelledBy="venerables-title">
       <SectionHeading
         id="venerables-title"
-        eyebrow={period ? `Residing with us · ${period}` : 'Residing with us'}
-        title="Residing venerables"
+        eyebrow={period ? `${t.residingWithUs} · ${period}` : t.residingWithUs}
+        title={t.residingVenerables}
         intro={clean(intro)}
         action={
           <ButtonLink href="/residing-venerables/" variant="outline">
-            More about the residency
+            {t.moreResidency}
           </ButtonLink>
         }
       />
       <ul
         className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0"
-        aria-label="Residing venerables"
+        aria-label={t.residingVenerables}
       >
         {venerables.map((v) => (
           <li key={v._id} className="w-[min(15rem,70vw)] shrink-0 snap-start lg:w-auto">
             <article className="h-full overflow-hidden rounded-card border border-gold-400/30 bg-white/70 text-center shadow-sm">
               <TeacherPhoto photo={v.photo} name={v.fullName} sizes="(min-width: 1024px) 13rem, 70vw" />
               <div className="p-4">
-                <p className="text-base font-semibold uppercase tracking-wider text-brown-700">Venerable</p>
+                <p className="text-base font-semibold uppercase tracking-wider text-brown-700">{t.venerable}</p>
                 <h3 className="mt-1 text-lg leading-snug">{v.fullName}</h3>
               </div>
             </article>
@@ -302,18 +309,19 @@ export function VenerablesSection({
 
 /* 8. Our teachers */
 export function TeachersSection({ teachers }: { teachers: TeacherCardData[] }) {
+  const t = useT()
   if (!teachers.length) return null
   return (
     <Section labelledBy="teachers-title">
-      <SectionHeading id="teachers-title" eyebrow="Guidance" title="Our venerable teachers" align="center" />
+      <SectionHeading id="teachers-title" eyebrow={t.guidance} title={t.teachersTitle} align="center" />
       <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {teachers.map((t) => (
-          <TeacherCard key={t._id} teacher={t} />
+        {teachers.map((teacher) => (
+          <TeacherCard key={teacher._id} teacher={teacher} />
         ))}
       </div>
       <div className="mt-10 text-center">
         <ButtonLink href="/teachers/" variant="outline">
-          Read more about our teachers
+          {t.readTeachers}
         </ButtonLink>
       </div>
     </Section>
@@ -322,16 +330,17 @@ export function TeachersSection({ teachers }: { teachers: TeacherCardData[] }) {
 
 /* 9. Latest articles */
 export function LatestArticles({ articles }: { articles: ArticleCardData[] }) {
+  const t = useT()
   if (!articles.length) return null
   return (
     <Section tone="warm" labelledBy="articles-title">
       <SectionHeading
         id="articles-title"
-        eyebrow="From our blog"
-        title="Reading the Dhamma together"
+        eyebrow={t.blogEyebrow}
+        title={t.blogTitle}
         action={
           <ButtonLink href="/blog/" variant="outline">
-            All articles
+            {t.allArticles}
           </ButtonLink>
         }
       />
@@ -352,6 +361,7 @@ export function InstagramSection({
   feed: InstagramFeed | null
   heading: string | null | undefined
 }) {
+  const t = useT()
   if (!feed?.posts.length) return null
   const profileUrl = feed.username ? `https://www.instagram.com/${encodeURIComponent(feed.username)}/` : null
   return (
@@ -359,16 +369,16 @@ export function InstagramSection({
       <SectionHeading
         id="instagram-title"
         eyebrow={feed.username ? `Instagram · @${feed.username}` : 'Instagram'}
-        title={clean(heading) || 'Follow us on Instagram'}
+        title={clean(heading) || t.instagramTitle}
         action={
           profileUrl ? (
             <ButtonLink href={profileUrl} variant="outline">
-              Follow on Instagram
+              {t.followInstagram}
             </ButtonLink>
           ) : undefined
         }
       />
-      <ul className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-4" aria-label="Newest Instagram posts">
+      <ul className="grid grid-cols-3 gap-1.5 sm:gap-3 lg:gap-4" aria-label={t.newestInstagram}>
         {feed.posts.map((post) => (
           <li key={post.id}>
             <a

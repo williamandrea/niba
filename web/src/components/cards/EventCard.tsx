@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import type { SanityImageSource } from '~/lib/sanity/image'
 import { dateBadge, formatDateRange } from '~/lib/dates'
-import { EVENT_TYPE_LABELS } from '~/lib/labels'
 import { clean } from '~/lib/text'
+import { useLang, useT } from '~/lib/i18n'
 import { SanityImage } from '~/components/ui/SanityImage'
 import { AudienceBadge } from './ProgramCard'
 
@@ -20,7 +20,9 @@ export type EventCardData = {
 }
 
 export function EventCard({ event, past = false }: { event: EventCardData; past?: boolean }) {
-  const badge = dateBadge(event.startDate)
+  const lang = useLang()
+  const t = useT()
+  const badge = dateBadge(event.startDate, lang)
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-gold-400/30 bg-white/70 shadow-sm">
       {event.image?.asset && (
@@ -42,7 +44,7 @@ export function EventCard({ event, past = false }: { event: EventCardData; past?
           </div>
           <div>
             <p className="text-base font-semibold uppercase tracking-wider text-brown-700">
-              {EVENT_TYPE_LABELS[event.type] ?? 'Event'}
+              {t.eventTypes[event.type] ?? t.event}
             </p>
             <h3 className="text-h3">
               <Link
@@ -55,17 +57,17 @@ export function EventCard({ event, past = false }: { event: EventCardData; past?
             </h3>
           </div>
         </div>
-        <p className="font-semibold">{formatDateRange(event.startDate, event.endDate)}</p>
+        <p className="font-semibold">{formatDateRange(event.startDate, event.endDate, lang)}</p>
         {event.sessions && event.sessions.length > 1 && (
           <ul className="text-ink/85">
             {event.sessions.map((s) => (
               <li key={s.label}>
-                {s.label}: {formatDateRange(s.start, s.end)}
+                {s.label}: {formatDateRange(s.start, s.end, lang)}
               </li>
             ))}
           </ul>
         )}
-        {clean(event.guide) && <p className="text-ink/85">Guided by {clean(event.guide)}</p>}
+        {clean(event.guide) && <p className="text-ink/85">{t.guidedBy(clean(event.guide))}</p>}
         <div className="mt-auto pt-2">
           <AudienceBadge audience={event.audience} />
         </div>

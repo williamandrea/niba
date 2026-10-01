@@ -1,5 +1,5 @@
-import { defineField, defineType } from 'sanity'
-import { imageField } from '../../lib/fields'
+import { defineType } from 'sanity'
+import { imageField, localeField } from '../../lib/fields'
 
 export const seo = defineType({
   name: 'seo',
@@ -7,20 +7,18 @@ export const seo = defineType({
   type: 'object',
   options: { collapsible: true, collapsed: true },
   fields: [
-    defineField({
+    localeField({
       name: 'title',
       title: 'Title for Google',
-      type: 'string',
       description: 'Optional. Leave empty to use the page title. Best under 60 characters.',
-      validation: (rule) => rule.max(70).warning('Google usually cuts titles after about 60 characters.'),
+      max: 70,
     }),
-    defineField({
+    localeField({
       name: 'description',
       title: 'Short description',
       type: 'text',
-      rows: 3,
       description: 'One or two sentences shown under the title in Google. Maximum 160 characters.',
-      validation: (rule) => rule.max(160).error('Please keep it to 160 characters or fewer.'),
+      max: 160,
     }),
     imageField({
       name: 'ogImage',

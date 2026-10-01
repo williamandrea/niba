@@ -8,6 +8,9 @@
  * Behold only refreshes free feeds once a day anyway.
  */
 
+import type { Lang } from './i18n'
+import { messages } from './messages'
+
 const FEED_PATTERN = /^https:\/\/feeds\.behold\.so\/[\w-]+\/?$/
 const CACHE_SECONDS = 6 * 60 * 60
 const MAX_POSTS = 9
@@ -41,7 +44,10 @@ type BeholdPost = {
 }
 
 /** Returns null when the link is missing or wrong, or Behold can't be reached. The section then hides. */
-export async function fetchInstagramFeed(feedUrl: string | null | undefined): Promise<InstagramFeed | null> {
+export async function fetchInstagramFeed(
+  feedUrl: string | null | undefined,
+  lang: Lang,
+): Promise<InstagramFeed | null> {
   if (!feedUrl || !FEED_PATTERN.test(feedUrl)) return null
   try {
     const res = await fetch(feedUrl, {
@@ -55,7 +61,7 @@ export async function fetchInstagramFeed(feedUrl: string | null | undefined): Pr
     return {
       username: Array.isArray(data) ? null : (data.username ?? null),
       posts: posts
-        .map(toPhoto)
+        .map((post) => toPhoto(post, lang))
         .filter((p): p is InstagramPhoto => p !== null)
         .slice(0, MAX_POSTS),
     }
@@ -64,7 +70,7 @@ export async function fetchInstagramFeed(feedUrl: string | null | undefined): Pr
   }
 }
 
-function toPhoto(post: BeholdPost): InstagramPhoto | null {
+function toPhoto(post: BeholdPost, lang: Lang): InstagramPhoto | null {
   const isVideo = post.mediaType === 'VIDEO'
   // Behold's sizes are still images, also for videos (their cover frame).
   const sizes = [post.sizes?.small, post.sizes?.medium, post.sizes?.large].filter((s): s is Required<BeholdSize> =>
@@ -78,14 +84,15 @@ function toPhoto(post: BeholdPost): InstagramPhoto | null {
     permalink: post.permalink,
     src,
     srcSet: sizes.map((s) => `${s.mediaUrl} ${s.width}w`).join(', '),
-    alt: describe(post.prunedCaption || post.caption, isVideo || Boolean(post.isReel)),
+    alt: describe(post.prunedCaption || post.caption, isVideo || Boolean(post.isReel), lang),
     isVideo: isVideo || Boolean(post.isReel),
   }
 }
 
 /** Instagram has no alt text, so the start of the caption describes the post. */
-function describe(caption: string | undefined, isVideo: boolean) {
-  const kind = isVideo ? 'Instagram video' : 'Instagram post'
+function describe(caption: string | undefined, isVideo: boolean, lang: Lang) {
+  const t = messages(lang)
+  const kind = isVideo ? t.instagramVideo : t.instagramPost
   const text = (caption ?? '').replace(/\s+/g, ' ').trim()
   if (!text) return kind
   const short = text.length > 120 ? `${text.slice(0, 117).replace(/\s+\S*$/, '')}…` : text

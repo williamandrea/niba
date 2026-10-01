@@ -5,6 +5,8 @@ import type { SanityImageSource } from '~/lib/sanity/image'
 import { SanityImage } from '~/components/ui/SanityImage'
 import { SmartLink } from '~/components/ui/SmartLink'
 import { LotusMark } from '~/components/ui/LotusMandala'
+import { useT } from '~/lib/i18n'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 type Props = {
   siteName: string
@@ -23,6 +25,7 @@ export function SiteHeader({ siteName, logo, menu }: Props) {
   const [drawerOpenOn, setDrawerOpenOn] = useState<string | null>(null)
   const drawerOpen = drawerOpenOn === pathname
   const closeDrawer = useCallback(() => setDrawerOpenOn(null), [])
+  const t = useT()
 
   return (
     <>
@@ -31,10 +34,10 @@ export function SiteHeader({ siteName, logo, menu }: Props) {
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-brown-900 focus:px-4 focus:py-2 focus:text-cream-50"
         >
-          Skip to content
+          {t.skipToContent}
         </a>
         <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-4 px-4 sm:px-6 lg:h-20">
-          <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2.5" aria-label={`${siteName} – home`}>
+          <Link to="/" className="flex min-h-11 min-w-0 items-center gap-2.5" aria-label={t.homeLink(siteName)}>
             {logo?.asset ? (
               <SanityImage image={logo} sizes="56px" widths={[112, 168]} alt="" className="h-10 w-auto lg:h-12" />
             ) : (
@@ -43,27 +46,30 @@ export function SiteHeader({ siteName, logo, menu }: Props) {
             <span className="font-serif text-base font-bold leading-tight text-brown-900 sm:text-lg">{siteName}</span>
           </Link>
 
-          <DesktopNav menu={menu} pathname={pathname} />
+          <div className="flex items-center gap-2 lg:gap-4">
+            <DesktopNav menu={menu} pathname={pathname} />
+            <LanguageSwitcher />
 
-          <button
-            type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-brown-900 hover:bg-saffron-100 lg:hidden"
-            aria-expanded={drawerOpen}
-            aria-controls="mobile-drawer"
-            onClick={() => setDrawerOpenOn(pathname)}
-          >
-            <span className="sr-only">Open menu</span>
-            <svg
-              viewBox="0 0 24 24"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
+            <button
+              type="button"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-brown-900 hover:bg-saffron-100 lg:hidden"
+              aria-expanded={drawerOpen}
+              aria-controls="mobile-drawer"
+              onClick={() => setDrawerOpenOn(pathname)}
             >
-              <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-            </svg>
-          </button>
+              <span className="sr-only">{t.openMenu}</span>
+              <svg
+                viewBox="0 0 24 24"
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
       {/* Outside the header: its backdrop blur would trap a fixed-position drawer inside it. */}
@@ -86,6 +92,7 @@ function DesktopNav({ menu, pathname }: { menu: MenuItem[]; pathname: string }) 
     [pathname],
   )
   const navRef = useRef<HTMLElement>(null)
+  const t = useT()
 
   useEffect(() => {
     if (openIndex === null) return
@@ -107,10 +114,10 @@ function DesktopNav({ menu, pathname }: { menu: MenuItem[]; pathname: string }) 
   }, [openIndex, setOpenIndex])
 
   const linkBase =
-    'inline-flex min-h-11 items-center gap-1 rounded-full px-3 text-base font-semibold text-brown-900 transition-colors hover:bg-saffron-100 hover:text-brown-700'
+    'inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-full px-3 text-base font-semibold text-brown-900 transition-colors hover:bg-saffron-100 hover:text-brown-700'
 
   return (
-    <nav ref={navRef} aria-label="Main" className="hidden lg:block">
+    <nav ref={navRef} aria-label={t.mainNav} className="hidden lg:block">
       <ul className="flex items-center gap-1">
         {menu.map((item, index) => {
           const active = isActive(pathname, item)
@@ -205,6 +212,7 @@ function MobileDrawer({
   const closeRef = useRef<HTMLButtonElement>(null)
   const [expanded, setExpanded] = useState<number | null>(null)
   const id = useId()
+  const t = useT()
 
   useEffect(() => {
     if (!open) return
@@ -250,19 +258,19 @@ function MobileDrawer({
         id="mobile-drawer"
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={t.menu}
         inert={!open}
         className={`absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col bg-cream-50 transition-transform duration-300 ${open ? 'translate-x-0 shadow-2xl' : 'translate-x-full'}`}
       >
         <div className="flex h-16 items-center justify-between border-b border-gold-400/30 px-4">
-          <span className="font-serif text-lg font-bold text-brown-900">Menu</span>
+          <span className="font-serif text-lg font-bold text-brown-900">{t.menu}</span>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-brown-900 hover:bg-saffron-100"
           >
-            <span className="sr-only">Close menu</span>
+            <span className="sr-only">{t.closeMenu}</span>
             <svg
               viewBox="0 0 24 24"
               className="h-6 w-6"
@@ -275,7 +283,7 @@ function MobileDrawer({
             </svg>
           </button>
         </div>
-        <nav aria-label="Mobile" className="flex-1 overflow-y-auto overscroll-contain px-2 py-3">
+        <nav aria-label={t.mobileNav} className="flex-1 overflow-y-auto overscroll-contain px-2 py-3">
           <ul className="space-y-1">
             {menu.map((item, index) => {
               const active = isActive(pathname, item)

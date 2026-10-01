@@ -1,6 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { UsersIcon } from '@sanity/icons/Users'
-import { imageField, slugField } from '../../lib/fields'
+import { imageField, localeField, slugField } from '../../lib/fields'
 
 export const TEACHER_ROLES = [
   { title: 'Spiritual teacher', value: 'teacher' },
@@ -35,7 +35,7 @@ export const teacher = defineType({
       validation: (rule) => rule.required(),
     }),
     imageField({ name: 'photo', title: 'Photo' }),
-    defineField({ name: 'bio', title: 'Short biography', type: 'text', rows: 6 }),
+    localeField({ name: 'bio', title: 'Short biography', type: 'text' }),
     defineField({
       name: 'residencyStart',
       title: 'Residency starts',

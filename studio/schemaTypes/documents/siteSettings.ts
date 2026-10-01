@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { CogIcon } from '@sanity/icons/Cog'
-import { imageField } from '../../lib/fields'
+import { imageField, localeField } from '../../lib/fields'
 import { E164, E164_MESSAGE } from './contactPerson'
 
 export const siteSettings = defineType({
@@ -38,19 +38,13 @@ export const siteSettings = defineType({
       type: 'object',
       group: 'footer',
       fields: [
-        defineField({
+        localeField({
           name: 'quote',
           title: 'Quote',
           type: 'text',
-          rows: 3,
           description: 'A short quote shown at the top of the footer.',
         }),
-        defineField({
-          name: 'quoteSource',
-          title: 'Quote source',
-          type: 'string',
-          description: 'e.g. "Dhammapada, verse 1"',
-        }),
+        localeField({ name: 'quoteSource', title: 'Quote source', description: 'e.g. "Dhammapada, verse 1"' }),
         defineField({ name: 'address', title: 'Address', type: 'text', rows: 3 }),
         defineField({
           name: 'mapsUrl',
@@ -79,11 +73,10 @@ export const siteSettings = defineType({
           type: 'array',
           of: [defineArrayMember({ type: 'link' })],
         }),
-        defineField({
+        localeField({
           name: 'nibaBlurb',
           title: 'NIBA registration text',
           type: 'text',
-          rows: 3,
           description: 'A short invitation for parents.',
         }),
         defineField({ name: 'nibaButton', title: 'NIBA registration button', type: 'link' }),

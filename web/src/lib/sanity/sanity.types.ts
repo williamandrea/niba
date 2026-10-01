@@ -24,8 +24,8 @@ export type SanityImageAssetReference = {
 
 export type PageSection = {
   _type: 'pageSection'
-  heading?: string
-  content?: BlockContent
+  heading?: LocaleString
+  content?: LocaleBlockContent
   images?: Array<{
     asset?: SanityImageAssetReference
     media?: unknown
@@ -47,7 +47,7 @@ export type SocialLink = {
 
 export type EventSession = {
   _type: 'eventSession'
-  label: string
+  label: LocaleString
   start: string
   end?: string
 }
@@ -111,7 +111,7 @@ export type BlockContent = Array<
 
 export type MenuItem = {
   _type: 'menuItem'
-  label: string
+  label: LocaleString
   href: string
   children?: Array<
     {
@@ -122,14 +122,14 @@ export type MenuItem = {
 
 export type Link = {
   _type: 'link'
-  label: string
+  label: LocaleString
   href: string
 }
 
 export type Seo = {
   _type: 'seo'
-  title?: string
-  description?: string
+  title?: LocaleString
+  description?: LocaleText
   ogImage?: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -140,15 +140,33 @@ export type Seo = {
   }
 }
 
+export type LocaleBlockContent = {
+  _type: 'localeBlockContent'
+  en?: BlockContent
+  id?: BlockContent
+}
+
+export type LocaleText = {
+  _type: 'localeText'
+  en?: string
+  id?: string
+}
+
+export type LocaleString = {
+  _type: 'localeString'
+  en?: string
+  id?: string
+}
+
 export type Page = {
   _id: string
   _type: 'page'
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title: LocaleString
   slug: Slug
-  intro?: string
+  intro?: LocaleText
   body?: Array<
     {
       _key: string
@@ -202,16 +220,16 @@ export type Program = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  name: string
+  name: LocaleString
   slug: Slug
   icon?: string
-  shortDescription: string
+  shortDescription: LocaleText
   schedule?: Array<
     {
       _key: string
     } & ScheduleItem
   >
-  scheduleNote?: string
+  scheduleNote?: LocaleString
   audience: 'public' | 'limited' | 'registration'
   images?: Array<{
     asset?: SanityImageAssetReference
@@ -244,7 +262,7 @@ export type Event = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title: LocaleString
   slug: Slug
   type: 'pabbajja' | 'meditation-retreat' | 'dhamma-talk' | 'other'
   startDate: string
@@ -265,7 +283,7 @@ export type Event = {
     alt?: string
     _type: 'image'
   }
-  description?: BlockContent
+  description?: LocaleBlockContent
   contacts?: Array<
     {
       _key: string
@@ -287,7 +305,7 @@ export type Post = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title: LocaleString
   slug: Slug
   category: CategoryReference
   coverImage?: {
@@ -298,9 +316,9 @@ export type Post = {
     alt?: string
     _type: 'image'
   }
-  excerpt?: string
+  excerpt?: LocaleText
   publishedAt: string
-  body?: BlockContent
+  body?: LocaleBlockContent
   seo?: Seo
 }
 
@@ -310,7 +328,7 @@ export type Category = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  title: string
+  title: LocaleString
   slug: Slug
 }
 
@@ -330,13 +348,13 @@ export type Homepage = {
       _type: 'image'
     }
     paliVerse: string
-    meaning?: string
-    tagline?: string
+    meaning?: LocaleText
+    tagline?: LocaleString
     button?: Link
   }
   intro?: {
-    heading?: string
-    text?: string
+    heading?: LocaleString
+    text?: LocaleText
     images?: Array<{
       asset?: SanityImageAssetReference
       media?: unknown
@@ -353,14 +371,14 @@ export type Homepage = {
     >
   }
   teacherQuote?: {
-    quote?: string
+    quote?: LocaleText
     teacher?: TeacherReference
   }
-  programsIntro?: string
-  venerablesIntro?: string
+  programsIntro?: LocaleText
+  venerablesIntro?: LocaleText
   instagram?: {
     feedUrl?: string
-    heading?: string
+    heading?: LocaleString
   }
 }
 
@@ -382,7 +400,7 @@ export type Teacher = {
     alt?: string
     _type: 'image'
   }
-  bio?: string
+  bio?: LocaleText
   residencyStart?: string
   residencyEnd?: string
   order?: number
@@ -409,8 +427,8 @@ export type SiteSettings = {
     } & MenuItem
   >
   footer?: {
-    quote?: string
-    quoteSource?: string
+    quote?: LocaleText
+    quoteSource?: LocaleString
     address?: string
     mapsUrl?: string
     email?: string
@@ -425,7 +443,7 @@ export type SiteSettings = {
         _key: string
       } & Link
     >
-    nibaBlurb?: string
+    nibaBlurb?: LocaleText
     nibaButton?: Link
     socialLinks?: Array<
       {
@@ -545,6 +563,9 @@ export type AllSanitySchemaTypes =
   | MenuItem
   | Link
   | Seo
+  | LocaleBlockContent
+  | LocaleText
+  | LocaleString
   | Page
   | SanityImageCrop
   | SanityImageHotspot
@@ -583,16 +604,16 @@ export type SETTINGS_QUERY_RESULT = {
     _type: 'image'
   } | null
   menu: Array<{
-    label: string
+    label: LocaleString
     href: string
     children: Array<{
-      label: string
+      label: LocaleString
       href: string
     }> | null
   }> | null
   footer: {
-    quote: string | null
-    quoteSource: string | null
+    quote: LocaleText | null
+    quoteSource: LocaleString | null
     address: string | null
     mapsUrl: string | null
     email: string | null
@@ -602,12 +623,12 @@ export type SETTINGS_QUERY_RESULT = {
       whatsapp: string
     }> | null
     usefulLinks: Array<{
-      label: string
+      label: LocaleString
       href: string
     }> | null
-    nibaBlurb: string | null
+    nibaBlurb: LocaleText | null
     nibaButton: {
-      label: string
+      label: LocaleString
       href: string
     } | null
     socialLinks: Array<{
@@ -621,7 +642,7 @@ export type SETTINGS_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: HOME_QUERY
-// Query: {  "home": *[_type == "homepage" && _id == "homepage"][0]{    hero{ image, paliVerse, meaning, tagline, button{ label, href } },    intro{ heading, text, images, buttons[]{ label, href } },    teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },    programsIntro,    venerablesIntro,    instagram{ feedUrl, heading }  },  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body[_type == "verse"]) > 0]    | order(publishedAt desc)[0]{      title,      "slug": slug.current,      "category": category->slug.current,      "verse": body[_type == "verse"][0]{ pali, meaning, reference }    },  "programs": *[_type == "program"] | order(order asc, name asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "events": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc)[0...6]{    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "hasPastEvents": count(*[_type == "event" && coalesce(endDate, startDate) < $today]) > 0,  "venerables": *[_type == "teacher" && role == "resident" && residencyStart <= $today      && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd  },  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc)[0...3]{    _id, fullName, shortName, "slug": slug.current, photo, bio  },  "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt  }}
+// Query: {  "home": *[_type == "homepage" && _id == "homepage"][0]{    hero{ image, paliVerse, meaning, tagline, button{ label, href } },    intro{ heading, text, images, buttons[]{ label, href } },    teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },    programsIntro,    venerablesIntro,    instagram{ feedUrl, heading }  },  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body.en[_type == "verse"]) > 0]    | order(publishedAt desc)[0]{      title,      "slug": slug.current,      "category": category->slug.current,      "verseEn": body.en[_type == "verse"][0]{ pali, meaning, reference },      "verseId": body.id[_type == "verse"][0]{ pali, meaning, reference }    },  "programs": *[_type == "program"] | order(order asc, name.en asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "events": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc)[0...6]{    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "hasPastEvents": count(*[_type == "event" && coalesce(endDate, startDate) < $today]) > 0,  "venerables": *[_type == "teacher" && role == "resident" && residencyStart <= $today      && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd  },  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc)[0...3]{    _id, fullName, shortName, "slug": slug.current, photo, bio  },  "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt  }}
 export type HOME_QUERY_RESULT = {
   home: {
     hero: {
@@ -634,16 +655,16 @@ export type HOME_QUERY_RESULT = {
         _type: 'image'
       }
       paliVerse: string
-      meaning: string | null
-      tagline: string | null
+      meaning: LocaleText | null
+      tagline: LocaleString | null
       button: {
-        label: string
+        label: LocaleString
         href: string
       } | null
     } | null
     intro: {
-      heading: string | null
-      text: string | null
+      heading: LocaleString | null
+      text: LocaleText | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -654,12 +675,12 @@ export type HOME_QUERY_RESULT = {
         _key: string
       }> | null
       buttons: Array<{
-        label: string
+        label: LocaleString
         href: string
       }> | null
     } | null
     teacherQuote: {
-      quote: string | null
+      quote: LocaleText | null
       teacher: {
         fullName: string
         shortName: string | null
@@ -674,18 +695,23 @@ export type HOME_QUERY_RESULT = {
         slug: string
       } | null
     } | null
-    programsIntro: string | null
-    venerablesIntro: string | null
+    programsIntro: LocaleText | null
+    venerablesIntro: LocaleText | null
     instagram: {
       feedUrl: string | null
-      heading: string | null
+      heading: LocaleString | null
     } | null
   } | null
   featured: {
-    title: string
+    title: LocaleString
     slug: string
     category: string
-    verse: {
+    verseEn: {
+      pali: string
+      meaning: string
+      reference: string | null
+    } | null
+    verseId: {
       pali: string
       meaning: string
       reference: string | null
@@ -693,19 +719,19 @@ export type HOME_QUERY_RESULT = {
   } | null
   programs: Array<{
     _id: string
-    name: string
+    name: LocaleString
     slug: string
     icon: string | null
-    shortDescription: string
+    shortDescription: LocaleText
     schedule: Array<{
       day: 'friday' | 'monday' | 'saturday' | 'sunday' | 'thursday' | 'tuesday' | 'wednesday'
       startTime: string
       endTime: string
     }> | null
-    scheduleNote: string | null
+    scheduleNote: LocaleString | null
     audience: 'limited' | 'public' | 'registration'
     button: {
-      label: string
+      label: LocaleString
       href: string
     } | null
     contacts: Array<{
@@ -715,7 +741,7 @@ export type HOME_QUERY_RESULT = {
   }>
   events: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     type: 'dhamma-talk' | 'meditation-retreat' | 'other' | 'pabbajja'
     startDate: string
@@ -730,7 +756,7 @@ export type HOME_QUERY_RESULT = {
       _type: 'image'
     } | null
     sessions: Array<{
-      label: string
+      label: LocaleString
       start: string
       end: string | null
     }> | null
@@ -766,14 +792,14 @@ export type HOME_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    bio: string | null
+    bio: LocaleText | null
   }>
   articles: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     category: {
-      title: string
+      title: LocaleString
       slug: string
     }
     coverImage: {
@@ -784,21 +810,21 @@ export type HOME_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    excerpt: string | null
+    excerpt: LocaleText | null
     publishedAt: string
   }>
 }
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: POST_LIST_QUERY
-// Query: {  "posts": *[_type == "post" && defined(category)      && ($category == "" || category->slug.current == $category)      && ($search == "" || [title, excerpt, pt::text(body)] match $terms)]    | order(publishedAt desc){      _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt    },  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title asc){    title, "slug": slug.current  },  "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }}
+// Query: {  "posts": *[_type == "post" && defined(category)      && ($category == "" || category->slug.current == $category)      && ($search == "" || [title.en, title.id, excerpt.en, excerpt.id, pt::text(body.en), pt::text(body.id)] match $terms)]    | order(publishedAt desc){      _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt    },  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title.en asc){    title, "slug": slug.current  },  "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }}
 export type POST_LIST_QUERY_RESULT = {
   posts: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     category: {
-      title: string
+      title: LocaleString
       slug: string
     }
     coverImage: {
@@ -809,16 +835,16 @@ export type POST_LIST_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    excerpt: string | null
+    excerpt: LocaleText | null
     publishedAt: string
   }>
   categories: Array<{
-    title: string
+    title: LocaleString
     slug: string
   }>
   page: {
-    title: string
-    intro: string | null
+    title: LocaleString
+    intro: LocaleText | null
     seo: Seo | null
   } | null
 }
@@ -829,10 +855,10 @@ export type POST_LIST_QUERY_RESULT = {
 export type POST_QUERY_RESULT = {
   _id: string
   _updatedAt: string
-  title: string
+  title: LocaleString
   slug: string
   category: {
-    title: string
+    title: LocaleString
     slug: string
   }
   coverImage: {
@@ -843,16 +869,16 @@ export type POST_QUERY_RESULT = {
     alt?: string
     _type: 'image'
   } | null
-  excerpt: string | null
+  excerpt: LocaleText | null
   publishedAt: string
-  body: BlockContent | null
+  body: LocaleBlockContent | null
   seo: Seo | null
   related: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     category: {
-      title: string
+      title: LocaleString
       slug: string
     }
     coverImage: {
@@ -863,7 +889,7 @@ export type POST_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    excerpt: string | null
+    excerpt: LocaleText | null
     publishedAt: string
   }>
 } | null
@@ -874,7 +900,7 @@ export type POST_QUERY_RESULT = {
 export type EVENTS_QUERY_RESULT = {
   upcoming: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     type: 'dhamma-talk' | 'meditation-retreat' | 'other' | 'pabbajja'
     startDate: string
@@ -889,7 +915,7 @@ export type EVENTS_QUERY_RESULT = {
       _type: 'image'
     } | null
     sessions: Array<{
-      label: string
+      label: LocaleString
       start: string
       end: string | null
     }> | null
@@ -897,7 +923,7 @@ export type EVENTS_QUERY_RESULT = {
   }>
   past: Array<{
     _id: string
-    title: string
+    title: LocaleString
     slug: string
     type: 'dhamma-talk' | 'meditation-retreat' | 'other' | 'pabbajja'
     startDate: string
@@ -912,19 +938,19 @@ export type EVENTS_QUERY_RESULT = {
       _type: 'image'
     } | null
     sessions: Array<{
-      label: string
+      label: LocaleString
       start: string
       end: string | null
     }> | null
     guide: string | null
   }>
   page: {
-    title: string
-    intro: string | null
+    title: LocaleString
+    intro: LocaleText | null
     body: Array<{
       _key: string
-      heading: string | null
-      content: BlockContent | null
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -946,14 +972,14 @@ export type EVENTS_QUERY_RESULT = {
 export type EVENT_QUERY_RESULT = {
   _id: string
   _updatedAt: string
-  title: string
+  title: LocaleString
   slug: string
   type: 'dhamma-talk' | 'meditation-retreat' | 'other' | 'pabbajja'
   startDate: string
   endDate: string | null
   sessions: Array<{
     _key: string
-    label: string
+    label: LocaleString
     start: string
     end: string | null
   }> | null
@@ -968,7 +994,7 @@ export type EVENT_QUERY_RESULT = {
     alt?: string
     _type: 'image'
   } | null
-  description: BlockContent | null
+  description: LocaleBlockContent | null
   contacts: Array<{
     name: string
     whatsapp: string
@@ -978,20 +1004,20 @@ export type EVENT_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: PROGRAMS_QUERY
-// Query: {  "programs": *[_type == "program"] | order(order asc, name asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "programs": *[_type == "program"] | order(order asc, name.en asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
 export type PROGRAMS_QUERY_RESULT = {
   programs: Array<{
     _id: string
-    name: string
+    name: LocaleString
     slug: string
     icon: string | null
-    shortDescription: string
+    shortDescription: LocaleText
     schedule: Array<{
       day: 'friday' | 'monday' | 'saturday' | 'sunday' | 'thursday' | 'tuesday' | 'wednesday'
       startTime: string
       endTime: string
     }> | null
-    scheduleNote: string | null
+    scheduleNote: LocaleString | null
     audience: 'limited' | 'public' | 'registration'
     images: Array<{
       asset?: SanityImageAssetReference
@@ -1003,7 +1029,7 @@ export type PROGRAMS_QUERY_RESULT = {
       _key: string
     }> | null
     button: {
-      label: string
+      label: LocaleString
       href: string
     } | null
     contacts: Array<{
@@ -1012,12 +1038,12 @@ export type PROGRAMS_QUERY_RESULT = {
     }> | null
   }>
   page: {
-    title: string
-    intro: string | null
+    title: LocaleString
+    intro: LocaleText | null
     body: Array<{
       _key: string
-      heading: string | null
-      content: BlockContent | null
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -1050,15 +1076,15 @@ export type TEACHERS_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    bio: string | null
+    bio: LocaleText | null
   }>
   page: {
-    title: string
-    intro: string | null
+    title: LocaleString
+    intro: LocaleText | null
     body: Array<{
       _key: string
-      heading: string | null
-      content: BlockContent | null
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -1091,17 +1117,17 @@ export type VENERABLES_QUERY_RESULT = {
       alt?: string
       _type: 'image'
     } | null
-    bio: string | null
+    bio: LocaleText | null
     residencyStart: string | null
     residencyEnd: string | null
   }>
   page: {
-    title: string
-    intro: string | null
+    title: LocaleString
+    intro: LocaleText | null
     body: Array<{
       _key: string
-      heading: string | null
-      content: BlockContent | null
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -1123,13 +1149,13 @@ export type VENERABLES_QUERY_RESULT = {
 export type PAGE_QUERY_RESULT = {
   _id: string
   _updatedAt: string
-  title: string
+  title: LocaleString
   slug: string
-  intro: string | null
+  intro: LocaleText | null
   body: Array<{
     _key: string
-    heading: string | null
-    content: BlockContent | null
+    heading: LocaleString | null
+    content: LocaleBlockContent | null
     images: Array<{
       asset?: SanityImageAssetReference
       media?: unknown
@@ -1146,17 +1172,17 @@ export type PAGE_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: NIBA_QUERY
-// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
+// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
 export type NIBA_QUERY_RESULT = {
   page: {
     _id: string
-    title: string
+    title: LocaleString
     slug: string
-    intro: string | null
+    intro: LocaleText | null
     body: Array<{
       _key: string
-      heading: string | null
-      content: BlockContent | null
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
       images: Array<{
         asset?: SanityImageAssetReference
         media?: unknown
@@ -1172,19 +1198,19 @@ export type NIBA_QUERY_RESULT = {
   } | null
   program: {
     _id: string
-    name: string
+    name: LocaleString
     slug: string
     icon: string | null
-    shortDescription: string
+    shortDescription: LocaleText
     schedule: Array<{
       day: 'friday' | 'monday' | 'saturday' | 'sunday' | 'thursday' | 'tuesday' | 'wednesday'
       startTime: string
       endTime: string
     }> | null
-    scheduleNote: string | null
+    scheduleNote: LocaleString | null
     audience: 'limited' | 'public' | 'registration'
     button: {
-      label: string
+      label: LocaleString
       href: string
     } | null
     contacts: Array<{
@@ -1217,16 +1243,16 @@ export type SITEMAP_QUERY_RESULT = {
 declare global {
   interface SanityQueries {
     '*[_type == "siteSettings" && _id == "siteSettings"][0]{\n  siteName,\n  logo,\n  menu[]{ label, href, children[]{ label, href } },\n  footer{\n    quote,\n    quoteSource,\n    address,\n    mapsUrl,\n    email,\n    whatsapp,\n    "contacts": contacts[]->{ name, whatsapp },\n    usefulLinks[]{ label, href },\n    nibaBlurb,\n    nibaButton{ label, href },\n    socialLinks[]{ platform, label, url }\n  },\n  seo\n}': SETTINGS_QUERY_RESULT
-    '{\n  "home": *[_type == "homepage" && _id == "homepage"][0]{\n    hero{ image, paliVerse, meaning, tagline, button{ label, href } },\n    intro{ heading, text, images, buttons[]{ label, href } },\n    teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },\n    programsIntro,\n    venerablesIntro,\n    instagram{ feedUrl, heading }\n  },\n  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body[_type == "verse"]) > 0]\n    | order(publishedAt desc)[0]{\n      title,\n      "slug": slug.current,\n      "category": category->slug.current,\n      "verse": body[_type == "verse"][0]{ pali, meaning, reference }\n    },\n  "programs": *[_type == "program"] | order(order asc, name asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "events": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc)[0...6]{\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "hasPastEvents": count(*[_type == "event" && coalesce(endDate, startDate) < $today]) > 0,\n  "venerables": *[_type == "teacher" && role == "resident" && residencyStart <= $today\n      && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd\n  },\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc)[0...3]{\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{\n    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n  }\n}': HOME_QUERY_RESULT
-    '{\n  "posts": *[_type == "post" && defined(category)\n      && ($category == "" || category->slug.current == $category)\n      && ($search == "" || [title, excerpt, pt::text(body)] match $terms)]\n    | order(publishedAt desc){\n      _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n    },\n  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title asc){\n    title, "slug": slug.current\n  },\n  "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }\n}': POST_LIST_QUERY_RESULT
+    '{\n  "home": *[_type == "homepage" && _id == "homepage"][0]{\n    hero{ image, paliVerse, meaning, tagline, button{ label, href } },\n    intro{ heading, text, images, buttons[]{ label, href } },\n    teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },\n    programsIntro,\n    venerablesIntro,\n    instagram{ feedUrl, heading }\n  },\n  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body.en[_type == "verse"]) > 0]\n    | order(publishedAt desc)[0]{\n      title,\n      "slug": slug.current,\n      "category": category->slug.current,\n      "verseEn": body.en[_type == "verse"][0]{ pali, meaning, reference },\n      "verseId": body.id[_type == "verse"][0]{ pali, meaning, reference }\n    },\n  "programs": *[_type == "program"] | order(order asc, name.en asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "events": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc)[0...6]{\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "hasPastEvents": count(*[_type == "event" && coalesce(endDate, startDate) < $today]) > 0,\n  "venerables": *[_type == "teacher" && role == "resident" && residencyStart <= $today\n      && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd\n  },\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc)[0...3]{\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{\n    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n  }\n}': HOME_QUERY_RESULT
+    '{\n  "posts": *[_type == "post" && defined(category)\n      && ($category == "" || category->slug.current == $category)\n      && ($search == "" || [title.en, title.id, excerpt.en, excerpt.id, pt::text(body.en), pt::text(body.id)] match $terms)]\n    | order(publishedAt desc){\n      _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n    },\n  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title.en asc){\n    title, "slug": slug.current\n  },\n  "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }\n}': POST_LIST_QUERY_RESULT
     '*[_type == "post" && slug.current == $slug && category->slug.current == $category][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "category": category->{ title, "slug": slug.current },\n  coverImage,\n  excerpt,\n  publishedAt,\n  body,\n  seo,\n  "related": *[_type == "post" && category._ref == ^.category._ref && _id != ^._id] | order(publishedAt desc)[0...3]{\n    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n  }\n}': POST_QUERY_RESULT
     '{\n  "upcoming": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "past": *[_type == "event" && coalesce(endDate, startDate) < $today] | order(startDate desc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': EVENTS_QUERY_RESULT
     '*[_type == "event" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  type,\n  startDate,\n  endDate,\n  "sessions": sessions[]{ _key, label, start, end },\n  "guide": coalesce(guidedBy->fullName, guidedByText),\n  "guideSlug": guidedBy->slug.current,\n  audience,\n  image,\n  description,\n  "contacts": contacts[]->{ name, whatsapp },\n  seo\n}': EVENT_QUERY_RESULT
-    '{\n  "programs": *[_type == "program"] | order(order asc, name asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': PROGRAMS_QUERY_RESULT
+    '{\n  "programs": *[_type == "program"] | order(order asc, name.en asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': PROGRAMS_QUERY_RESULT
     '{\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': TEACHERS_QUERY_RESULT
     '{\n  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd\n  },\n  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VENERABLES_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background },\n  seo\n}': PAGE_QUERY_RESULT
-    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
+    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && defined(category)]{\n    "slug": slug.current, "category": category->slug.current, _updatedAt\n  },\n  "events": *[_type == "event" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT
   }
 }

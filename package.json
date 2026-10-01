@@ -13,6 +13,7 @@
     "deploy:studio": "pnpm --filter studio deploy",
     "typegen": "pnpm --filter studio typegen",
     "migrate": "pnpm --filter migration migrate",
+    "localize": "pnpm --filter migration localize",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

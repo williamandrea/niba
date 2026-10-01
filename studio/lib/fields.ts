@@ -65,7 +65,8 @@ export function seoField(group?: string) {
   })
 }
 
-export function slugField(source = 'title', description?: string) {
+/** Slugs are shared by both languages and made from the English title. */
+export function slugField(source = 'title.en', description?: string) {
   return defineField({
     name: 'slug',
     title: 'Web address (slug)',
@@ -75,5 +76,64 @@ export function slugField(source = 'title', description?: string) {
       'The last part of the page address. Click "Generate" to make it from the title. Avoid changing it after publishing.',
     options: { source, maxLength: 96 },
     validation: (rule) => rule.required(),
+  })
+}
+
+type LocaleFieldOptions = {
+  name: string
+  title: string
+  /** string: one line, text: a paragraph, blockContent: rich text. */
+  type?: 'string' | 'text' | 'blockContent'
+  description?: string
+  group?: string
+  /** English must be filled in. Indonesian is always optional. */
+  required?: boolean
+  /** Maximum characters, per language. */
+  max?: number
+}
+
+const LOCALE_TYPE = { string: 'localeString', text: 'localeText', blockContent: 'localeBlockContent' } as const
+type LocaleValue = { en?: unknown; id?: unknown } | undefined
+
+const hasText = (value: unknown) =>
+  typeof value === 'string' ? value.trim().length > 0 : Array.isArray(value) && value.length > 0
+
+/**
+ * A field in English and Indonesian (see schemaTypes/objects/locale.ts).
+ * A missing translation is a warning, not an error: the site shows English until it is added.
+ */
+export function localeField({ name, title, type = 'string', description, group, required, max }: LocaleFieldOptions) {
+  return defineField({
+    name,
+    title,
+    type: LOCALE_TYPE[type],
+    description,
+    group,
+    validation: (rule) => [
+      ...(required
+        ? [
+            rule.required().error('Please fill in the English text.'),
+            rule.custom((value: LocaleValue) =>
+              value && !hasText(value.en) ? 'Please fill in the English text.' : true,
+            ),
+          ]
+        : []),
+      ...(max
+        ? [
+            rule.custom((value: LocaleValue) =>
+              [value?.en, value?.id].some((v) => typeof v === 'string' && v.length > max)
+                ? `Please keep each language to ${max} characters or fewer.`
+                : true,
+            ),
+          ]
+        : []),
+      rule
+        .custom((value: LocaleValue) =>
+          hasText(value?.en) && !hasText(value?.id)
+            ? 'Not translated yet. The Indonesian site shows the English text until you add it.'
+            : true,
+        )
+        .warning(),
+    ],
   })
 }

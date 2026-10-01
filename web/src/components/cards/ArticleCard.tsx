@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import type { SanityImageSource } from '~/lib/sanity/image'
 import { formatDate } from '~/lib/dates'
 import { clean } from '~/lib/text'
+import { useLang, useT } from '~/lib/i18n'
 import { SanityImage } from '~/components/ui/SanityImage'
 import { LotusMandala } from '~/components/ui/LotusMandala'
 
@@ -18,6 +19,8 @@ export type ArticleCardData = {
 export function ArticleCard({ article, headingLevel = 3 }: { article: ArticleCardData; headingLevel?: 2 | 3 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3'
   const category = article.category?.slug ?? 'blog'
+  const lang = useLang()
+  const t = useT()
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-gold-400/30 bg-white/70 shadow-sm">
       {article.coverImage?.asset ? (
@@ -37,7 +40,7 @@ export function ArticleCard({ article, headingLevel = 3 }: { article: ArticleCar
         <p className="text-base text-ink/75">
           {article.category && <span className="font-semibold text-brown-700">{article.category.title}</span>}
           {article.category && ' · '}
-          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, lang)}</time>
         </p>
         <Heading className="text-h3">
           <Link
@@ -50,7 +53,7 @@ export function ArticleCard({ article, headingLevel = 3 }: { article: ArticleCar
         </Heading>
         {clean(article.excerpt) && <p className="line-clamp-4 text-ink/85">{clean(article.excerpt)}</p>}
         <span className="mt-auto pt-2 font-semibold text-brown-700" aria-hidden="true">
-          Read more →
+          {t.readMore}
         </span>
       </div>
     </article>

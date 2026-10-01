@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { HomeIcon } from '@sanity/icons/Home'
-import { imageField } from '../../lib/fields'
+import { imageField, localeField } from '../../lib/fields'
 
 export const homepage = defineType({
   name: 'homepage',
@@ -28,14 +28,13 @@ export const homepage = defineType({
           title: 'Pali verse',
           type: 'text',
           rows: 3,
-          description: 'Press Enter for a new line.',
+          description: 'Press Enter for a new line. Pali is the same in both languages.',
           validation: (rule) => rule.required(),
         }),
-        defineField({ name: 'meaning', title: 'English meaning', type: 'text', rows: 3 }),
-        defineField({
+        localeField({ name: 'meaning', title: 'Meaning', type: 'text' }),
+        localeField({
           name: 'tagline',
           title: 'Small line under the verse',
-          type: 'string',
           description: 'e.g. "Theruwan Saranai with Metta"',
         }),
         defineField({ name: 'button', title: 'Button', type: 'link' }),
@@ -47,8 +46,8 @@ export const homepage = defineType({
       type: 'object',
       group: 'intro',
       fields: [
-        defineField({ name: 'heading', title: 'Heading', type: 'string' }),
-        defineField({ name: 'text', title: 'Text', type: 'text', rows: 5 }),
+        localeField({ name: 'heading', title: 'Heading' }),
+        localeField({ name: 'text', title: 'Text', type: 'text' }),
         defineField({
           name: 'images',
           title: 'Photo collage',
@@ -73,22 +72,20 @@ export const homepage = defineType({
       group: 'quote',
       description: 'Leave the quote empty to hide this section.',
       fields: [
-        defineField({ name: 'quote', title: 'Quote', type: 'text', rows: 4 }),
+        localeField({ name: 'quote', title: 'Quote', type: 'text' }),
         defineField({ name: 'teacher', title: 'Teacher', type: 'reference', to: [{ type: 'teacher' }] }),
       ],
     }),
-    defineField({
+    localeField({
       name: 'programsIntro',
       title: 'Programs: short introduction',
       type: 'text',
-      rows: 3,
       group: 'sections',
     }),
-    defineField({
+    localeField({
       name: 'venerablesIntro',
       title: 'Residing venerables: short note',
       type: 'text',
-      rows: 3,
       group: 'sections',
       description: 'e.g. how devotees can offer dāna during the residency.',
     }),
@@ -113,10 +110,9 @@ export const homepage = defineType({
                 : 'Paste the feed link from Behold, e.g. https://feeds.behold.so/abc123',
             ),
         }),
-        defineField({
+        localeField({
           name: 'heading',
           title: 'Heading',
-          type: 'string',
           description: 'Optional. Default: "Follow us on Instagram".',
         }),
       ],

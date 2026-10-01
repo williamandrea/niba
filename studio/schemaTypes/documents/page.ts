@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { DocumentIcon } from '@sanity/icons/Document'
-import { seoField, slugField } from '../../lib/fields'
+import { localeField, seoField, slugField } from '../../lib/fields'
 import { RESERVED_SLUGS, PAGE_SLUG_PATHS } from '../../lib/paths'
 
 export const page = defineType({
@@ -13,16 +13,10 @@ export const page = defineType({
     { name: 'seo', title: 'Search & sharing' },
   ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    localeField({ name: 'title', title: 'Title', group: 'content', required: true }),
     {
       ...slugField(
-        'title',
+        'title.en',
         `The page address. These slugs fill special pages: ${Object.entries(PAGE_SLUG_PATHS)
           .map(([slug, path]) => `"${slug}" → ${path}`)
           .join(', ')}.`,
@@ -37,11 +31,10 @@ export const page = defineType({
           return true
         }),
     },
-    defineField({
+    localeField({
       name: 'intro',
       title: 'Introduction',
       type: 'text',
-      rows: 3,
       group: 'content',
       description: 'Optional. A short line under the title.',
     }),
@@ -56,7 +49,7 @@ export const page = defineType({
     seoField('seo'),
   ],
   preview: {
-    select: { title: 'title', slug: 'slug.current', media: 'body.0.images.0' },
+    select: { title: 'title.en', slug: 'slug.current', media: 'body.0.images.0' },
     prepare: ({ title, slug, media }) => ({
       title,
       subtitle: slug ? (PAGE_SLUG_PATHS[slug] ?? `/${slug}/`) : '',

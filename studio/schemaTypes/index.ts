@@ -3,6 +3,7 @@ import { link } from './objects/link'
 import { menuItem } from './objects/menuItem'
 import { eventSession, pageSection, scheduleItem, socialLink } from './objects/misc'
 import { seo } from './objects/seo'
+import { localeBlockContent, localeString, localeText } from './objects/locale'
 import { category } from './documents/category'
 import { contactPerson } from './documents/contactPerson'
 import { event } from './documents/event'
@@ -27,6 +28,9 @@ export const schemaTypes = [
   contactPerson,
   page,
   // Objects
+  localeString,
+  localeText,
+  localeBlockContent,
   seo,
   link,
   menuItem,

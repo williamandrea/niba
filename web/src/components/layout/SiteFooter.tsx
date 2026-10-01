@@ -3,6 +3,7 @@ import type { NavLink } from '~/lib/site'
 import { clean, formatPhone, whatsappUrl } from '~/lib/text'
 import { SmartLink } from '~/components/ui/SmartLink'
 import { LotusMandala } from '~/components/ui/LotusMandala'
+import { useT } from '~/lib/i18n'
 
 export type FooterData = {
   siteName: string
@@ -20,6 +21,7 @@ export type FooterData = {
 }
 
 export function SiteFooter({ data }: { data: FooterData }) {
+  const t = useT()
   const year = new Date().getFullYear()
   const quote = clean(data.quote)
   const contacts = data.contacts
@@ -45,12 +47,12 @@ export function SiteFooter({ data }: { data: FooterData }) {
       )}
 
       <div className="mx-auto grid max-w-site gap-x-10 gap-y-2 px-4 py-12 sm:px-6 md:grid-cols-2 md:gap-y-10 lg:grid-cols-4">
-        <FooterGroup title="Address">
+        <FooterGroup id="address" title={t.address}>
           {data.address && <p className="whitespace-pre-line">{clean(data.address)}</p>}
           <ul className="mt-3 space-y-1">
             {data.mapsUrl && (
               <li>
-                <FooterLink href={data.mapsUrl}>Open in Google Maps</FooterLink>
+                <FooterLink href={data.mapsUrl}>{t.openMaps}</FooterLink>
               </li>
             )}
             {data.email && (
@@ -61,7 +63,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
           </ul>
         </FooterGroup>
 
-        <FooterGroup title="Our contact">
+        <FooterGroup id="contact" title={t.ourContact}>
           <ul className="space-y-1">
             {mainWa && data.whatsapp && (
               <li>
@@ -76,7 +78,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
           </ul>
         </FooterGroup>
 
-        <FooterGroup title="Useful links">
+        <FooterGroup id="links" title={t.usefulLinks}>
           <ul className="space-y-1">
             {data.usefulLinks.map((link) => (
               <li key={link.href + link.label}>
@@ -86,7 +88,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
           </ul>
         </FooterGroup>
 
-        <FooterGroup title="NIBA registration">
+        <FooterGroup id="niba" title={t.nibaRegistration}>
           {data.nibaBlurb && <p>{clean(data.nibaBlurb)}</p>}
           {data.nibaLink && (
             <SmartLink
@@ -97,7 +99,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
             </SmartLink>
           )}
           {socials.length > 0 && (
-            <ul className="mt-5 flex flex-wrap gap-2" aria-label="Social media">
+            <ul className="mt-5 flex flex-wrap gap-2" aria-label={t.socialMedia}>
               {socials.map((s) => (
                 <li key={s.url}>
                   <a
@@ -118,7 +120,7 @@ export function SiteFooter({ data }: { data: FooterData }) {
 
       <div className="border-t border-cream-100/15">
         <p className="mx-auto max-w-site px-4 py-6 text-center text-base text-cream-100/80 sm:px-6">
-          © {year} {data.siteName}. All rights reserved.
+          {t.rights(year, data.siteName)}
         </p>
       </div>
     </footer>
@@ -126,9 +128,9 @@ export function SiteFooter({ data }: { data: FooterData }) {
 }
 
 /** A footer column. On phones it is a tap-to-open group; on wider screens it is always open. */
-function FooterGroup({ title, children }: { title: string; children: ReactNode }) {
+function FooterGroup({ id: name, title, children }: { id: string; title: string; children: ReactNode }) {
   const [open, setOpen] = useState(false)
-  const id = `footer-${title.toLowerCase().replace(/\W+/g, '-')}`
+  const id = `footer-${name}`
   return (
     <section className="border-b border-cream-100/15 md:border-0" aria-labelledby={`${id}-title`}>
       <h2 id={`${id}-title`} className="font-sans text-base font-bold tracking-wide text-gold-400">

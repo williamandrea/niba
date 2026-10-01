@@ -6,8 +6,22 @@ import { DocumentTextIcon } from '@sanity/icons/DocumentText'
 import { HomeIcon } from '@sanity/icons/Home'
 import { RocketIcon } from '@sanity/icons/Rocket'
 import { TagIcon } from '@sanity/icons/Tag'
+import { TranslateIcon } from '@sanity/icons/Translate'
 import { UserIcon } from '@sanity/icons/User'
 import { UsersIcon } from '@sanity/icons/Users'
+
+/**
+ * Documents whose main text has no Indonesian yet. Settings and Homepage
+ * sections are not listed: their missing translations show as warnings.
+ */
+const NEEDS_TRANSLATION = `
+  (_type in ["post", "event", "page", "category"] && !defined(title.id))
+  || (_type == "post" && (defined(body.en) && !defined(body.id) || defined(excerpt.en) && !defined(excerpt.id)))
+  || (_type == "event" && defined(description.en) && !defined(description.id))
+  || (_type == "page" && count(body[defined(content.en) && !defined(content.id)]) > 0)
+  || (_type == "program" && (!defined(name.id) || !defined(shortDescription.id)))
+  || (_type == "teacher" && defined(bio.en) && !defined(bio.id))
+`
 
 /** Today's date in Medan (WIB), e.g. 2026-10-01. */
 function todayInMedan() {
@@ -118,5 +132,16 @@ export const structure: StructureResolver = (S) => {
         ),
       S.listItem().title('Contacts').icon(UserIcon).child(S.documentTypeList('contactPerson').title('Contacts')),
       S.listItem().title('Pages').icon(DocumentIcon).child(S.documentTypeList('page').title('Pages')),
+      S.divider(),
+      S.listItem()
+        .title('Not yet in Indonesian')
+        .icon(TranslateIcon)
+        .child(
+          S.documentList()
+            .title('Not yet in Indonesian')
+            .apiVersion('2026-09-30')
+            .filter(NEEDS_TRANSLATION)
+            .defaultOrdering([{ field: '_updatedAt', direction: 'desc' }]),
+        ),
     ])
 }

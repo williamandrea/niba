@@ -1,12 +1,13 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { validHref } from './link'
+import { localeField } from '../../lib/fields'
 
 export const menuItem = defineType({
   name: 'menuItem',
   title: 'Menu item',
   type: 'object',
   fields: [
-    defineField({ name: 'label', title: 'Text', type: 'string', validation: (rule) => rule.required() }),
+    localeField({ name: 'label', title: 'Text', required: true }),
     defineField({
       name: 'href',
       title: 'Goes to',
@@ -24,7 +25,7 @@ export const menuItem = defineType({
     }),
   ],
   preview: {
-    select: { title: 'label', subtitle: 'href', children: 'children' },
+    select: { title: 'label.en', subtitle: 'href', children: 'children' },
     prepare: ({ title, subtitle, children }) => ({
       title,
       subtitle: children?.length ? `${children.length} sub-menu links` : subtitle,

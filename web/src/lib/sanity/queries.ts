@@ -3,6 +3,10 @@ import { defineQuery } from 'groq'
 /*
  * All GROQ queries for the site. After changing a query or a schema, run
  * `pnpm typegen` to refresh the TypeScript types in sanity.types.ts.
+ *
+ * Translatable fields come back as { en, id } objects. The server functions
+ * pick the visitor's language (see lib/sanity/localize.ts), so queries only
+ * name a language where they filter, sort, or search.
  */
 
 export const SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id == "siteSettings"][0]{
@@ -34,14 +38,15 @@ export const HOME_QUERY = defineQuery(`{
     venerablesIntro,
     instagram{ feedUrl, heading }
   },
-  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body[_type == "verse"]) > 0]
+  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body.en[_type == "verse"]) > 0]
     | order(publishedAt desc)[0]{
       title,
       "slug": slug.current,
       "category": category->slug.current,
-      "verse": body[_type == "verse"][0]{ pali, meaning, reference }
+      "verseEn": body.en[_type == "verse"][0]{ pali, meaning, reference },
+      "verseId": body.id[_type == "verse"][0]{ pali, meaning, reference }
     },
-  "programs": *[_type == "program"] | order(order asc, name asc){
+  "programs": *[_type == "program"] | order(order asc, name.en asc){
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,
     audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }
   },
@@ -66,11 +71,11 @@ export const HOME_QUERY = defineQuery(`{
 export const POST_LIST_QUERY = defineQuery(`{
   "posts": *[_type == "post" && defined(category)
       && ($category == "" || category->slug.current == $category)
-      && ($search == "" || [title, excerpt, pt::text(body)] match $terms)]
+      && ($search == "" || [title.en, title.id, excerpt.en, excerpt.id, pt::text(body.en), pt::text(body.id)] match $terms)]
     | order(publishedAt desc){
       _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt
     },
-  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title asc){
+  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title.en asc){
     title, "slug": slug.current
   },
   "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }
@@ -126,7 +131,7 @@ export const EVENT_QUERY = defineQuery(`*[_type == "event" && slug.current == $s
 }`)
 
 export const PROGRAMS_QUERY = defineQuery(`{
-  "programs": *[_type == "program"] | order(order asc, name asc){
+  "programs": *[_type == "program"] | order(order asc, name.en asc){
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,
     audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }
   },
@@ -161,7 +166,7 @@ export const NIBA_QUERY = defineQuery(`{
   "page": *[_type == "page" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo
   },
-  "program": *[_type == "program" && (slug.current match "niba*" || name match "NIBA")] | order(order asc)[0]{
+  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,
     audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }
   }

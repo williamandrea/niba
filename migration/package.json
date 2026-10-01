@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "migrate": "tsx src/index.ts",
+    "localize": "tsx src/localize.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

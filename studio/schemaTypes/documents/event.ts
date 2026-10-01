@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { CalendarIcon } from '@sanity/icons/Calendar'
-import { imageField, seoField, slugField } from '../../lib/fields'
+import { imageField, localeField, seoField, slugField } from '../../lib/fields'
 
 export const EVENT_TYPES = [
   { title: 'Pabbajja', value: 'pabbajja' },
@@ -26,13 +26,7 @@ export const event = defineType({
     { name: 'seo', title: 'Search & sharing' },
   ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    localeField({ name: 'title', title: 'Title', group: 'content', required: true }),
     { ...slugField(), group: 'content' },
     defineField({
       name: 'type',
@@ -96,7 +90,7 @@ export const event = defineType({
       validation: (rule) => rule.required(),
     }),
     imageField({ name: 'image', title: 'Poster or photo', group: 'content' }),
-    defineField({ name: 'description', title: 'Description', type: 'blockContent', group: 'content' }),
+    localeField({ name: 'description', title: 'Description', type: 'blockContent', group: 'content' }),
     defineField({
       name: 'contacts',
       title: 'Contact people',
@@ -109,7 +103,7 @@ export const event = defineType({
   ],
   orderings: [{ title: 'Date, newest first', name: 'startDesc', by: [{ field: 'startDate', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', start: 'startDate', end: 'endDate', media: 'image', type: 'type' },
+    select: { title: 'title.en', start: 'startDate', end: 'endDate', media: 'image', type: 'type' },
     prepare: ({ title, start, end, media, type }) => ({
       title,
       subtitle: [EVENT_TYPES.find((t) => t.value === type)?.title, end && end !== start ? `${start} → ${end}` : start]

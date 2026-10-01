@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes, SINGLETONS } from './schemaTypes'
 import { structure } from './structure'
-import { PreviewOnSiteAction } from './actions/previewOnSite'
+import { PreviewOnSiteAction, PreviewOnSiteIndonesianAction } from './actions/previewOnSite'
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? ''
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
@@ -37,7 +37,7 @@ export default defineConfig({
       const actions = SINGLETONS.includes(context.schemaType)
         ? prev.filter(({ action }) => action && !['unpublish', 'delete', 'duplicate'].includes(action))
         : prev
-      return [...actions, PreviewOnSiteAction]
+      return [...actions, PreviewOnSiteAction, PreviewOnSiteIndonesianAction]
     },
     newDocumentOptions: (prev) =>
       prev.filter((item) => !SINGLETONS.includes(item.templateId) && item.templateId !== 'teacher-role'),

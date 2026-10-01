@@ -21,6 +21,8 @@ export const PAGE_SLUG_PATHS: Record<string, string> = {
 export const RESERVED_SLUGS = [
   ...Object.keys(PAGE_SLUG_PATHS),
   'blog',
+  // Indonesian pages live under /id/.
+  'id',
   'sitemap.xml',
   'robots.txt',
   'feed',

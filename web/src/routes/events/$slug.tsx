@@ -1,4 +1,6 @@
 import { Link, createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { absoluteUrl, buildHead, breadcrumbs, ogImageUrl, rootSettings } from '~/lib/seo'
+import { blocksToText } from '~/lib/portable-text'
 import { getEvent } from '~/lib/sanity/api'
 import { formatDateRange } from '~/lib/dates'
 import { EVENT_TYPE_LABELS } from '~/lib/labels'
@@ -11,6 +13,48 @@ import { WhatsAppButtons } from '~/components/ui/WhatsApp'
 
 export const Route = createFileRoute('/events/$slug')({
   loader: ({ params }) => getEvent({ data: { slug: params.slug } }),
+  head: ({ matches, loaderData }) => {
+    if (!loaderData) return {}
+    const { event } = loaderData
+    const settings = rootSettings(matches)
+    const path = `/events/${event.slug}/`
+    const image = ogImageUrl(event.seo?.ogImage) ?? ogImageUrl(event.image)
+    const description = blocksToText(event.description).slice(0, 300)
+    return buildHead({
+      title: event.title,
+      description,
+      seo: event.seo,
+      image: event.image,
+      path,
+      settings,
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: event.title,
+          ...(description ? { description } : {}),
+          startDate: event.startDate,
+          endDate: event.endDate ?? event.startDate,
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          ...(image ? { image: [image] } : {}),
+          url: absoluteUrl(path),
+          location: {
+            '@type': 'Place',
+            name: settings?.siteName,
+            address: clean(settings?.footer.address).replace(/\n/g, ', ') || 'Medan, Indonesia',
+          },
+          organizer: { '@type': 'Organization', name: settings?.siteName, url: absoluteUrl('/') },
+          ...(clean(event.guide) ? { performer: { '@type': 'Person', name: clean(event.guide) } } : {}),
+          isAccessibleForFree: true,
+        },
+        breadcrumbs([
+          ['Events', '/events/'],
+          [event.title, path],
+        ]),
+      ],
+    })
+  },
   component: EventPage,
 })
 

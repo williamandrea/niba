@@ -17,6 +17,8 @@ import { Route as ChantingRouteImport } from './routes/chanting'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ResidingVenerablesRouteImport } from './routes/residing-venerables'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TeachersRouteImport } from './routes/teachers'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
@@ -64,6 +66,16 @@ const ProgramsRoute = ProgramsRouteImport.update({
 const ResidingVenerablesRoute = ResidingVenerablesRouteImport.update({
   id: '/residing-venerables',
   path: '/residing-venerables',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeachersRoute = TeachersRouteImport.update({
@@ -116,6 +128,8 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -134,6 +148,8 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -153,6 +169,8 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -173,6 +191,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/programs'
     | '/residing-venerables'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
     | '/events/$slug'
@@ -191,6 +211,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/programs'
     | '/residing-venerables'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
     | '/events/$slug'
@@ -209,6 +231,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/programs'
     | '/residing-venerables'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
     | '/events/$slug'
@@ -228,6 +252,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ProgramsRoute: typeof ProgramsRoute
   ResidingVenerablesRoute: typeof ResidingVenerablesRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeachersRoute: typeof TeachersRoute
   CategorySlugRoute: typeof CategorySlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -294,6 +320,20 @@ declare module '@tanstack/react-router' {
       path: '/residing-venerables'
       fullPath: '/residing-venerables'
       preLoaderRoute: typeof ResidingVenerablesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teachers': {
@@ -364,6 +404,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ProgramsRoute: ProgramsRoute,
   ResidingVenerablesRoute: ResidingVenerablesRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeachersRoute: TeachersRoute,
   CategorySlugRoute: CategorySlugRoute,
   EventsSlugRoute: EventsSlugRoute,

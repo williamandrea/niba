@@ -1,4 +1,5 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getPage } from '~/lib/sanity/api'
 import { PAGE_SLUG_PATHS } from '~/lib/paths'
 import { PageView } from '~/components/page/PageView'
@@ -14,6 +15,18 @@ export const Route = createFileRoute('/$slug')({
     if (!page) throw notFound()
     return page
   },
+  head: ({ matches, loaderData: page }) =>
+    page
+      ? buildHead({
+          title: page.title,
+          description: page.intro,
+          seo: page.seo,
+          image: page.body?.[0]?.images?.[0],
+          path: `/${page.slug}/`,
+          settings: rootSettings(matches),
+          jsonLd: [breadcrumbs([[page.title, `/${page.slug}/`]])],
+        })
+      : {},
   component: function GenericPage() {
     return <PageView page={Route.useLoaderData()} fallbackTitle="" />
   },

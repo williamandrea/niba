@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getVenerables } from '~/lib/sanity/api'
 import { formatDateRange } from '~/lib/dates'
 import { PageHeader } from '~/components/ui/PageHeader'
@@ -7,6 +8,17 @@ import { TeacherCard } from '~/components/cards/TeacherCard'
 
 export const Route = createFileRoute('/residing-venerables')({
   loader: () => getVenerables(),
+  head: ({ matches, loaderData }) =>
+    buildHead({
+      title: loaderData?.page?.title || 'Residing Venerables',
+      description:
+        loaderData?.page?.intro ||
+        'Venerable monks residing with us in Medan, and how to offer dāna during their stay.',
+      seo: loaderData?.page?.seo,
+      path: '/residing-venerables/',
+      settings: rootSettings(matches),
+      jsonLd: [breadcrumbs([['Residing Venerables', '/residing-venerables/']])],
+    }),
   component: VenerablesPage,
 })
 

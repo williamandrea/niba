@@ -1,4 +1,5 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { useState, type FormEvent } from 'react'
 import { getPostList } from '~/lib/sanity/api'
 import { ArticleCard } from '~/components/cards/ArticleCard'
@@ -18,6 +19,17 @@ export const Route = createFileRoute('/blog/')({
   },
   loaderDeps: ({ search }) => search,
   loader: ({ deps }) => getPostList({ data: deps }),
+  head: ({ matches, loaderData }) =>
+    buildHead({
+      title: loaderData?.page?.title || 'Articles',
+      description:
+        loaderData?.page?.intro ||
+        'Stories and teachings from the Dhammapada and the Tipiṭaka, to read and reflect on.',
+      seo: loaderData?.page?.seo,
+      path: '/blog/',
+      settings: rootSettings(matches),
+      jsonLd: [breadcrumbs([['Articles', '/blog/']])],
+    }),
   component: BlogPage,
 })
 

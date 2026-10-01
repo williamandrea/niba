@@ -1,4 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { absoluteUrl, buildHead, breadcrumbs, ogImageUrl, rootSettings } from '~/lib/seo'
 import { getPost } from '~/lib/sanity/api'
 import { formatDate } from '~/lib/dates'
 import { clean } from '~/lib/text'
@@ -9,6 +10,41 @@ import { LotusMandala } from '~/components/ui/LotusMandala'
 
 export const Route = createFileRoute('/$category/$slug')({
   loader: ({ params }) => getPost({ data: { category: params.category, slug: params.slug } }),
+  head: ({ matches, loaderData: post }) => {
+    if (!post) return {}
+    const settings = rootSettings(matches)
+    const path = `/${post.category?.slug}/${post.slug}/`
+    const image = ogImageUrl(post.seo?.ogImage) ?? ogImageUrl(post.coverImage)
+    return buildHead({
+      title: post.title,
+      description: post.excerpt,
+      seo: post.seo,
+      image: post.coverImage,
+      path,
+      type: 'article',
+      settings,
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: post.title,
+          description: clean(post.seo?.description) || clean(post.excerpt) || undefined,
+          datePublished: post.publishedAt,
+          dateModified: post._updatedAt,
+          mainEntityOfPage: absoluteUrl(path),
+          ...(image ? { image } : {}),
+          articleSection: post.category?.title,
+          author: { '@type': 'Organization', name: settings?.siteName, url: absoluteUrl('/') },
+          publisher: { '@id': `${absoluteUrl('/')}#organization` },
+        },
+        breadcrumbs([
+          ['Articles', '/blog/'],
+          [post.category?.title ?? 'Articles', `/blog/?category=${post.category?.slug}`],
+          [post.title, path],
+        ]),
+      ],
+    })
+  },
   component: PostPage,
 })
 

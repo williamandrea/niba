@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getTeachers } from '~/lib/sanity/api'
 import { PageHeader } from '~/components/ui/PageHeader'
 import { PageSections } from '~/components/page/PageSections'
@@ -6,6 +7,15 @@ import { TeacherCard } from '~/components/cards/TeacherCard'
 
 export const Route = createFileRoute('/teachers')({
   loader: () => getTeachers(),
+  head: ({ matches, loaderData }) =>
+    buildHead({
+      title: loaderData?.page?.title || 'Our Teachers',
+      description: loaderData?.page?.intro || 'The venerable teachers who guide the Na Uyana community in Medan.',
+      seo: loaderData?.page?.seo,
+      path: '/teachers/',
+      settings: rootSettings(matches),
+      jsonLd: [breadcrumbs([['Our Teachers', '/teachers/']])],
+    }),
   component: TeachersPage,
 })
 

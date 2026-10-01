@@ -1,4 +1,5 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getPage } from '~/lib/sanity/api'
 import { clean, formatPhone, whatsappUrl } from '~/lib/text'
 import { PageHeader } from '~/components/ui/PageHeader'
@@ -7,6 +8,16 @@ import { WhatsAppButtons, WhatsAppIcon } from '~/components/ui/WhatsApp'
 
 export const Route = createFileRoute('/contact')({
   loader: () => getPage({ data: { slug: 'contact' } }),
+  head: ({ matches, loaderData: page }) =>
+    buildHead({
+      title: page?.title || 'Contact Us',
+      description: page?.intro,
+      seo: page?.seo,
+      image: page?.body?.[0]?.images?.[0],
+      path: '/contact/',
+      settings: rootSettings(matches),
+      jsonLd: [breadcrumbs([['Contact', '/contact/']])],
+    }),
   component: ContactPage,
 })
 

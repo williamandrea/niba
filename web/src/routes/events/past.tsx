@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getEvents } from '~/lib/sanity/api'
 import { PageHeader } from '~/components/ui/PageHeader'
 import { EventCard } from '~/components/cards/EventCard'
@@ -6,6 +7,19 @@ import { ButtonLink } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/events/past')({
   loader: () => getEvents(),
+  head: ({ matches }) =>
+    buildHead({
+      title: 'Past Events',
+      description: 'A look back at retreats and programs at Na Uyana Aranya Indonesia.',
+      path: '/events/past/',
+      settings: rootSettings(matches),
+      jsonLd: [
+        breadcrumbs([
+          ['Events', '/events/'],
+          ['Past events', '/events/past/'],
+        ]),
+      ],
+    }),
   component: PastEventsPage,
 })
 

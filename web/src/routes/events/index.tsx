@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildHead, breadcrumbs, rootSettings } from '~/lib/seo'
 import { getEvents } from '~/lib/sanity/api'
 import { PageHeader } from '~/components/ui/PageHeader'
 import { PageSections } from '~/components/page/PageSections'
@@ -7,6 +8,16 @@ import { ButtonLink } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/events/')({
   loader: () => getEvents(),
+  head: ({ matches, loaderData }) =>
+    buildHead({
+      title: loaderData?.page?.title || 'Upcoming Events',
+      description:
+        loaderData?.page?.intro || 'Retreats, pabbajjā programs, and Dhamma talks at Na Uyana Aranya Indonesia.',
+      seo: loaderData?.page?.seo,
+      path: '/events/',
+      settings: rootSettings(matches),
+      jsonLd: [breadcrumbs([['Events', '/events/']])],
+    }),
   component: UpcomingEventsPage,
 })
 

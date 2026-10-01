@@ -1,4 +1,5 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
+import { buildHead, rootSettings } from '~/lib/seo'
 import { getHome } from '~/lib/sanity/api'
 import {
   EventsSection,
@@ -14,6 +15,7 @@ import {
 
 export const Route = createFileRoute('/')({
   loader: () => getHome(),
+  head: ({ matches }) => buildHead({ path: '/', settings: rootSettings(matches) }),
   component: HomePage,
 })
 

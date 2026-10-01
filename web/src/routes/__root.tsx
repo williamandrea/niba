@@ -7,6 +7,7 @@ import { SiteFooter } from '~/components/layout/SiteFooter'
 import { NotFound } from '~/components/layout/NotFound'
 import { getSettings } from '~/lib/sanity/api'
 import { resolveSettings } from '~/lib/settings'
+import { organizationJsonLd } from '~/lib/seo'
 
 export const Route = createRootRoute({
   loader: async () => resolveSettings(await getSettings()),
@@ -18,6 +19,7 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'theme-color', content: '#fdf8e1' },
       { title: loaderData?.siteName },
+      ...(loaderData ? [{ 'script:ld+json': organizationJsonLd(loaderData) } as unknown as { name: string }] : []),
     ],
     links: [
       {

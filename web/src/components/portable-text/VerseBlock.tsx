@@ -1,6 +1,21 @@
 import { clean } from '~/lib/text'
 import { useT } from '~/lib/i18n'
 
+/** Splits out verse citations like (1:5) so they render upright (not italic). */
+function renderPali(text: string) {
+  const parts = text.split(/(\(\d+:\d+\))/g)
+  return parts.map((part, i) => {
+    if (/^\(\d+:\d+\)$/.test(part)) {
+      return (
+        <span key={i} className="not-italic">
+          {part}
+        </span>
+      )
+    }
+    return part
+  })
+}
+
 /** Pali verse with its meaning: side by side on wider screens, stacked on phones. */
 export function VerseBlock({
   pali,
@@ -19,7 +34,7 @@ export function VerseBlock({
         <div>
           <p className="mb-2 font-sans text-base font-semibold uppercase tracking-widest text-brown-700">{t.pali}</p>
           <p lang="pi" className="whitespace-pre-line font-serif text-verse italic leading-relaxed text-brown-900">
-            {clean(pali)}
+            {renderPali(clean(pali))}
           </p>
         </div>
         {clean(meaning) && (

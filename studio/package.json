@@ -7,7 +7,7 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "typegen": "sanity schema extract --force && sanity typegen generate",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc6 --noEmit"
   },
   "dependencies": {
     "@sanity/icons": "^5.2.3",

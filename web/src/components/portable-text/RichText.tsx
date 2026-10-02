@@ -40,6 +40,7 @@ const components: PortableTextComponents = {
     blockquote: ({ children }) => <blockquote className="whitespace-pre-line">{children}</blockquote>,
   },
   marks: {
+    em: ({ children }) => <em className="font-serif italic text-brown-900">{children}</em>,
     link: ({ value, children }) => {
       const href = (value as { href?: string } | undefined)?.href
       return href ? <SmartLink href={href}>{children}</SmartLink> : <>{children}</>
@@ -48,8 +49,12 @@ const components: PortableTextComponents = {
   types: {
     verse: ({ value }) => <VerseBlock pali={value.pali} meaning={value.meaning} reference={value.reference} />,
     image: ({ value }) => (
-      <figure className="my-8">
-        <SanityImage image={value} sizes="(min-width: 768px) 42rem, 100vw" className="w-full rounded-card" />
+      <figure className="my-8 text-center">
+        <SanityImage
+          image={value}
+          sizes="(min-width: 768px) 42rem, 100vw"
+          className="mx-auto max-w-full rounded-card"
+        />
         {clean(value.caption) && <figcaption className="mt-2 text-base text-ink/75">{clean(value.caption)}</figcaption>}
       </figure>
     ),

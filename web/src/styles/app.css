@@ -109,6 +109,9 @@
   .prose-nu a {
     @apply text-brown-700 underline;
   }
+  .prose-nu em {
+    @apply font-serif italic text-brown-900;
+  }
   .prose-nu ul {
     @apply list-disc pl-6;
   }

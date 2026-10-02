@@ -66,9 +66,7 @@ export function Hero({
             </p>
           )}
           {clean(meaning) && (
-            <p className="mt-5 font-serif text-base italic leading-relaxed text-white">
-              {clean(meaning)}
-            </p>
+            <p className="mt-5 font-serif text-base italic leading-relaxed text-white">{clean(meaning)}</p>
           )}
           {clean(tagline) && (
             <p className="mt-6 flex items-center gap-3 text-lg font-semibold text-white">

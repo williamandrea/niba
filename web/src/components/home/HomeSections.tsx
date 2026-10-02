@@ -261,7 +261,7 @@ export function EventsSection({ events, hasPastEvents }: { events: EventCardData
   )
 }
 
-/* 7. Residing venerables: only those staying with us today. Same cards as Our teachers. */
+/* 7. Residing venerables: only those staying with us today. Same grid as Our teachers. */
 export function VenerablesSection({
   venerables,
   intro,
@@ -287,11 +287,23 @@ export function VenerablesSection({
           </ButtonLink>
         }
       />
-      <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label={t.residingVenerables}>
         {venerables.map((v) => (
-          <TeacherCard key={v._id} teacher={v} />
+          <li key={v._id}>
+            <article className="h-full overflow-hidden rounded-card border border-gold-400/30 bg-white/70 text-center shadow-sm">
+              <TeacherPhoto
+                photo={v.photo}
+                name={v.fullName}
+                sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 100vw"
+              />
+              <div className="p-4">
+                <p className="text-base font-semibold uppercase tracking-wider text-brown-700">{t.venerable}</p>
+                <h3 className="mt-1 text-lg leading-snug">{v.fullName}</h3>
+              </div>
+            </article>
+          </li>
         ))}
-      </div>
+      </ul>
     </Section>
   )
 }

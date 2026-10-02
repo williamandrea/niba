@@ -21,7 +21,7 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: (templates) => [
-      // Singletons are created once by the migration script, never from the "+" menu.
+      // Singletons open from the Studio sidebar, never from the "+" menu.
       ...templates.filter(({ schemaType }) => !SINGLETONS.includes(schemaType)),
       {
         id: 'teacher-role',

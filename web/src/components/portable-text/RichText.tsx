@@ -34,7 +34,7 @@ export function cleanBlocks(blocks: BlockContent | null | undefined): BlockConte
 
 const components: PortableTextComponents = {
   block: {
-    normal: ({ children }) => <p>{children}</p>,
+    normal: ({ children }) => <p className="text-justify">{children}</p>,
     h2: ({ children }) => <h2>{children}</h2>,
     h3: ({ children }) => <h3>{children}</h3>,
     blockquote: ({ children }) => <blockquote className="whitespace-pre-line">{children}</blockquote>,

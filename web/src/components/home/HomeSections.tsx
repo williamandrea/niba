@@ -261,7 +261,7 @@ export function EventsSection({ events, hasPastEvents }: { events: EventCardData
   )
 }
 
-/* 7. Residing venerables: only those staying with us today. Swipe row on phones. */
+/* 7. Residing venerables: only those staying with us today. Same cards as Our teachers. */
 export function VenerablesSection({
   venerables,
   intro,
@@ -287,22 +287,11 @@ export function VenerablesSection({
           </ButtonLink>
         }
       />
-      <ul
-        className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0"
-        aria-label={t.residingVenerables}
-      >
+      <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {venerables.map((v) => (
-          <li key={v._id} className="w-[min(15rem,70vw)] shrink-0 snap-start lg:w-auto">
-            <article className="h-full overflow-hidden rounded-card border border-gold-400/30 bg-white/70 text-center shadow-sm">
-              <TeacherPhoto photo={v.photo} name={v.fullName} sizes="(min-width: 1024px) 13rem, 70vw" />
-              <div className="p-4">
-                <p className="text-base font-semibold uppercase tracking-wider text-brown-700">{t.venerable}</p>
-                <h3 className="mt-1 text-lg leading-snug">{v.fullName}</h3>
-              </div>
-            </article>
-          </li>
+          <TeacherCard key={v._id} teacher={v} />
         ))}
-      </ul>
+      </div>
     </Section>
   )
 }

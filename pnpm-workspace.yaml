@@ -1,7 +1,6 @@
 packages:
   - web
   - studio
-  - migration
 
 onlyBuiltDependencies:
   - esbuild

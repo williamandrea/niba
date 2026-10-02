@@ -14,7 +14,6 @@ export default tseslint.config(
       '**/routeTree.gen.ts',
       '**/sanity.types.ts',
       'web/worker-configuration.d.ts',
-      'migration/out/**',
     ],
   },
   js.configs.recommended,

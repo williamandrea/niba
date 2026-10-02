@@ -13,11 +13,10 @@ with a Sunday Dhamma school for children (NIBA), weekly programs, and retreats.
 
 ## Repo layout
 
-| Folder       | What it is                                                  |
-| ------------ | ----------------------------------------------------------- |
-| `web/`       | The public website (TanStack Start, deployed to Cloudflare) |
-| `studio/`    | Sanity Studio, where admins edit content (`sanity deploy`)  |
-| `migration/` | One-time WordPress import + seed content (`pnpm migrate`)   |
+| Folder    | What it is                                                  |
+| --------- | ----------------------------------------------------------- |
+| `web/`    | The public website (TanStack Start, deployed to Cloudflare) |
+| `studio/` | Sanity Studio, where admins edit content (`sanity deploy`)  |
 
 pnpm workspaces. ESLint + Prettier at the root.
 
@@ -36,15 +35,14 @@ cp .env.example .env   # then fill it in
 
 ### Environment variables (root `.env`)
 
-| Name                     | Used by                | Secret? | What it is                                                                       |
-| ------------------------ | ---------------------- | ------- | -------------------------------------------------------------------------------- |
-| `SANITY_PROJECT_ID`      | web, studio, migration | no      | From sanity.io/manage                                                            |
-| `SANITY_DATASET`         | web, studio, migration | no      | Usually `production`                                                             |
-| `SITE_URL`               | web, studio            | no      | `https://nauyana.id` (no trailing slash). Canonical URLs, sitemap, preview links |
-| `SANITY_STUDIO_SITE_URL` | studio                 | no      | Where "Preview on site" opens. Defaults to `SITE_URL`                            |
-| `SANITY_STUDIO_APP_ID`   | studio                 | no      | Printed by the first `sanity deploy`. Keeps later deploys on the same Studio     |
-| `SANITY_WRITE_TOKEN`     | migration only         | **yes** | Editor token from sanity.io/manage → API → Tokens. Keep it in `.env` only        |
-| `SANITY_API_HOST`        | web (optional)         | no      | Only for testing against a local mock API. Leave empty                           |
+| Name                     | Used by        | Secret? | What it is                                                                       |
+| ------------------------ | -------------- | ------- | -------------------------------------------------------------------------------- |
+| `SANITY_PROJECT_ID`      | web, studio    | no      | From sanity.io/manage                                                            |
+| `SANITY_DATASET`         | web, studio    | no      | Usually `production`                                                             |
+| `SITE_URL`               | web, studio    | no      | `https://nauyana.id` (no trailing slash). Canonical URLs, sitemap, preview links |
+| `SANITY_STUDIO_SITE_URL` | studio         | no      | Where "Preview on site" opens. Defaults to `SITE_URL`                            |
+| `SANITY_STUDIO_APP_ID`   | studio         | no      | Printed by the first `sanity deploy`. Keeps later deploys on the same Studio     |
+| `SANITY_API_HOST`        | web (optional) | no      | Only for testing against a local mock API. Leave empty                           |
 
 The website gets `SANITY_PROJECT_ID`, `SANITY_DATASET`, and `SITE_URL` at **build time**
 (see `web/vite.config.ts`). Only those three values reach the browser. Never add tokens there.
@@ -73,45 +71,7 @@ pnpm typegen        # studio/schema.json → web/src/lib/sanity/sanity.types.ts
 
 Before pushing: `pnpm check` (lint, type-check, formatting).
 
-## 3. Import content from WordPress
-
-```bash
-pnpm migrate --dry-run   # shows what would happen; writes migration/out/documents.ndjson
-pnpm migrate             # imports into Sanity
-```
-
-The script imports the 3 published Dhammapada articles (same URLs: `/dhammapada/<slug>/`),
-uploads the logo and homepage photos, creates starter content (settings, homepage, programs,
-events, teachers, residing venerables, contacts, pages), and prints a report.
-
-- **Images:** nauyana.id blocks bots, so downloads may fail. The report lists each missing
-  image with its link. Open the link in your browser, save the image into `migration/images/`,
-  and run again. The name must match the one in the report, but WordPress size suffixes are fine
-  (`hero-section-1024x683.webp` matches `hero-section`), and so is any image type (.webp, .jpg, .png).
-  If there are several copies, the biggest file is used.
-- **Re-running is safe:** every document has a fixed ID, so it updates instead of duplicating.
-  But it **overwrites** those documents, including edits made in the Studio. Run it before admins
-  start editing.
-- Anything unsure is marked `TODO:` in the Studio. The public site hides TODO notes automatically.
-- Starter content comes in English and Indonesian. The WordPress articles are English only;
-  admins add the Indonesian text in the Studio.
-
-### Upgrading content made before the two languages
-
-If the dataset already has content from before the language update (plain text instead of
-English + Indonesian), convert it once:
-
-```bash
-pnpm localize --dry-run   # lists every field it would change
-pnpm localize             # wraps plain text as English; Indonesian stays empty
-```
-
-It only touches text that is still plain, keeps every edit made in the Studio, and converts
-drafts too. Running it twice is safe. Order: deploy the new website first (its pages still load
-with the old content, though search and the homepage verse wait for the conversion), then run
-`pnpm localize`, then deploy the Studio (`pnpm deploy:studio`).
-
-## 4. Deploy the website (Cloudflare Workers)
+## 3. Deploy the website (Cloudflare Workers)
 
 The site deploys with **GitHub Actions** (`.github/workflows/deploy.yml`). Every pull request
 gets checks (lint, types, format), a build, and a preview link posted on the PR. Every push to
@@ -172,7 +132,7 @@ Measured with `pnpm --filter web build` then `npx wrangler deploy --dry-run` (in
 Re-check after the first real deploy (the dashboard shows the size of each version) and update
 this table. The Studio is a separate app, so it never adds to the Worker.
 
-## 5. Deploy the Studio
+## 4. Deploy the Studio
 
 ```bash
 pnpm deploy:studio
@@ -196,7 +156,7 @@ npx sanity cors add http://localhost:3333 --credentials
 `sanity deploy` normally adds the hosted `*.sanity.studio` address for you. If admins can't log
 in there, add it the same way with `--credentials`.
 
-## 6. Admins
+## 5. Admins
 
 ### Invite an admin
 
@@ -248,8 +208,7 @@ address with `/id` in front: `/programs/` → `/id/programs/`.
 - Fixed texts (buttons, headings, labels, month names) are in `web/src/lib/messages.ts`.
   Add a text to `en` and TypeScript asks for the Indonesian one.
 - Sanity stores translatable fields as `{ en, id }` (`studio/schemaTypes/objects/locale.ts`).
-  Add one with `localeField()` from `studio/lib/fields.ts`, then add it to the list in
-  `migration/src/localize.ts`. The server functions pick the language (`web/src/lib/sanity/localize.ts`),
+  Add one with `localeField()` from `studio/lib/fields.ts`. The server functions pick the language (`web/src/lib/sanity/localize.ts`),
   so components and most queries never see `{ en, id }`.
 - The `/id/` prefix is handled by a router rewrite (`web/src/lib/i18n.ts`): routes keep their
   English paths and read the language from a hidden `lang` search param. Use `useLang()` and
@@ -307,7 +266,7 @@ Choices made where the brief was open, or where the current docs required a chan
    `Cloudflare-CDN-Cache-Control: max-age=300, stale-while-revalidate=86400` for the edge.
 3. **Sanity is only called from server functions** (`web/src/lib/sanity/api.ts`). This keeps
    `@sanity/client` out of the browser bundle, and client-side page changes are cached too.
-4. **One `.env` at the repo root** for all three apps. The website gets the public values at
+4. **One `.env` at the repo root** for both apps. The website gets the public values at
    build time through `define`, not `VITE_` variables, so a token can't leak by prefix.
 5. **TODO notes are hidden on the public site.** Text like `TODO: …` stays visible in the Studio
    so admins find it, but the website removes it (and hides blocks left empty).
@@ -319,7 +278,7 @@ Choices made where the brief was open, or where the current docs required a chan
 9. **Article URLs are `/<category slug>/<post slug>/`**, matching WordPress. Category and page
    slugs can't use addresses the site already uses (`blog`, `events`, …); the Studio checks this.
 10. **The NIBA pages find the NIBA program** by a slug starting with `niba` or a name containing
-    "NIBA". The seeded program's slug is `niba-dhammapada-class`.
+    "NIBA". The current program's slug is `niba-dhammapada-class`.
 11. **Fonts are self-hosted, subset variable fonts** (Latin, Latin Extended, Latin Extended
     Additional, and combining accents), so every Pali mark renders. Plus Jakarta Sans has no
     precomposed `ṁ`; the browser builds it from `m` + combining dot. Libre Baskerville's license
@@ -333,42 +292,36 @@ Choices made where the brief was open, or where the current docs required a chan
     shows only those residing today (Medan time).
 15. **"Preview on site" opens the published page.** There is no draft preview (it would need a
     token and a server), so the button is off until a document is published.
-16. **Migration:**
-    - The WordPress export includes a photo titled "Ven Pak Auk Sayadaw"; it was attached to
-      Pa-Auk Sayadaw. Remove it in the Studio if wrong.
-    - "Dhammapada Verse 2" was copied from a PDF in an old Pali font ("Manopubbaïgamà"). The script
-      converts those letters (à→ā, ï→ṅ, ñ→ṭ, ü→ṃ, ã→ī) and reports it. Please check the spelling.
-    - Verse 1 had its Pali in plain paragraphs, not columns; it is also turned into a verse block.
-      Footnote numbers inside the verse were removed.
-    - Images with poor titles (screenshots, UUIDs) get `TODO:` alt text or the article title.
-    - Article excerpts are the first real paragraph (WordPress excerpts were empty).
-17. **Search** uses GROQ `match` with word prefixes ("medit" finds "meditation"). 9 articles per page.
-18. **Studio "Vision" tab** is kept for the developer to test GROQ. Admins can ignore it.
-19. **Instagram photos come from Behold, not Instagram's API directly.** Both need a Business or
+16. **Search** uses GROQ `match` with word prefixes ("medit" finds "meditation"). 9 articles per page.
+17. **Studio "Vision" tab** is kept for the developer to test GROQ. Admins can ignore it.
+18. **Instagram photos come from Behold, not Instagram's API directly.** Both need a Business or
     Creator account, but Behold needs no Meta developer app and renews Instagram's 60-day access
     key by itself. The free plan gives 6 posts. The feed link lives in the Studio, so it can be
     changed without a deploy; the website only accepts `https://feeds.behold.so/…` links.
-20. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
+19. **Deploys use GitHub Actions, not Workers Builds.** Workers Builds only shows its logs in the
     Cloudflare dashboard. GitHub Actions shows them on the PR, runs the code checks on every PR,
     and is free (2,000 minutes a month for private repos; a run takes about 2).
-21. **Translations are per field, not per document.** Each text field holds English and
+20. **Translations are per field, not per document.** Each text field holds English and
     Indonesian side by side, so photos, dates, contacts and slugs are entered once, and a missing
     translation falls back to English field by field. The other common way (a separate copy of each
     document per language) suits sites with many languages but doubles the work for volunteers.
-22. **English keeps the old addresses; Indonesian is under `/id/`.** Old links and Google results
+21. **English keeps the old addresses; Indonesian is under `/id/`.** Old links and Google results
     keep working. Pages list each other with `hreflang` tags and in the sitemap. Slugs are shared,
     so `/dhammapada/<slug>/` becomes `/id/dhammapada/<slug>/`.
-23. **No automatic language choice from the browser.** Pages are cached at Cloudflare's edge per
+22. **No automatic language choice from the browser.** Pages are cached at Cloudflare's edge per
     address; choosing by browser language would need a redirect on every visit and break that.
     Visitors pick with the switch, and links keep their choice.
-24. **Photo alt text is one language** (written in English). Two alt boxes on every photo would be a
+23. **Photo alt text is one language** (written in English). Two alt boxes on every photo would be a
     lot of extra work for little gain. Rich text images inside the Indonesian article text have
     their own alt text.
 
 ## Known issues to review
 
-From the migration report (see `pnpm migrate --dry-run`):
+Content to check in the Studio:
 
+- A photo titled "Ven Pak Auk Sayadaw" from the old site is attached to Pa-Auk Sayadaw.
+  Remove it if wrong.
+- "Dhammapada Verse 2" was copied from a PDF in an old Pali font. Please check the spelling.
 - "Dhammapada Verse 3" ends mid-story. A TODO note was added at the end of the article.
 - "Dhammapada Verse 2": the verse line "manoseṭṭā" is missing an "h" in the source.
 - The "About us" WordPress template contains another organisation's text and was ignored.

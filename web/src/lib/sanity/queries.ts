@@ -31,7 +31,7 @@ export const SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id == "
 
 export const HOME_QUERY = defineQuery(`{
   "home": *[_type == "homepage" && _id == "homepage"][0]{
-    hero{ image, paliVerse, meaning, tagline, button{ label, href } },
+    hero{ image, heading, paliVerse, meaning, tagline, button{ label, href } },
     intro{ heading, text, images, buttons[]{ label, href } },
     teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },
     programsIntro,

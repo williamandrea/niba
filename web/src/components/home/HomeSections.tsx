@@ -21,6 +21,7 @@ type LinkData = { label: string; href: string } | null | undefined
 export function Hero({
   siteName,
   image,
+  heading,
   paliVerse,
   meaning,
   tagline,
@@ -28,6 +29,7 @@ export function Hero({
 }: {
   siteName: string
   image: SanityImageSource | null | undefined
+  heading: string | null | undefined
   paliVerse: string | null | undefined
   meaning: string | null | undefined
   tagline: string | null | undefined
@@ -35,7 +37,11 @@ export function Hero({
 }) {
   const verse = clean(paliVerse)
   return (
-    <section aria-labelledby="hero-title" className="grid lg:min-h-[34rem] lg:grid-cols-2">
+    // Fills the screen below the sticky header (4rem, 5rem on desktop, plus its 1px border).
+    <section
+      aria-labelledby="hero-title"
+      className="grid min-h-[calc(100svh-4rem-1px)] grid-rows-[auto_1fr] lg:min-h-[calc(100svh-5rem-1px)] lg:grid-cols-2 lg:grid-rows-1"
+    >
       <div className="relative bg-brown-900">
         {image?.asset ? (
           <SanityImage
@@ -52,15 +58,17 @@ export function Hero({
         <LotusMandala className="pointer-events-none absolute -bottom-24 -right-24 -z-10 h-96 w-96 text-gold-300 opacity-[0.16]" />
         <div className="max-w-xl">
           <h1 id="hero-title" className="font-sans text-base font-semibold uppercase tracking-widest text-white">
-            {siteName}
+            {clean(heading) || siteName}
           </h1>
           {verse && (
-            <p lang="pi" className="mt-5 whitespace-pre-line font-serif text-h1 leading-tight text-white">
+            <p lang="pi" className="mt-5 whitespace-pre-line font-hero text-h2 font-bold leading-snug text-white">
               {verse}
             </p>
           )}
           {clean(meaning) && (
-            <p className="mt-5 font-serif text-verse italic leading-relaxed text-white">{clean(meaning)}</p>
+            <p className="mt-5 whitespace-pre-line font-serif text-base italic leading-relaxed text-white">
+              {clean(meaning)}
+            </p>
           )}
           {clean(tagline) && (
             <p className="mt-6 flex items-center gap-3 text-lg font-semibold text-white">
@@ -177,7 +185,7 @@ export function FeaturedVerse({
   if (!featured?.verse) return null
   const { verse } = featured
   return (
-    <section aria-labelledby="verse-title" className="relative isolate overflow-hidden bg-cream-50 py-section">
+    <section aria-labelledby="verse-title" className="relative isolate overflow-hidden bg-cream-100 py-section">
       <LotusMandala className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[38rem] w-[38rem] -translate-x-1/2 -translate-y-1/2 text-saffron-500 opacity-[0.07]" />
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <p className="text-base font-semibold uppercase tracking-widest text-brown-700">{t.fromDhammapada}</p>
@@ -356,7 +364,7 @@ export function LatestArticles({ articles }: { articles: ArticleCardData[] }) {
   const t = useT()
   if (!articles.length) return null
   return (
-    <Section tone="warm" labelledBy="articles-title">
+    <Section labelledBy="articles-title">
       <SectionHeading
         id="articles-title"
         eyebrow={t.blogEyebrow}

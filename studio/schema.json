@@ -2010,6 +2010,14 @@
               },
               "optional": false
             },
+            "heading": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "localeString"
+              },
+              "optional": true
+            },
             "paliVerse": {
               "type": "objectAttribute",
               "value": {

@@ -52,8 +52,8 @@ const components: PortableTextComponents = {
       <figure className="my-8 text-center">
         <SanityImage
           image={value}
-          sizes="(min-width: 768px) 42rem, 100vw"
-          className="mx-auto max-w-full rounded-card"
+          sizes="(min-width: 1152px) 72rem, 100vw"
+          className="mx-auto w-full rounded-card shadow-md"
         />
         {clean(value.caption) && <figcaption className="mt-2 text-base text-ink/75">{clean(value.caption)}</figcaption>}
       </figure>

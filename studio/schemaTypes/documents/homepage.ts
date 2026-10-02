@@ -23,6 +23,11 @@ export const homepage = defineType({
       description: 'The first thing visitors see: a photo next to a saffron panel with a Pali verse.',
       fields: [
         imageField({ name: 'image', title: 'Photo', required: true }),
+        localeField({
+          name: 'heading',
+          title: 'Small heading above the verse',
+          description: 'e.g. "Lord Buddha\'s Last Words". Leave empty to show the site name.',
+        }),
         defineField({
           name: 'paliVerse',
           title: 'Pali verse',

@@ -31,6 +31,7 @@ function HomePage() {
       <Hero
         siteName={siteName}
         image={home?.hero?.image}
+        heading={home?.hero?.heading}
         paliVerse={home?.hero?.paliVerse}
         meaning={home?.hero?.meaning}
         tagline={home?.hero?.tagline}

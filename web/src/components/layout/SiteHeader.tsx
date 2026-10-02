@@ -210,7 +210,9 @@ function MobileDrawer({
     if (!open) return
     const previous = document.activeElement as HTMLElement | null
     document.documentElement.style.overflow = 'hidden'
-    closeRef.current?.focus()
+    // preventScroll: the panel is still off-screen here, and focusing it would
+    // scroll the wrapper sideways and fight the slide-in transition.
+    closeRef.current?.focus({ preventScroll: true })
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -231,14 +233,15 @@ function MobileDrawer({
     return () => {
       document.documentElement.style.overflow = ''
       document.removeEventListener('keydown', onKey)
-      previous?.focus()
+      previous?.focus({ preventScroll: true })
     }
   }, [open, onClose])
 
   return (
     // The fixed, clipped wrapper keeps the closed drawer from widening the page.
+    // overflow-clip (not hidden) so the browser can never scroll it sideways.
     <div
-      className={`fixed inset-0 z-50 overflow-hidden lg:hidden ${open ? '' : 'pointer-events-none'}`}
+      className={`fixed inset-0 z-50 overflow-clip lg:hidden ${open ? '' : 'pointer-events-none'}`}
       aria-hidden={!open}
     >
       <div

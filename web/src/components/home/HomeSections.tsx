@@ -311,13 +311,17 @@ export function VenerablesSection({
       <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label={t.residingVenerables}>
         {venerables.map((v) => (
           <li key={v._id}>
-            <article className="h-full overflow-hidden rounded-card border border-gold-400/30 bg-white/70 text-center shadow-sm">
-              <TeacherPhoto
-                photo={v.photo}
-                name={v.fullName}
-                sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 100vw"
-              />
-              <div className="p-4">
+            <article className="flex h-full flex-row overflow-hidden rounded-card border border-gold-400/30 bg-white/70 shadow-sm sm:flex-col sm:text-center">
+              {/* Phones: small photo beside the name, like the teacher cards. */}
+              <div className="w-28 shrink-0 sm:w-full">
+                <TeacherPhoto
+                  photo={v.photo}
+                  name={v.fullName}
+                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 7rem"
+                  className="h-full sm:h-auto"
+                />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col justify-center p-4 sm:justify-start">
                 <p className="text-base font-semibold uppercase tracking-wider text-brown-700">{t.venerable}</p>
                 <h3 className="mt-1 text-lg leading-snug">{v.fullName}</h3>
               </div>

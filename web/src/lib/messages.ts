@@ -207,7 +207,6 @@ const en = {
   instagramVideo: 'Instagram video',
 
   // Built-in menu, used until the Studio menu is filled in
-  menuHome: 'Home',
   menuAbout: 'About',
   menuAboutUs: 'About Us',
   menuTeachers: 'Our Teachers',
@@ -421,7 +420,6 @@ const id: Messages = {
   instagramPost: 'Unggahan Instagram',
   instagramVideo: 'Video Instagram',
 
-  menuHome: 'Beranda',
   menuAbout: 'Tentang',
   menuAboutUs: 'Tentang Kami',
   menuTeachers: 'Guru Kami',

@@ -10,7 +10,6 @@ export const TIME_ZONE = 'Asia/Jakarta'
 
 export function defaultMenu(t: Messages): MenuItem[] {
   return [
-    { label: t.menuHome, href: '/' },
     {
       label: t.menuAbout,
       href: '/about/',

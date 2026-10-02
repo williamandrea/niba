@@ -261,7 +261,28 @@ export function EventsSection({ events, hasPastEvents }: { events: EventCardData
   )
 }
 
-/* 7. Residing venerables: only those staying with us today. Same grid as Our teachers. */
+/* 7. Our teachers */
+export function TeachersSection({ teachers }: { teachers: TeacherCardData[] }) {
+  const t = useT()
+  if (!teachers.length) return null
+  return (
+    <Section tone="warm" labelledBy="teachers-title">
+      <SectionHeading id="teachers-title" eyebrow={t.guidance} title={t.teachersTitle} align="center" />
+      <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {teachers.map((teacher) => (
+          <TeacherCard key={teacher._id} teacher={teacher} />
+        ))}
+      </div>
+      <div className="mt-10 text-center">
+        <ButtonLink href="/teachers/" variant="outline">
+          {t.readTeachers}
+        </ButtonLink>
+      </div>
+    </Section>
+  )
+}
+
+/* 8. Residing venerables: only those staying with us today. Same grid as Our teachers. */
 export function VenerablesSection({
   venerables,
   intro,
@@ -275,7 +296,7 @@ export function VenerablesSection({
   const first = venerables[0]
   const period = first?.residencyStart ? formatDateRange(first.residencyStart, first.residencyEnd, lang) : ''
   return (
-    <Section tone="warm" labelledBy="venerables-title">
+    <Section labelledBy="venerables-title">
       <SectionHeading
         id="venerables-title"
         eyebrow={period ? `${t.residingWithUs} · ${period}` : t.residingWithUs}
@@ -304,27 +325,6 @@ export function VenerablesSection({
           </li>
         ))}
       </ul>
-    </Section>
-  )
-}
-
-/* 8. Our teachers */
-export function TeachersSection({ teachers }: { teachers: TeacherCardData[] }) {
-  const t = useT()
-  if (!teachers.length) return null
-  return (
-    <Section labelledBy="teachers-title">
-      <SectionHeading id="teachers-title" eyebrow={t.guidance} title={t.teachersTitle} align="center" />
-      <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {teachers.map((teacher) => (
-          <TeacherCard key={teacher._id} teacher={teacher} />
-        ))}
-      </div>
-      <div className="mt-10 text-center">
-        <ButtonLink href="/teachers/" variant="outline">
-          {t.readTeachers}
-        </ButtonLink>
-      </div>
     </Section>
   )
 }

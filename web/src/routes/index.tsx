@@ -46,8 +46,8 @@ function HomePage() {
       <FeaturedVerse featured={data.featured} />
       <ProgramsSection programs={data.programs} intro={home?.programsIntro} />
       <EventsSection events={data.events} hasPastEvents={data.hasPastEvents} />
-      <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
       <TeachersSection teachers={data.teachers} />
+      <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
       <LatestArticles articles={data.articles} />
       <InstagramSection feed={data.instagram} heading={home?.instagram?.heading} />
     </>

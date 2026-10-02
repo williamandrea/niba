@@ -66,10 +66,12 @@ export function ProgramCard({
   program,
   headingLevel = 3,
   showPhoto = false,
+  outlineButton = false,
 }: {
   program: ProgramCardData
   headingLevel?: 2 | 3
   showPhoto?: boolean
+  outlineButton?: boolean
 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3'
   const photo = program.images?.[0]
@@ -105,7 +107,7 @@ export function ProgramCard({
           <AudienceBadge audience={program.audience} />
         </div>
         {program.button && (
-          <ButtonLink href={program.button.href} className="self-start">
+          <ButtonLink href={program.button.href} variant={outlineButton ? 'outline' : 'primary'} className="self-start">
             {program.button.label}
           </ButtonLink>
         )}

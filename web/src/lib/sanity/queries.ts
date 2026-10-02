@@ -60,7 +60,7 @@ export const HOME_QUERY = defineQuery(`{
       && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){
     _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd
   },
-  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc)[0...3]{
+  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){
     _id, fullName, shortName, "slug": slug.current, photo, bio
   },
   "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{

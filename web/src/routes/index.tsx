@@ -43,13 +43,13 @@ function HomePage() {
         buttons={home?.intro?.buttons}
       />
       <TeacherQuote quote={home?.teacherQuote?.quote} teacher={home?.teacherQuote?.teacher} />
-      <FeaturedVerse featured={data.featured} />
-      <ProgramsSection programs={data.programs} intro={home?.programsIntro} />
       <EventsSection events={data.events} hasPastEvents={data.hasPastEvents} />
       <TeachersSection teachers={data.teachers} />
       <VenerablesSection venerables={data.venerables} intro={home?.venerablesIntro} />
+      <ProgramsSection programs={data.programs} intro={home?.programsIntro} />
       <LatestArticles articles={data.articles} />
       <InstagramSection feed={data.instagram} heading={home?.instagram?.heading} />
+      <FeaturedVerse featured={data.featured} />
     </>
   )
 }

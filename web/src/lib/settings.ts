@@ -11,12 +11,15 @@ export function resolveSettings(settings: Settings | null | undefined, lang: Lan
   const t = messages(lang)
   const s: Partial<Settings> = settings ?? {}
   const siteName = s.siteName || SITE_NAME
+  // The logo already links home, so a Home item saved in the Studio menu is dropped.
   const menu: MenuItem[] = s.menu?.length
-    ? s.menu.map((item) => ({
-        label: item.label,
-        href: item.href,
-        children: item.children?.map((c) => ({ label: c.label, href: c.href })),
-      }))
+    ? s.menu
+        .filter((item) => item.href !== '/')
+        .map((item) => ({
+          label: item.label,
+          href: item.href,
+          children: item.children?.map((c) => ({ label: c.label, href: c.href })),
+        }))
     : defaultMenu(t)
   const f = s.footer
   const footer: FooterData = {

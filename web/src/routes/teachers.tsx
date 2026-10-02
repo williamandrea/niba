@@ -30,10 +30,15 @@ function TeachersPage() {
     <>
       <PageHeader eyebrow={t.about} title={page?.title || t.ourTeachers} intro={page?.intro || t.teachersIntro} />
       <section aria-label={t.teachers} className="py-section">
-        <div className="mx-auto grid max-w-5xl gap-6 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3">
-          {teachers.map((t) => (
-            <TeacherCard key={t._id} teacher={t} showBio headingLevel={2} />
-          ))}
+        <div className="mx-auto max-w-site px-4 sm:px-6">
+          {/* Flex wrap, not grid, so a short last row (e.g. 3 + 2) sits centered. */}
+          <div className="flex flex-wrap justify-center gap-6">
+            {teachers.map((t) => (
+              <div key={t._id} className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
+                <TeacherCard teacher={t} showBio headingLevel={2} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <PageSections sections={page?.body} />

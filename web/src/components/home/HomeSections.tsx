@@ -40,10 +40,9 @@ export function Hero({
         {image?.asset ? (
           <SanityImage
             image={image}
-            aspect={4 / 3}
             sizes="(min-width: 1024px) 50vw, 100vw"
             priority
-            className="h-full w-full object-cover lg:absolute lg:inset-0 lg:aspect-auto!"
+            className="aspect-[4/3] h-full w-full object-cover object-top lg:absolute lg:inset-0 lg:aspect-auto"
           />
         ) : (
           <div className="aspect-[4/3] lg:absolute lg:inset-0 lg:aspect-auto" />
@@ -94,6 +93,7 @@ export function Intro({
 }) {
   const t = useT()
   if (!heading && !text) return null
+  const [main, ...others] = buttons ?? []
   return (
     <Section labelledBy="intro-title">
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -104,13 +104,14 @@ export function Intro({
           <p className="mb-2 text-base font-semibold uppercase tracking-widest text-brown-700">{t.introEyebrow}</p>
           <h2 id="intro-title">{clean(heading)}</h2>
           {clean(text) && <p className="mt-4 whitespace-pre-line">{clean(text)}</p>}
-          {buttons?.length ? (
+          {main ? (
             <div className="mt-8 flex flex-wrap gap-3">
-              {buttons.map((b, i) => (
-                <ButtonLink key={b.href + b.label} href={b.href} variant={i === 0 ? 'primary' : 'outline'}>
+              {others.map((b) => (
+                <ButtonLink key={b.href + b.label} href={b.href} variant="outline">
                   {b.label}
                 </ButtonLink>
               ))}
+              <ButtonLink href={main.href}>{main.label} →</ButtonLink>
             </div>
           ) : null}
         </div>
@@ -220,14 +221,16 @@ export function ProgramsSection({
         title={t.programsTitle}
         intro={clean(intro)}
         action={
-          <ButtonLink href="/programs/" variant="outline">
-            {t.allPrograms}
-          </ButtonLink>
+          <div className="w-full">
+            <ButtonLink href="/programs/" variant="outline">
+              {t.allPrograms}
+            </ButtonLink>
+          </div>
         }
       />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {programs.map((p) => (
-          <ProgramCard key={p._id} program={p} />
+          <ProgramCard key={p._id} program={p} outlineButton />
         ))}
       </div>
     </Section>
@@ -267,16 +270,25 @@ export function TeachersSection({ teachers }: { teachers: TeacherCardData[] }) {
   if (!teachers.length) return null
   return (
     <Section tone="warm" labelledBy="teachers-title">
-      <SectionHeading id="teachers-title" eyebrow={t.guidance} title={t.teachersTitle} align="center" />
-      <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <SectionHeading
+        id="teachers-title"
+        eyebrow={t.guidance}
+        title={t.teachersTitle}
+        action={
+          <div className="w-full">
+            <ButtonLink href="/teachers/" variant="outline">
+              {t.readTeachers}
+            </ButtonLink>
+          </div>
+        }
+      />
+      {/* Flex wrap, not grid, so a short last row (e.g. 3 + 2) sits centered. */}
+      <div className="flex flex-wrap justify-center gap-6 text-center">
         {teachers.map((teacher) => (
-          <TeacherCard key={teacher._id} teacher={teacher} />
+          <div key={teacher._id} className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
+            <TeacherCard teacher={teacher} />
+          </div>
         ))}
-      </div>
-      <div className="mt-10 text-center">
-        <ButtonLink href="/teachers/" variant="outline">
-          {t.readTeachers}
-        </ButtonLink>
       </div>
     </Section>
   )
@@ -303,21 +315,27 @@ export function VenerablesSection({
         title={t.residingVenerables}
         intro={clean(intro)}
         action={
-          <ButtonLink href="/residing-venerables/" variant="outline">
-            {t.moreResidency}
-          </ButtonLink>
+          <div className="w-full">
+            <ButtonLink href="/residing-venerables/" variant="outline">
+              {t.moreResidency}
+            </ButtonLink>
+          </div>
         }
       />
-      <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label={t.residingVenerables}>
+      {/* Tablet: flex wrap, three per row, so a short last row (e.g. 3 + 2) sits centered. */}
+      <ul
+        className="flex flex-wrap justify-center gap-6 lg:grid lg:auto-cols-fr lg:grid-flow-col"
+        aria-label={t.residingVenerables}
+      >
         {venerables.map((v) => (
-          <li key={v._id}>
-            <article className="flex h-full flex-row overflow-hidden rounded-card border border-gold-400/30 bg-white/70 shadow-sm sm:flex-col sm:text-center">
+          <li key={v._id} className="w-full sm:max-lg:w-[calc((100%-3rem)/3)]">
+            <article className="flex h-full flex-row overflow-hidden rounded-card border border-gold-400/30 bg-white/70 text-center shadow-sm sm:flex-col">
               {/* Phones: small photo beside the name, like the teacher cards. */}
               <div className="w-28 shrink-0 sm:w-full">
                 <TeacherPhoto
                   photo={v.photo}
                   name={v.fullName}
-                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 7rem"
+                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 30vw, 7rem"
                   className="h-full sm:h-auto"
                 />
               </div>
@@ -344,9 +362,11 @@ export function LatestArticles({ articles }: { articles: ArticleCardData[] }) {
         eyebrow={t.blogEyebrow}
         title={t.blogTitle}
         action={
-          <ButtonLink href="/blog/" variant="outline">
-            {t.allArticles}
-          </ButtonLink>
+          <div className="w-full">
+            <ButtonLink href="/blog/" variant="outline">
+              {t.allArticles}
+            </ButtonLink>
+          </div>
         }
       />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

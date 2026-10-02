@@ -36,7 +36,9 @@ export function TeacherCard({
           className="h-full sm:h-auto"
         />
       </div>
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 p-4 sm:justify-start sm:p-6 sm:text-center">
+      <div
+        className={`flex min-w-0 flex-1 flex-col justify-center gap-2 p-4 sm:p-6 sm:text-center ${showBio ? 'sm:justify-start' : ''}`}
+      >
         <Heading className="text-lg leading-snug sm:text-xl">{teacher.fullName}</Heading>
         {teacher.shortName && <p className="text-ink/75">{teacher.shortName}</p>}
         {showBio && bio && <p className="mt-2 whitespace-pre-line text-left">{bio}</p>}

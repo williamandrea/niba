@@ -63,7 +63,7 @@ function PostPage() {
       <article>
         <header className="relative isolate overflow-hidden bg-cream-100">
           <LotusMandala className="pointer-events-none absolute -right-20 -top-16 -z-10 h-80 w-80 text-saffron-500 opacity-[0.08]" />
-          <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+          <div className="mx-auto max-w-site px-4 py-12 sm:px-6 sm:py-16">
             <nav aria-label={t.breadcrumb} className="mb-4 text-base">
               <ol className="flex flex-wrap items-center gap-2 text-ink/80">
                 <li>
@@ -94,16 +94,16 @@ function PostPage() {
           </div>
         </header>
         {post.coverImage?.asset && (
-          <div className="mx-auto max-w-4xl px-4 pt-10 sm:px-6">
+          <div className="mx-auto max-w-site px-4 pt-10 sm:px-6">
             <SanityImage
               image={post.coverImage}
-              sizes="(min-width: 896px) 56rem, 100vw"
+              sizes="(min-width: 1152px) 72rem, 100vw"
               priority
               className="w-full rounded-card shadow-md"
             />
           </div>
         )}
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+        <div className="mx-auto max-w-site px-4 py-12 sm:px-6">
           <RichText value={post.body} className="prose-nu max-w-none" />
         </div>
       </article>

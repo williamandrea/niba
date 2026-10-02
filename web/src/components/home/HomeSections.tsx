@@ -66,7 +66,7 @@ export function Hero({
             </p>
           )}
           {clean(meaning) && (
-            <p className="mt-5 whitespace-pre-line font-serif text-base italic leading-relaxed text-white">
+            <p className="mt-5 font-serif text-base italic leading-relaxed text-white">
               {clean(meaning)}
             </p>
           )}

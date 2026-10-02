@@ -17,7 +17,7 @@ import type { InstagramFeed } from '~/lib/instagram'
 
 type LinkData = { label: string; href: string } | null | undefined
 
-/* 1. Hero: photo on one side, saffron panel with a Pali verse on the other. */
+/* 1. Hero: photo on one side, dark brown panel with a Pali verse on the other. */
 export function Hero({
   siteName,
   image,
@@ -49,7 +49,7 @@ export function Hero({
           <div className="aspect-[4/3] lg:absolute lg:inset-0 lg:aspect-auto" />
         )}
       </div>
-      <div className="relative isolate flex items-center overflow-hidden bg-saffron-600 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
+      <div className="relative isolate flex items-center overflow-hidden bg-brown-900 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
         <LotusMandala className="pointer-events-none absolute -bottom-24 -right-24 -z-10 h-96 w-96 text-gold-300 opacity-[0.16]" />
         <div className="max-w-xl">
           <h1 id="hero-title" className="font-sans text-base font-semibold uppercase tracking-widest text-white">

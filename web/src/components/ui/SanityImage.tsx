@@ -25,7 +25,11 @@ export function SanityImage({ image, sizes, aspect, widths = DEFAULT_WIDTHS, pri
 
   const build = (w: number) => {
     let b = urlFor(image).width(w)
-    if (aspect) b = b.height(Math.round(w / aspect)).fit('crop')
+    if (aspect) {
+      b = b.height(Math.round(w / aspect)).fit('crop')
+      // Keep the top of the image unless an editor picked a focus point in the Studio.
+      if (!image.hotspot) b = b.crop('top')
+    }
     return b.url()
   }
 
@@ -49,7 +53,7 @@ export function SanityImage({ image, sizes, aspect, widths = DEFAULT_WIDTHS, pri
       decoding={priority ? 'sync' : 'async'}
       fetchPriority={priority ? 'high' : undefined}
       className={className}
-      style={aspect ? { aspectRatio: String(aspect) } : undefined}
+      style={{ objectPosition: 'top', ...(aspect ? { aspectRatio: String(aspect) } : {}) }}
     />
   )
 }

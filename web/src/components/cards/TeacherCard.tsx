@@ -15,9 +15,11 @@ export function TeacherCard({
   teacher,
   showBio = false,
   headingLevel = 3,
+  eyebrow,
 }: {
   teacher: TeacherCardData
   showBio?: boolean
+  eyebrow?: string
   headingLevel?: 2 | 3
 }) {
   const Heading = headingLevel === 2 ? 'h2' : 'h3'
@@ -39,6 +41,7 @@ export function TeacherCard({
       <div
         className={`flex min-w-0 flex-1 flex-col justify-center gap-2 p-4 sm:p-6 sm:text-center ${showBio ? 'sm:justify-start' : ''}`}
       >
+        {eyebrow && <p className="text-base font-semibold uppercase tracking-wider text-brown-700">{eyebrow}</p>}
         <Heading className="text-lg leading-snug sm:text-xl">{teacher.fullName}</Heading>
         {teacher.shortName && <p className="text-ink/75">{teacher.shortName}</p>}
         {showBio && bio && <p className="mt-2 whitespace-pre-line text-left">{bio}</p>}

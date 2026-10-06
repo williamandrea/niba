@@ -64,6 +64,7 @@ function Group({
   warm?: boolean
 }) {
   const lang = useLang()
+  const t = useT()
   const period = items[0]?.residencyStart ? formatDateRange(items[0].residencyStart, items[0].residencyEnd, lang) : ''
   return (
     <section aria-labelledby={`${id}-title`} className={`py-section ${warm ? 'bg-cream-100' : ''}`}>
@@ -75,7 +76,7 @@ function Group({
           <div className="mt-8 flex flex-wrap justify-center gap-6">
             {items.map((v) => (
               <div key={v._id} className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
-                <TeacherCard teacher={v} showBio />
+                <TeacherCard teacher={v} showBio eyebrow={t.venerable} />
               </div>
             ))}
           </div>

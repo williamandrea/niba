@@ -9,6 +9,7 @@ import { TagIcon } from '@sanity/icons/Tag'
 import { TranslateIcon } from '@sanity/icons/Translate'
 import { UserIcon } from '@sanity/icons/User'
 import { UsersIcon } from '@sanity/icons/Users'
+import { PlayIcon } from '@sanity/icons/Play'
 
 /**
  * Documents whose main text has no Indonesian yet. Settings and Homepage
@@ -21,6 +22,7 @@ const NEEDS_TRANSLATION = `
   || (_type == "page" && count(body[defined(content.en) && !defined(content.id)]) > 0)
   || (_type == "program" && (!defined(name.id) || !defined(shortDescription.id)))
   || (_type == "teacher" && defined(bio.en) && !defined(bio.id))
+  || (_type == "video" && !defined(title.id))
 `
 
 /** Today's date in Medan (WIB), e.g. 2026-10-01. */
@@ -129,6 +131,14 @@ export const structure: StructureResolver = (S) => {
                     .defaultOrdering([{ field: 'residencyStart', direction: 'desc' }]),
                 ),
             ]),
+        ),
+      S.listItem()
+        .title('Videos')
+        .icon(PlayIcon)
+        .child(
+          S.documentTypeList('video')
+            .title('Videos')
+            .defaultOrdering([{ field: 'order', direction: 'asc' }]),
         ),
       S.listItem().title('Contacts').icon(UserIcon).child(S.documentTypeList('contactPerson').title('Contacts')),
       S.listItem().title('Pages').icon(DocumentIcon).child(S.documentTypeList('page').title('Pages')),

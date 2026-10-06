@@ -13,6 +13,7 @@ import { post } from './documents/post'
 import { program } from './documents/program'
 import { siteSettings } from './documents/siteSettings'
 import { teacher } from './documents/teacher'
+import { video } from './documents/video'
 
 export const SINGLETONS = ['siteSettings', 'homepage']
 
@@ -26,6 +27,7 @@ export const schemaTypes = [
   program,
   teacher,
   contactPerson,
+  video,
   page,
   // Objects
   localeString,

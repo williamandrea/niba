@@ -18,6 +18,7 @@ const STATIC_PATHS = [
   '/blog/',
   '/books/',
   '/chanting/',
+  '/videos/',
   '/contact/',
 ]
 

@@ -197,6 +197,25 @@ export type Slug = {
   source?: string
 }
 
+export type PostReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'post'
+}
+
+export type Video = {
+  _id: string
+  _type: 'video'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: LocaleString
+  driveUrl: string
+  article?: PostReference
+  order?: number
+}
+
 export type ContactPerson = {
   _id: string
   _type: 'contactPerson'
@@ -571,6 +590,8 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | PostReference
+  | Video
   | ContactPerson
   | ContactPersonReference
   | Program
@@ -1196,6 +1217,41 @@ export type CHANTING_PAGE_QUERY_RESULT = {
 } | null
 
 // Source: ../web/src/lib/sanity/queries.ts
+// Variable: VIDEOS_QUERY
+// Query: {  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){    _id, title, driveUrl,    "article": article->{ "slug": slug.current, "category": category->slug.current }  },  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+export type VIDEOS_QUERY_RESULT = {
+  videos: Array<{
+    _id: string
+    title: LocaleString
+    driveUrl: string
+    article: {
+      slug: string
+      category: string
+    } | null
+  }>
+  page: {
+    title: LocaleString
+    intro: LocaleText | null
+    body: Array<{
+      _key: string
+      heading: LocaleString | null
+      content: LocaleBlockContent | null
+      images: Array<{
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        _type: 'photo'
+        _key: string
+      }> | null
+      background: 'light' | 'warm' | null
+    }> | null
+    seo: Seo | null
+  } | null
+}
+
+// Source: ../web/src/lib/sanity/queries.ts
 // Variable: NIBA_QUERY
 // Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
 export type NIBA_QUERY_RESULT = {
@@ -1278,6 +1334,7 @@ declare global {
     '{\n  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd\n  },\n  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VENERABLES_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background },\n  seo\n}': PAGE_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content },\n  seo,\n  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{\n    _id, title, "slug": slug.current, intro\n  }\n}': CHANTING_PAGE_QUERY_RESULT
+    '{\n  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){\n    _id, title, driveUrl,\n    "article": article->{ "slug": slug.current, "category": category->slug.current }\n  },\n  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VIDEOS_QUERY_RESULT
     '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && defined(category)]{\n    "slug": slug.current, "category": category->slug.current, _updatedAt\n  },\n  "events": *[_type == "event" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT
   }

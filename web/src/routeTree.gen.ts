@@ -19,6 +19,7 @@ import { Route as ResidingVenerablesRouteImport } from './routes/residing-venera
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as ChantingIndexRouteImport } from './routes/chanting/index'
@@ -79,6 +80,11 @@ const TeachersRoute = TeachersRouteImport.update({
   path: '/teachers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/$category/$slug',
   path: '/$category/$slug',
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
+  '/videos': typeof VideosRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -157,6 +164,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
+  '/videos': typeof VideosRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
+  '/videos': typeof VideosRoute
   '/$category/$slug': typeof CategorySlugRoute
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/teachers'
+    | '/videos'
     | '/$category/$slug'
     | '/chanting/$slug'
     | '/events/$slug'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/teachers'
+    | '/videos'
     | '/$category/$slug'
     | '/chanting/$slug'
     | '/events/$slug'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/teachers'
+    | '/videos'
     | '/$category/$slug'
     | '/chanting/$slug'
     | '/events/$slug'
@@ -266,6 +278,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeachersRoute: typeof TeachersRoute
+  VideosRoute: typeof VideosRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ChantingSlugRoute: typeof ChantingSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeachersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$category/$slug': {
       id: '/$category/$slug'
       path: '/$category/$slug'
@@ -426,6 +446,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeachersRoute: TeachersRoute,
+  VideosRoute: VideosRoute,
   CategorySlugRoute: CategorySlugRoute,
   ChantingSlugRoute: ChantingSlugRoute,
   EventsSlugRoute: EventsSlugRoute,

@@ -43,6 +43,7 @@ export function defaultMenu(t: Messages): MenuItem[] {
         { label: t.menuArticles, href: '/blog/' },
         { label: t.menuBooks, href: '/books/' },
         { label: t.menuChanting, href: '/chanting/' },
+        { label: t.menuVideos, href: '/videos/' },
       ],
     },
     { label: t.menuContact, href: '/contact/' },

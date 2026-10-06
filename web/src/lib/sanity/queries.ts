@@ -176,6 +176,14 @@ export const CHANTING_PAGE_QUERY =
   }
 }`)
 
+export const VIDEOS_QUERY = defineQuery(`{
+  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){
+    _id, title, driveUrl,
+    "article": article->{ "slug": slug.current, "category": category->slug.current }
+  },
+  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+}`)
+
 export const NIBA_QUERY = defineQuery(`{
   "page": *[_type == "page" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo

@@ -9,6 +9,7 @@ export const PAGE_SLUG_PATHS: Record<string, string> = {
   'niba-registration': '/niba/registration/',
   books: '/books/',
   chanting: '/chanting/',
+  videos: '/videos/',
   contact: '/contact/',
   teachers: '/teachers/',
   'residing-venerables': '/residing-venerables/',
@@ -62,6 +63,8 @@ export function pathFor(doc: Doc): string | null {
       return slug ? `/programs/#${slug}` : '/programs/'
     case 'teacher':
       return doc.role === 'resident' ? '/residing-venerables/' : slug ? `/teachers/#${slug}` : '/teachers/'
+    case 'video':
+      return '/videos/'
     case 'page':
       return slug ? pagePath(slug) : null
     default:

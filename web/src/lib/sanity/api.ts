@@ -14,6 +14,7 @@ import {
   SETTINGS_QUERY,
   TEACHERS_QUERY,
   VENERABLES_QUERY,
+  VIDEOS_QUERY,
 } from './queries'
 import { todayInMedan } from '../dates'
 import { parseLang, type Lang } from '../i18n'
@@ -126,6 +127,10 @@ export const getPrograms = createServerFn({ method: 'GET' })
 export const getTeachers = createServerFn({ method: 'GET' })
   .validator((data: LangInput) => withLang(data))
   .handler(({ data }) => fetchQuery(sanityClient.fetch(TEACHERS_QUERY), data.lang))
+
+export const getVideos = createServerFn({ method: 'GET' })
+  .validator((data: LangInput) => withLang(data))
+  .handler(({ data }) => fetchQuery(sanityClient.fetch(VIDEOS_QUERY), data.lang))
 
 export const getVenerables = createServerFn({ method: 'GET' })
   .validator((data: LangInput) => withLang(data))

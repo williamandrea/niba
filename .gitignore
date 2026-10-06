@@ -5,6 +5,7 @@ node_modules/
 dist/
 .wrangler/
 .sanity/
+.tanstack/
 .dev.vars*
 *.log
 .DS_Store

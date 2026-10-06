@@ -1,0 +1,40 @@
+{
+  "body[_key==\"dr072\"].content": [
+    "Kami mengikuti sistem meditasi yang diajarkan oleh Pa-Auk Sayadaw dari Myanmar, yang juga dipraktikkan di Nā Uyana Aranya, Sri Lanka.",
+    "Sistem ini terdiri dari dua bagian. Pertama, meditasi samatha (ketenangan) membangun konsentrasi yang kuat dan stabil. Kemudian konsentrasi itu digunakan untuk meditasi vipassanā (pandangan terang), untuk melihat sifat sejati jasmani dan batin: tidak kekal, penderitaan, dan tanpa diri.",
+    "Metode ini mengikuti ajaran Sang Buddha dalam teks-teks Pali dan Visuddhimagga (Jalan Pemurnian)."
+  ],
+  "body[_key==\"dr072\"].heading": "Metode Pa-Auk",
+  "body[_key==\"dr097\"].content": [
+    "Sang Buddha mengajarkan 40 objek untuk membangun konsentrasi:",
+    "<b>10 perenungan (anussati):</b> Buddha, Dhamma, Sangha, sīla, kemurahan hati, para dewa, kedamaian (Nibbāna), kematian, tubuh, dan napas (ānāpānasati)",
+    "<b>4 kediaman luhur (brahmavihāra):</b> cinta kasih (mettā), belas kasih (karuṇā), turut berbahagia (muditā), dan keseimbangan batin (upekkhā)",
+    "<b>10 kasiṇa:</b> tanah, air, api, angin, biru, kuning, merah, putih, cahaya, dan ruang",
+    "<b>10 meditasi kejijikan (asubha):</b> tahap-tahap jasad yang membusuk",
+    "<b>4 alam tanpa materi (arūpa):</b> ruang tanpa batas, kesadaran tanpa batas, kekosongan, serta bukan persepsi dan bukan pula tanpa persepsi",
+    "<b>Kejijikan terhadap makanan</b> (āhāre paṭikūlasaññā)",
+    "<b>Empat unsur</b> (catudhātuvavatthāna): unsur tanah, air, api, dan angin di dalam tubuh",
+    {
+      "title": "Mulai dari mana",
+      "body": "Kebanyakan pemula memulai dengan perhatian pada napas (ānāpānasati) atau meditasi empat unsur. Guru dapat membantu Anda memilih."
+    }
+  ],
+  "body[_key==\"dr097\"].heading": "Samatha: 40 objek meditasi",
+  "body[_key==\"dr112\"].content": [
+    "Meditasi pandangan terang mengamati empat bidang dengan saksama:",
+    "<b>Tubuh</b> (kāyānupassanā)",
+    "<b>Perasaan</b> (vedanānupassanā): menyenangkan, menyakitkan, dan netral",
+    "<b>Pikiran</b> (cittānupassanā)",
+    "<b>Dhamma</b> (dhammānupassanā): fenomena batin dan jasmani"
+  ],
+  "body[_key==\"dr112\"].heading": "Vipassanā: empat landasan perhatian",
+  "body[_key==\"dr130\"].content": [
+    "<a:dr113>Knowing and Seeing</a> oleh Pa-Auk Sayadaw",
+    "<a:dr117>Mindfulness of Breathing</a> oleh Pa-Auk Sayadaw",
+    "Ikuti program <a:dr122>Meditasi dengan Metta</a> kami",
+    "Baca tentang setiap teknik di <a:dr127>nauyana.org</a>"
+  ],
+  "body[_key==\"dr130\"].heading": "Pelajari lebih lanjut",
+  "intro": "Gambaran umum meditasi yang kami praktikkan: metode Pa-Auk untuk samatha dan vipassanā.",
+  "title": "Meditasi"
+}

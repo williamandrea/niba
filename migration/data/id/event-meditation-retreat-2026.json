@@ -1,0 +1,8 @@
+{
+  "description": [
+    "Hari-hari latihan dalam keheningan: meditasi duduk dan jalan terbimbing, ceramah Dhamma, serta keheningan mulia. Pilih ikut retret penuh atau bergabung di sesi kedua yang lebih singkat."
+  ],
+  "sessions[_key==\"se053\"].label": "Sesi 1",
+  "sessions[_key==\"se054\"].label": "Sesi 2",
+  "title": "Retret Meditasi"
+}

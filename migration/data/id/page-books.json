@@ -1,0 +1,23 @@
+{
+  "body[_key==\"dr008\"].content": [
+    "Buku-buku ini dibagikan secara gratis dalam bentuk PDF oleh Nā Uyana Aranya, Sri Lanka. Ketuk judulnya untuk membaca atau mengunduh.",
+    "Lihat daftar lengkapnya, termasuk buku dalam bahasa Sinhala dan Mandarin, di <a:dr004>nauyana.org</a>."
+  ],
+  "body[_key==\"dr008\"].heading": "Buku Dhamma gratis",
+  "body[_key==\"dr031\"].content": [
+    "<a:dr009>Knowing and Seeing</a> (edisi revisi kelima)",
+    "<a:dr013>Mindfulness of Breathing (Ānāpānasati)</a> (edisi revisi kedua)",
+    "<a:dr017>The Workings of Kamma</a> (edisi revisi kedua)",
+    "<a:dr021>The Only Way for the Realization of Nibbāna</a>",
+    "<a:dr024>14 Ways of Complete Control of Mind</a>",
+    "<a:dr027>Nibbāna Gāminī Paṭipadā</a> (jilid 1 sampai 5)"
+  ],
+  "body[_key==\"dr031\"].heading": "Karya Pa-Auk Sayadaw",
+  "body[_key==\"dr040\"].content": [
+    "<a:dr032>Footprints on the Wonderful Path to Buddhahood</a> oleh Yang Mulia Nā Uyane Ariyadhamma Mahāthera",
+    "<a:dr036>25 Years of His Incomparable Dhamma Mission</a>, disusun oleh para bhikkhu murid beliau"
+  ],
+  "body[_key==\"dr040\"].heading": "Dari Nā Uyana Aranya",
+  "intro": "Buku-buku Dhamma untuk dibaca dan dibagikan.",
+  "title": "Buku"
+}

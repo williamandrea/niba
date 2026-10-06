@@ -87,7 +87,7 @@ function VideoDialog({ id, title, onClose }: { id: string; title: string; onClos
       className="m-auto w-[min(64rem,calc(100vw-2rem))] max-w-none overflow-visible bg-transparent p-0 backdrop:bg-black/80"
     >
       <div className="mb-2 flex items-center justify-between gap-4 text-white">
-        <h2 className="truncate font-serif text-lg font-bold">{title}</h2>
+        <h2 className="truncate font-serif text-lg font-bold text-white">{title}</h2>
         <button
           type="button"
           autoFocus

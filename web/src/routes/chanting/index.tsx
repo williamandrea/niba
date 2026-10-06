@@ -4,7 +4,7 @@ import { getPage } from '~/lib/sanity/api'
 import { langDeps, useT } from '~/lib/i18n'
 import { PageView } from '~/components/page/PageView'
 
-export const Route = createFileRoute('/chanting')({
+export const Route = createFileRoute('/chanting/')({
   loaderDeps: langDeps,
   loader: ({ deps: { lang } }) => getPage({ data: { slug: 'chanting', lang } }),
   head: ({ matches, loaderData: page }) => {

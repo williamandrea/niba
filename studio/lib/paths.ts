@@ -17,6 +17,14 @@ export const PAGE_SLUG_PATHS: Record<string, string> = {
   blog: '/blog/',
 }
 
+/** Pages whose slug starts with this live under /chanting/. */
+export const CHANTING_PREFIX = 'paritta-'
+
+/** Path on the site for a page slug. */
+export function pagePath(slug: string) {
+  return PAGE_SLUG_PATHS[slug] ?? (slug.startsWith(CHANTING_PREFIX) ? `/chanting/${slug}/` : `/${slug}/`)
+}
+
 /** First path segments the site already uses. Pages and categories cannot use them. */
 export const RESERVED_SLUGS = [
   ...Object.keys(PAGE_SLUG_PATHS),
@@ -55,7 +63,7 @@ export function pathFor(doc: Doc): string | null {
     case 'teacher':
       return doc.role === 'resident' ? '/residing-venerables/' : slug ? `/teachers/#${slug}` : '/teachers/'
     case 'page':
-      return slug ? (PAGE_SLUG_PATHS[slug] ?? `/${slug}/`) : null
+      return slug ? pagePath(slug) : null
     default:
       return null
   }

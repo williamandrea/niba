@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SlugRouteImport } from './routes/$slug'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BooksRouteImport } from './routes/books'
-import { Route as ChantingRouteImport } from './routes/chanting'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ResidingVenerablesRouteImport } from './routes/residing-venerables'
@@ -22,6 +21,8 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TeachersRouteImport } from './routes/teachers'
 import { Route as CategorySlugRouteImport } from './routes/$category/$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as ChantingIndexRouteImport } from './routes/chanting/index'
+import { Route as ChantingSlugRouteImport } from './routes/chanting/$slug'
 import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as EventsSlugRouteImport } from './routes/events/$slug'
 import { Route as EventsPastRouteImport } from './routes/events/past'
@@ -46,11 +47,6 @@ const AboutRoute = AboutRouteImport.update({
 const BooksRoute = BooksRouteImport.update({
   id: '/books',
   path: '/books',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChantingRoute = ChantingRouteImport.update({
-  id: '/chanting',
-  path: '/chanting',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -93,6 +89,16 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChantingIndexRoute = ChantingIndexRouteImport.update({
+  id: '/chanting/',
+  path: '/chanting/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChantingSlugRoute = ChantingSlugRouteImport.update({
+  id: '/chanting/$slug',
+  path: '/chanting/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EventsIndexRoute = EventsIndexRouteImport.update({
   id: '/events/',
   path: '/events/',
@@ -124,7 +130,6 @@ export interface FileRoutesByFullPath {
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRoute
-  '/chanting': typeof ChantingRoute
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
@@ -132,10 +137,12 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
+  '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
   '/niba/registration': typeof NibaRegistrationRoute
   '/blog/': typeof BlogIndexRoute
+  '/chanting/': typeof ChantingIndexRoute
   '/events/': typeof EventsIndexRoute
   '/niba/': typeof NibaIndexRoute
 }
@@ -144,7 +151,6 @@ export interface FileRoutesByTo {
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRoute
-  '/chanting': typeof ChantingRoute
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
@@ -152,10 +158,12 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
+  '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
   '/niba/registration': typeof NibaRegistrationRoute
   '/blog': typeof BlogIndexRoute
+  '/chanting': typeof ChantingIndexRoute
   '/events': typeof EventsIndexRoute
   '/niba': typeof NibaIndexRoute
 }
@@ -165,7 +173,6 @@ export interface FileRoutesById {
   '/$slug': typeof SlugRoute
   '/about': typeof AboutRoute
   '/books': typeof BooksRoute
-  '/chanting': typeof ChantingRoute
   '/contact': typeof ContactRoute
   '/programs': typeof ProgramsRoute
   '/residing-venerables': typeof ResidingVenerablesRoute
@@ -173,10 +180,12 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teachers': typeof TeachersRoute
   '/$category/$slug': typeof CategorySlugRoute
+  '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
   '/niba/registration': typeof NibaRegistrationRoute
   '/blog/': typeof BlogIndexRoute
+  '/chanting/': typeof ChantingIndexRoute
   '/events/': typeof EventsIndexRoute
   '/niba/': typeof NibaIndexRoute
 }
@@ -187,7 +196,6 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/about'
     | '/books'
-    | '/chanting'
     | '/contact'
     | '/programs'
     | '/residing-venerables'
@@ -195,10 +203,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
+    | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
     | '/niba/registration'
     | '/blog/'
+    | '/chanting/'
     | '/events/'
     | '/niba/'
   fileRoutesByTo: FileRoutesByTo
@@ -207,7 +217,6 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/about'
     | '/books'
-    | '/chanting'
     | '/contact'
     | '/programs'
     | '/residing-venerables'
@@ -215,10 +224,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
+    | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
     | '/niba/registration'
     | '/blog'
+    | '/chanting'
     | '/events'
     | '/niba'
   id:
@@ -227,7 +238,6 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/about'
     | '/books'
-    | '/chanting'
     | '/contact'
     | '/programs'
     | '/residing-venerables'
@@ -235,10 +245,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/teachers'
     | '/$category/$slug'
+    | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
     | '/niba/registration'
     | '/blog/'
+    | '/chanting/'
     | '/events/'
     | '/niba/'
   fileRoutesById: FileRoutesById
@@ -248,7 +260,6 @@ export interface RootRouteChildren {
   SlugRoute: typeof SlugRoute
   AboutRoute: typeof AboutRoute
   BooksRoute: typeof BooksRoute
-  ChantingRoute: typeof ChantingRoute
   ContactRoute: typeof ContactRoute
   ProgramsRoute: typeof ProgramsRoute
   ResidingVenerablesRoute: typeof ResidingVenerablesRoute
@@ -256,10 +267,12 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TeachersRoute: typeof TeachersRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  ChantingSlugRoute: typeof ChantingSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
   EventsPastRoute: typeof EventsPastRoute
   NibaRegistrationRoute: typeof NibaRegistrationRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  ChantingIndexRoute: typeof ChantingIndexRoute
   EventsIndexRoute: typeof EventsIndexRoute
   NibaIndexRoute: typeof NibaIndexRoute
 }
@@ -292,13 +305,6 @@ declare module '@tanstack/react-router' {
       path: '/books'
       fullPath: '/books'
       preLoaderRoute: typeof BooksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chanting': {
-      id: '/chanting'
-      path: '/chanting'
-      fullPath: '/chanting'
-      preLoaderRoute: typeof ChantingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -357,6 +363,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chanting/': {
+      id: '/chanting/'
+      path: '/chanting'
+      fullPath: '/chanting/'
+      preLoaderRoute: typeof ChantingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chanting/$slug': {
+      id: '/chanting/$slug'
+      path: '/chanting/$slug'
+      fullPath: '/chanting/$slug'
+      preLoaderRoute: typeof ChantingSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/events/': {
       id: '/events/'
       path: '/events'
@@ -400,7 +420,6 @@ const rootRouteChildren: RootRouteChildren = {
   SlugRoute: SlugRoute,
   AboutRoute: AboutRoute,
   BooksRoute: BooksRoute,
-  ChantingRoute: ChantingRoute,
   ContactRoute: ContactRoute,
   ProgramsRoute: ProgramsRoute,
   ResidingVenerablesRoute: ResidingVenerablesRoute,
@@ -408,10 +427,12 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TeachersRoute: TeachersRoute,
   CategorySlugRoute: CategorySlugRoute,
+  ChantingSlugRoute: ChantingSlugRoute,
   EventsSlugRoute: EventsSlugRoute,
   EventsPastRoute: EventsPastRoute,
   NibaRegistrationRoute: NibaRegistrationRoute,
   BlogIndexRoute: BlogIndexRoute,
+  ChantingIndexRoute: ChantingIndexRoute,
   EventsIndexRoute: EventsIndexRoute,
   NibaIndexRoute: NibaIndexRoute,
 }

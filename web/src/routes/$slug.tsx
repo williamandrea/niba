@@ -2,17 +2,17 @@ import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
 import { buildHead, breadcrumbs, headContext } from '~/lib/seo'
 import { getPage } from '~/lib/sanity/api'
 import { langDeps } from '~/lib/i18n'
-import { PAGE_SLUG_PATHS } from '~/lib/paths'
+import { pagePath } from '~/lib/paths'
 import { PageView } from '~/components/page/PageView'
 
 /** Any other Sanity `page`, at /<slug>/. */
 export const Route = createFileRoute('/$slug')({
   loaderDeps: langDeps,
   loader: async ({ params, deps: { lang } }) => {
-    const special = PAGE_SLUG_PATHS[params.slug]
-    if (special && special !== `/${params.slug}/`)
+    const path = pagePath(params.slug)
+    if (path !== `/${params.slug}/`)
       // CMS paths are plain strings, so they can't be checked against the route tree.
-      throw redirect({ to: special as '/', statusCode: 301 })
+      throw redirect({ to: path as '/', statusCode: 301 })
     const page = await getPage({ data: { slug: params.slug, lang } })
     if (!page) throw notFound()
     return page

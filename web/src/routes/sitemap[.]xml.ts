@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { sanityClient } from '~/lib/sanity/client'
 import { SITEMAP_QUERY } from '~/lib/sanity/queries'
-import { PAGE_SLUG_PATHS } from '~/lib/paths'
+import { pagePath } from '~/lib/paths'
 import { absoluteUrl } from '~/lib/seo'
 import { LANGS, LANG_TAGS } from '~/lib/i18n'
 
@@ -32,7 +32,7 @@ export const Route = createFileRoute('/sitemap.xml')({
         for (const post of data.posts)
           if (post.category) entries.set(`/${post.category}/${post.slug}/`, post._updatedAt)
         for (const event of data.events) entries.set(`/events/${event.slug}/`, event._updatedAt)
-        for (const page of data.pages) entries.set(PAGE_SLUG_PATHS[page.slug] ?? `/${page.slug}/`, page._updatedAt)
+        for (const page of data.pages) entries.set(pagePath(page.slug), page._updatedAt)
 
         // Every page in both languages, each listing its translations.
         const urls = [...entries]

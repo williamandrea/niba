@@ -162,6 +162,20 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   seo
 }`)
 
+export const CHANTING_PAGE_QUERY =
+  defineQuery(`*[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{
+  _id,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  intro,
+  body[]{ _key, heading, content },
+  seo,
+  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{
+    _id, title, "slug": slug.current, intro
+  }
+}`)
+
 export const NIBA_QUERY = defineQuery(`{
   "page": *[_type == "page" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo

@@ -2,6 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { notFound } from '@tanstack/react-router'
 import { sanityClient } from './client'
 import {
+  CHANTING_PAGE_QUERY,
   EVENT_QUERY,
   EVENTS_QUERY,
   HOME_QUERY,
@@ -16,6 +17,7 @@ import {
 } from './queries'
 import { todayInMedan } from '../dates'
 import { parseLang, type Lang } from '../i18n'
+import { CHANTING_PREFIX } from '../paths'
 import { localize, type Localized } from './localize'
 import { fetchInstagramFeed } from '../instagram'
 
@@ -136,6 +138,14 @@ export const getVenerables = createServerFn({ method: 'GET' })
 export const getPage = createServerFn({ method: 'GET' })
   .validator((data: { slug: string } & LangInput) => withLang(data))
   .handler(({ data: { lang, slug } }) => fetchQuery(sanityClient.fetch(PAGE_QUERY, { slug }), lang))
+
+export const getChantingPage = createServerFn({ method: 'GET' })
+  .validator((data: { slug: string } & LangInput) => withLang(data))
+  .handler(async ({ data: { lang, slug } }) => {
+    const page = await fetchQuery(sanityClient.fetch(CHANTING_PAGE_QUERY, { slug, prefix: CHANTING_PREFIX }), lang)
+    if (!page) throw notFound()
+    return page
+  })
 
 export const getNiba = createServerFn({ method: 'GET' })
   .validator((data: { slug: string } & LangInput) => withLang(data))

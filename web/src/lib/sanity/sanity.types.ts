@@ -1173,6 +1173,29 @@ export type PAGE_QUERY_RESULT = {
 } | null
 
 // Source: ../web/src/lib/sanity/queries.ts
+// Variable: CHANTING_PAGE_QUERY
+// Query: *[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{  _id,  _updatedAt,  title,  "slug": slug.current,  intro,  body[]{ _key, heading, content },  seo,  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{    _id, title, "slug": slug.current, intro  }}
+export type CHANTING_PAGE_QUERY_RESULT = {
+  _id: string
+  _updatedAt: string
+  title: LocaleString
+  slug: string
+  intro: LocaleText | null
+  body: Array<{
+    _key: string
+    heading: LocaleString | null
+    content: LocaleBlockContent | null
+  }> | null
+  seo: Seo | null
+  related: Array<{
+    _id: string
+    title: LocaleString
+    slug: string
+    intro: LocaleText | null
+  }>
+} | null
+
+// Source: ../web/src/lib/sanity/queries.ts
 // Variable: NIBA_QUERY
 // Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
 export type NIBA_QUERY_RESULT = {
@@ -1254,6 +1277,7 @@ declare global {
     '{\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': TEACHERS_QUERY_RESULT
     '{\n  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd\n  },\n  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VENERABLES_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background },\n  seo\n}': PAGE_QUERY_RESULT
+    '*[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content },\n  seo,\n  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{\n    _id, title, "slug": slug.current, intro\n  }\n}': CHANTING_PAGE_QUERY_RESULT
     '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && defined(category)]{\n    "slug": slug.current, "category": category->slug.current, _updatedAt\n  },\n  "events": *[_type == "event" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT
   }

@@ -1,7 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { DocumentIcon } from '@sanity/icons/Document'
 import { localeField, seoField, slugField } from '../../lib/fields'
-import { RESERVED_SLUGS, PAGE_SLUG_PATHS } from '../../lib/paths'
+import { CHANTING_PREFIX, RESERVED_SLUGS, PAGE_SLUG_PATHS, pagePath } from '../../lib/paths'
 
 export const page = defineType({
   name: 'page',
@@ -19,7 +19,7 @@ export const page = defineType({
         'title.en',
         `The page address. These slugs fill special pages: ${Object.entries(PAGE_SLUG_PATHS)
           .map(([slug, path]) => `"${slug}" → ${path}`)
-          .join(', ')}.`,
+          .join(', ')}. Slugs starting with "${CHANTING_PREFIX}" live under /chanting/.`,
       ),
       group: 'content',
       validation: (rule) =>
@@ -52,7 +52,7 @@ export const page = defineType({
     select: { title: 'title.en', slug: 'slug.current', media: 'body.0.images.0' },
     prepare: ({ title, slug, media }) => ({
       title,
-      subtitle: slug ? (PAGE_SLUG_PATHS[slug] ?? `/${slug}/`) : '',
+      subtitle: slug ? pagePath(slug) : '',
       media,
     }),
   },

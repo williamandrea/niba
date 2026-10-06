@@ -13,7 +13,7 @@ export type ArticleCardData = {
   category: { title: string; slug: string } | null
   coverImage: SanityImageSource | null
   excerpt: string | null
-  publishedAt: string
+  publishedAt?: string | null
 }
 
 export function ArticleCard({ article, headingLevel = 3 }: { article: ArticleCardData; headingLevel?: 2 | 3 }) {
@@ -39,8 +39,8 @@ export function ArticleCard({ article, headingLevel = 3 }: { article: ArticleCar
       <div className="flex flex-1 flex-col gap-2 p-6">
         <p className="text-base text-ink/75">
           {article.category && <span className="font-semibold text-brown-700">{article.category.title}</span>}
-          {article.category && ' · '}
-          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, lang)}</time>
+          {article.category && article.publishedAt && ' · '}
+          {article.publishedAt && <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, lang)}</time>}
         </p>
         <Heading className="text-h3">
           <Link

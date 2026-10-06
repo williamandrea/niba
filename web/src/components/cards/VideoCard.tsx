@@ -95,7 +95,14 @@ function VideoDialog({ id, title, onClose }: { id: string; title: string; onClos
           className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full hover:bg-white/15"
         >
           <span className="sr-only">{t.closeVideo}</span>
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
             <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
           </svg>
         </button>

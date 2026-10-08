@@ -25,15 +25,36 @@ export const Route = createFileRoute('/blog/')({
     lang: parseLang(search.lang),
   }),
   loader: ({ deps }) => getPostList({ data: deps }),
-  head: ({ matches, loaderData }) => {
+  head: ({ matches, match, loaderData }) => {
     const { settings, lang, t } = headContext(matches)
+    const category = loaderData?.categories.find((c) => c.slug === match.search.category)
+    const currentPage = loaderData?.currentPage ?? 1
+    // Each category and page is its own address for search engines, so articles
+    // on later pages get found. Same parameter order as the links on the page.
+    const params = new URLSearchParams()
+    if (category) params.set('category', category.slug)
+    if (currentPage > 1) params.set('page', String(currentPage))
+    const path = params.size ? `/blog/?${params}` : '/blog/'
+    const title = loaderData?.page?.title || t.articles
     return buildHead({
-      title: loaderData?.page?.title || t.articles,
+      title: [category?.title, title, currentPage > 1 && t.pageNumber(currentPage)].filter(Boolean).join(' – '),
       description: loaderData?.page?.intro || t.blogDescription,
-      seo: loaderData?.page?.seo,
-      path: '/blog/',
+      seo: category || currentPage > 1 ? { ...loaderData?.page?.seo, title: null } : loaderData?.page?.seo,
+      path,
       settings,
-      jsonLd: [breadcrumbs([[t.articles, '/blog/']], lang)],
+      jsonLd: [
+        breadcrumbs(
+          category
+            ? [
+                [t.articles, '/blog/'],
+                [category.title, `/blog/?category=${category.slug}`],
+              ]
+            : [[t.articles, '/blog/']],
+          lang,
+        ),
+      ],
+      // Search results and unknown categories are not pages to show in Google.
+      noindex: Boolean(match.search.q) || Boolean(match.search.category && !category) || loaderData?.total === 0,
     })
   },
   component: BlogPage,

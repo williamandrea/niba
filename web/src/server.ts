@@ -1,5 +1,9 @@
 import handler, { createServerEntry } from '@tanstack/react-start/server-entry'
 import { legacyRedirect } from './lib/legacy-redirects'
+import { env } from './env'
+
+/** The live site's host. Other hosts (workers.dev, PR previews) stay out of search engines. */
+const SITE_HOST = new URL(env.SITE_URL).host
 
 /**
  * Pages are cached at Cloudflare's edge (Workers Caching, see wrangler.jsonc):
@@ -56,6 +60,10 @@ export default createServerEntry({
     }
 
     const response = await handler.fetch(request)
-    return isRead ? withCaching(response) : response
+    const res = isRead ? withCaching(response) : response
+    if (url.host === SITE_HOST) return res
+    const hidden = new Response(res.body, res)
+    hidden.headers.set('X-Robots-Tag', 'noindex')
+    return hidden
   },
 })

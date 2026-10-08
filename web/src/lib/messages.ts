@@ -132,6 +132,7 @@ const en = {
   articleCount: (count: number, category?: string, query?: string) =>
     `${count} article${count === 1 ? '' : 's'}${category ? ` in ${category}` : ''}${query ? ` matching “${query}”` : ''}`,
   pages: 'Pages',
+  pageNumber: (page: number) => `Page ${page}`,
   newer: '← Newer',
   older: 'Older →',
   breadcrumb: 'Breadcrumb',
@@ -232,7 +233,7 @@ const en = {
   linkAboutUs: 'About us',
   linkTeachers: 'Our teachers',
   siteDescription:
-    'Na Uyana Aranya Indonesia is a Theravada Buddhist community in Medan. Join our Sunday Dhamma school for children (NIBA), weekly Dhamma and meditation programs, and retreats.',
+    'A Theravada Buddhist community in Medan. Sunday Dhamma school for children (NIBA), weekly Dhamma and meditation programs, and retreats.',
 }
 
 export type Messages = typeof en
@@ -357,6 +358,7 @@ const id: Messages = {
   articleCount: (count, category, query) =>
     `${count} artikel${category ? ` dalam ${category}` : ''}${query ? ` untuk “${query}”` : ''}`,
   pages: 'Halaman',
+  pageNumber: (page) => `Halaman ${page}`,
   newer: '← Lebih baru',
   older: 'Lebih lama →',
   breadcrumb: 'Navigasi',
@@ -452,7 +454,7 @@ const id: Messages = {
   linkAboutUs: 'Tentang kami',
   linkTeachers: 'Guru kami',
   siteDescription:
-    'Na Uyana Aranya Indonesia adalah komunitas Buddhis Theravada di Medan. Bergabunglah di sekolah Minggu Dhamma untuk anak-anak (NIBA), program Dhamma dan meditasi mingguan, serta retret.',
+    'Komunitas Buddhis Theravada di Medan. Sekolah Minggu Dhamma untuk anak-anak (NIBA), program Dhamma dan meditasi mingguan, serta retret.',
 }
 
 const MESSAGES: Record<Lang, Messages> = { en, id }

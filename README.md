@@ -106,6 +106,9 @@ Manual deploy from your machine: `pnpm --filter web run deploy` (after `npx wran
 3. Redirect `www` to the bare domain: Rules → **Redirect Rules** → "Redirect from WWW to root" template.
 4. Remove the old WordPress DNS records for the root only after the Worker domain works.
 
+Pages served from any other address (`*.workers.dev`, PR previews) send `X-Robots-Tag: noindex`,
+so only the `SITE_URL` address shows up in Google.
+
 ### Caching
 
 Every page is server-rendered and sent with:
@@ -238,7 +241,7 @@ limit is reached, the section hides by itself and the rest of the page still wor
 | Path                                                | Content                                           |
 | --------------------------------------------------- | ------------------------------------------------- |
 | `/`                                                 | Homepage                                          |
-| `/blog/`                                            | Articles, with search, category filter, pages     |
+| `/blog/`                                            | Articles, with search, category filter, pages (1) |
 | `/<category>/<slug>/` (e.g. `/dhammapada/<slug>/`)  | Article                                           |
 | `/about/`, `/books/`, `/chanting/`, `/contact/`     | Pages (Sanity `page` with that slug)              |
 | `/niba/`, `/niba/registration/`                     | Page + NIBA class times + WhatsApp buttons        |
@@ -247,6 +250,9 @@ limit is reached, the section hides by itself and the rest of the page still wor
 | `/<slug>/`                                          | Any other Sanity page                             |
 | `/id/…` (e.g. `/id/`, `/id/programs/`)              | The same pages in Indonesian                      |
 | `/sitemap.xml`, `/robots.txt`                       | Generated (sitemap lists both languages)          |
+
+(1) Each category and page (`/blog/?category=dhammapada&page=2`) is its own page for Google, with
+its own title and canonical address. Search results (`?q=`) are `noindex`.
 
 Old WordPress links (`/?p=85`, `/?page_id=161`, `/?s=…`, `/feed/`, `/category/…`, `/page/2/`)
 redirect permanently to the closest page (`web/src/lib/legacy-redirects.ts`). URLs without a

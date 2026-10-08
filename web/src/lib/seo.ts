@@ -5,6 +5,7 @@ import { hasImage, urlFor, type SanityImageSource } from './sanity/image'
 import { clean } from './text'
 import { DEFAULT_LANG, LANGS, LANG_TAGS, localizePath, type Lang } from './i18n'
 import { messages } from './messages'
+import { SITE_NAME, SITE_SHORT_NAME } from './site'
 
 type MetaTag = JSX.IntrinsicElements['meta']
 
@@ -28,6 +29,9 @@ type HeadInput = {
   settings?: ResolvedSettings
   jsonLd?: object[]
   noindex?: boolean
+  /** For articles: ISO dates for article:published_time and article:modified_time. */
+  published?: string | null
+  modified?: string | null
 }
 
 /** Full URL for a site path, in the given language. */
@@ -53,9 +57,11 @@ export function buildHead({
   settings,
   jsonLd = [],
   noindex,
+  published,
+  modified,
 }: HeadInput) {
   const lang = settings?.lang ?? DEFAULT_LANG
-  const siteName = settings?.siteName ?? 'Na Uyana Aranya Indonesia'
+  const siteName = settings?.siteName ?? SITE_NAME
   const defaults = settings?.seo
   const pageTitle = clean(seo?.title) || title
   const fullTitle = pageTitle ? `${pageTitle} | ${siteName}` : clean(defaults?.title) || siteName
@@ -86,6 +92,8 @@ export function buildHead({
           { name: 'twitter:image', content: img },
         ]
       : []),
+    ...(published ? [{ property: 'article:published_time', content: published }] : []),
+    ...(modified ? [{ property: 'article:modified_time', content: modified }] : []),
     ...(noindex ? [{ name: 'robots', content: 'noindex' }] : []),
     // Rendered by HeadContent as <script type="application/ld+json"> in <head>.
     // The router supports this key at runtime, but its types don't list it.
@@ -147,7 +155,23 @@ export function organizationJsonLd(settings: ResolvedSettings) {
           },
         }
       : {}),
+    ...(f.mapsUrl ? { hasMap: f.mapsUrl } : {}),
     ...(sameAs.length ? { sameAs } : {}),
+  }
+}
+
+/** schema.org WebSite for the homepage, so Google shows the site's name in results. */
+export function websiteJsonLd(settings: ResolvedSettings | undefined) {
+  const lang = settings?.lang ?? DEFAULT_LANG
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${absoluteUrl('/')}#website`,
+    name: settings?.siteName ?? SITE_NAME,
+    alternateName: SITE_SHORT_NAME,
+    url: absoluteUrl('/', lang),
+    inLanguage: LANG_TAGS[lang].html,
+    publisher: { '@id': `${absoluteUrl('/')}#organization` },
   }
 }
 

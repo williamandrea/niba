@@ -23,6 +23,8 @@ export const Route = createFileRoute('/$category/$slug')({
       image: post.coverImage,
       path,
       type: 'article',
+      published: post.publishedAt,
+      modified: post._updatedAt,
       settings,
       jsonLd: [
         {

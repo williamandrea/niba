@@ -1,5 +1,5 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
-import { buildHead, rootSettings } from '~/lib/seo'
+import { buildHead, rootSettings, websiteJsonLd } from '~/lib/seo'
 import { langDeps } from '~/lib/i18n'
 import { getHome } from '~/lib/sanity/api'
 import {
@@ -18,7 +18,10 @@ import {
 export const Route = createFileRoute('/')({
   loaderDeps: langDeps,
   loader: ({ deps: { lang } }) => getHome({ data: { lang } }),
-  head: ({ matches }) => buildHead({ path: '/', settings: rootSettings(matches) }),
+  head: ({ matches }) => {
+    const settings = rootSettings(matches)
+    return buildHead({ path: '/', settings, jsonLd: [websiteJsonLd(settings)] })
+  },
   component: HomePage,
 })
 

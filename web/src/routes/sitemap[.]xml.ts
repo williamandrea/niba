@@ -30,8 +30,14 @@ export const Route = createFileRoute('/sitemap.xml')({
       GET: async () => {
         const data = await sanityClient.fetch(SITEMAP_QUERY)
         const entries = new Map<string, string | undefined>(STATIC_PATHS.map((p) => [p, undefined]))
-        for (const post of data.posts)
-          if (post.category) entries.set(`/${post.category}/${post.slug}/`, post._updatedAt)
+        for (const post of data.posts) {
+          if (!post.category) continue
+          entries.set(`/${post.category}/${post.slug}/`, post._updatedAt)
+          // Each category's list (same address as its canonical), dated by its newest article.
+          const categoryPath = `/blog/?category=${post.category}`
+          const latest = entries.get(categoryPath)
+          if (!latest || post._updatedAt > latest) entries.set(categoryPath, post._updatedAt)
+        }
         for (const event of data.events) entries.set(`/events/${event.slug}/`, event._updatedAt)
         for (const page of data.pages) entries.set(pagePath(page.slug), page._updatedAt)
 

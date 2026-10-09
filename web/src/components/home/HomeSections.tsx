@@ -57,9 +57,16 @@ export function Hero({
       <div className="relative isolate flex items-center overflow-hidden bg-brown-900 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
         <LotusMandala className="pointer-events-none absolute -bottom-24 -right-24 -z-10 h-96 w-96 text-gold-300 opacity-[0.16]" />
         <div className="max-w-xl">
-          <h1 id="hero-title" className="font-sans text-sm font-semibold uppercase tracking-widest text-gold-400">
-            {clean(heading) || siteName}
+          {/* The site name is the page's H1 for search engines; the visible eyebrow stays the editor's heading. */}
+          <h1 id="hero-title" className="sr-only">
+            {siteName}
           </h1>
+          <p
+            aria-hidden={!clean(heading)}
+            className="font-sans text-sm font-semibold uppercase tracking-widest text-gold-400"
+          >
+            {clean(heading) || siteName}
+          </p>
           {verse && (
             <p lang="pi" className="mt-5 whitespace-pre-line font-hero text-h2 font-bold leading-snug text-white">
               {verse}

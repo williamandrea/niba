@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useLoaderData } from '@tanstack/react-router'
-import { absoluteUrl, buildHead, breadcrumbs, headContext, ogImageUrl } from '~/lib/seo'
+import { absoluteUrl, buildHead, breadcrumbs, headContext, ogImageUrl, postalAddress } from '~/lib/seo'
 import { LANG_TAGS, langDeps, useLang, useT } from '~/lib/i18n'
 import { blocksToText } from '~/lib/portable-text'
 import { getEvent } from '~/lib/sanity/api'
@@ -44,9 +44,14 @@ export const Route = createFileRoute('/events/$slug')({
           location: {
             '@type': 'Place',
             name: settings?.siteName,
-            address: clean(settings?.footer.address).replace(/\n/g, ', ') || 'Medan, Indonesia',
+            address: postalAddress(settings?.footer.address) ?? 'Medan, Indonesia',
           },
-          organizer: { '@type': 'Organization', name: settings?.siteName, url: absoluteUrl('/') },
+          organizer: {
+            '@type': 'Organization',
+            '@id': `${absoluteUrl('/')}#organization`,
+            name: settings?.siteName,
+            url: absoluteUrl('/'),
+          },
           ...(clean(event.guide) ? { performer: { '@type': 'Person', name: clean(event.guide) } } : {}),
           isAccessibleForFree: true,
         },

@@ -130,10 +130,24 @@ export function breadcrumbs(items: [string, string][], lang: Lang = DEFAULT_LANG
   }
 }
 
+/** The footer address as a schema.org PostalAddress. */
+export function postalAddress(address: string | null | undefined) {
+  if (!address) return undefined
+  return {
+    '@type': 'PostalAddress',
+    streetAddress: clean(address).split('\n').slice(0, 2).join(', '),
+    addressLocality: 'Medan',
+    addressRegion: 'North Sumatra',
+    postalCode: /\b\d{5}\b/.exec(address)?.[0],
+    addressCountry: 'ID',
+  }
+}
+
 export function organizationJsonLd(settings: ResolvedSettings) {
   const f = settings.footer
   const logo = hasImage(settings.logo) ? urlFor(settings.logo).width(512).url() : undefined
   const sameAs = f.socialLinks.map((s) => s.url).filter(Boolean)
+  const address = postalAddress(f.address)
   return {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'BuddhistTemple'],
@@ -143,18 +157,7 @@ export function organizationJsonLd(settings: ResolvedSettings) {
     ...(logo ? { logo, image: logo } : {}),
     ...(f.email ? { email: f.email } : {}),
     ...(f.whatsapp ? { telephone: f.whatsapp } : {}),
-    ...(f.address
-      ? {
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: clean(f.address).split('\n').slice(0, 2).join(', '),
-            addressLocality: 'Medan',
-            addressRegion: 'North Sumatra',
-            postalCode: /\b\d{5}\b/.exec(f.address)?.[0],
-            addressCountry: 'ID',
-          },
-        }
-      : {}),
+    ...(address ? { address } : {}),
     ...(f.mapsUrl ? { hasMap: f.mapsUrl } : {}),
     ...(sameAs.length ? { sameAs } : {}),
   }

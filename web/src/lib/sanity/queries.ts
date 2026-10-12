@@ -190,7 +190,7 @@ export const NIBA_QUERY = defineQuery(`{
   },
   "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,
-    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }
+    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }
   }
 }`)
 

@@ -265,6 +265,7 @@ export type Program = {
     } & ContactPersonReference
   >
   button?: Link
+  registrationForm?: Link
   order?: number
 }
 
@@ -1253,7 +1254,7 @@ export type VIDEOS_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: NIBA_QUERY
-// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
+// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
 export type NIBA_QUERY_RESULT = {
   page: {
     _id: string
@@ -1291,6 +1292,10 @@ export type NIBA_QUERY_RESULT = {
     scheduleNote: LocaleString | null
     audience: 'limited' | 'public' | 'registration'
     button: {
+      label: LocaleString
+      href: string
+    } | null
+    registrationForm: {
       label: LocaleString
       href: string
     } | null
@@ -1335,7 +1340,7 @@ declare global {
     '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background },\n  seo\n}': PAGE_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content },\n  seo,\n  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{\n    _id, title, "slug": slug.current, intro\n  }\n}': CHANTING_PAGE_QUERY_RESULT
     '{\n  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){\n    _id, title, driveUrl,\n    "article": article->{ "slug": slug.current, "category": category->slug.current }\n  },\n  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VIDEOS_QUERY_RESULT
-    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
+    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && defined(category)]{\n    "slug": slug.current, "category": category->slug.current, _updatedAt\n  },\n  "events": *[_type == "event" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT
   }
 }

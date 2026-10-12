@@ -66,6 +66,13 @@ export const program = defineType({
       description: 'Optional, e.g. "Register" → /niba/registration/',
     }),
     defineField({
+      name: 'registrationForm',
+      title: 'Registration form',
+      type: 'link',
+      description:
+        'Optional. A sign-up form, e.g. a Google Form. For NIBA it is the main button on the NIBA pages, with WhatsApp for questions.',
+    }),
+    defineField({
       name: 'order',
       title: 'Order',
       type: 'number',

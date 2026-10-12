@@ -79,6 +79,9 @@ const en = {
   registerWhatsApp: 'Register through WhatsApp',
   registerHelp: (program?: string) =>
     `Send us a message and we will help you get started${program ? ` with ${program}` : ''}.`,
+  registerOnline: 'Register online',
+  registerFormHelp: 'Fill in the short form. It is free and takes a few minutes.',
+  questionsWhatsApp: 'Questions? Chat with us on WhatsApp.',
   nibaMessage: 'Hello, I would like to register my child for NIBA.',
   messageTo: (name: string) => `Message ${name}`,
 
@@ -306,6 +309,9 @@ const id: Messages = {
   registerWhatsApp: 'Daftar lewat WhatsApp',
   registerHelp: (program) =>
     `Kirim pesan kepada kami dan kami akan membantu Anda memulai${program ? ` di ${program}` : ''}.`,
+  registerOnline: 'Daftar online',
+  registerFormHelp: 'Isi formulir singkat. Gratis dan hanya butuh beberapa menit.',
+  questionsWhatsApp: 'Ada pertanyaan? Hubungi kami lewat WhatsApp.',
   nibaMessage: 'Halo, saya ingin mendaftarkan anak saya ke NIBA.',
   messageTo: (name) => `Kirim pesan ke ${name}`,
 

@@ -1503,6 +1503,14 @@
         },
         "optional": true
       },
+      "registrationForm": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "link"
+        },
+        "optional": true
+      },
       "order": {
         "type": "objectAttribute",
         "value": {

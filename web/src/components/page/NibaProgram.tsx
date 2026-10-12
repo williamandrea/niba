@@ -3,6 +3,7 @@ import { clean } from '~/lib/text'
 import { useT } from '~/lib/i18n'
 import { AudienceBadge, ScheduleList } from '~/components/cards/ProgramCard'
 import { WhatsAppButtons } from '~/components/ui/WhatsApp'
+import { ButtonLink } from '~/components/ui/Button'
 
 type Program = NonNullable<Awaited<ReturnType<typeof getNiba>>['program']>
 type Contact = { name: string | null; whatsapp: string | null }
@@ -19,6 +20,7 @@ export function NibaProgram({
 }) {
   const t = useT()
   const contacts = program?.contacts?.length ? program.contacts : fallbackContacts
+  const form = program?.registrationForm?.href ? program.registrationForm : null
   return (
     <section aria-labelledby="niba-times" className="bg-cream-100 py-section">
       <div className="mx-auto grid max-w-site gap-8 px-4 sm:px-6 md:grid-cols-2">
@@ -34,11 +36,27 @@ export function NibaProgram({
           )}
         </div>
         <div className="rounded-card border border-gold-400/30 bg-white/70 p-6 shadow-sm">
-          <h2 className="text-h3">{t.registerWhatsApp}</h2>
-          <p className="mt-2">{t.registerHelp(program ? clean(program.name) : undefined)}</p>
-          <div className="mt-4">
-            <WhatsAppButtons contacts={contacts} message={t.nibaMessage} label={t.messageTo} />
-          </div>
+          {form ? (
+            <>
+              <h2 className="text-h3">{t.registerOnline}</h2>
+              <p className="mt-2">{t.registerFormHelp}</p>
+              <ButtonLink href={form.href} className="mt-4">
+                {form.label}
+              </ButtonLink>
+              <p className="mt-6">{t.questionsWhatsApp}</p>
+              <div className="mt-3">
+                <WhatsAppButtons contacts={contacts} message={t.nibaMessage} label={t.messageTo} tone="soft" />
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="text-h3">{t.registerWhatsApp}</h2>
+              <p className="mt-2">{t.registerHelp(program ? clean(program.name) : undefined)}</p>
+              <div className="mt-4">
+                <WhatsAppButtons contacts={contacts} message={t.nibaMessage} label={t.messageTo} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>

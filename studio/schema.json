@@ -58,6 +58,13 @@
           },
           "optional": true
         },
+        "accordion": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
         "images": {
           "type": "objectAttribute",
           "value": {

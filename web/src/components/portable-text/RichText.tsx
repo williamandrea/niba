@@ -82,3 +82,45 @@ export function RichText({
     </div>
   )
 }
+
+/**
+ * FAQ: each small heading (h3) becomes a question that opens to show the text
+ * under it. Text before the first question shows as usual.
+ */
+export function FaqAccordion({ value }: { value: BlockContent | null | undefined }) {
+  const intro: BlockContent = []
+  const items: { key: string; question: string; answer: BlockContent }[] = []
+  for (const block of cleanBlocks(value)) {
+    if (block._type === 'block' && block.style === 'h3') {
+      const question = (block.children ?? []).map((c) => ('text' in c ? (c.text ?? '') : '')).join('')
+      items.push({ key: block._key, question, answer: [] })
+    } else {
+      ;(items.at(-1)?.answer ?? intro).push(block)
+    }
+  }
+  return (
+    <div className="max-w-[42rem]">
+      <RichText value={intro} />
+      {items.length > 0 && (
+        <div className={`divide-y divide-gold-400/40 border-y border-gold-400/40 ${intro.length ? 'mt-6' : ''}`}>
+          {items.map((item) => (
+            <details key={item.key} className="group">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
+                <h3>{item.question}</h3>
+                <svg
+                  viewBox="0 0 20 20"
+                  className="h-5 w-5 shrink-0 text-brown-700 transition-transform group-open:rotate-180"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z" />
+                </svg>
+              </summary>
+              <RichText value={item.answer} className="prose-nu pb-5" />
+            </details>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

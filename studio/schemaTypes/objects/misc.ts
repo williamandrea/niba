@@ -120,6 +120,14 @@ export const pageSection = defineType({
     localeField({ name: 'heading', title: 'Heading', description: 'Optional.' }),
     localeField({ name: 'content', title: 'Text', type: 'blockContent' }),
     defineField({
+      name: 'accordion',
+      title: 'Show as questions you can open',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'For FAQs. Each "Small heading" in the text becomes a question. The text under it shows when the question is tapped.',
+    }),
+    defineField({
       name: 'images',
       title: 'Photos',
       type: 'array',

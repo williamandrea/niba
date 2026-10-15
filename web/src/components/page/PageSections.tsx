@@ -4,7 +4,7 @@ import { clean } from '~/lib/text'
 import { useT } from '~/lib/i18n'
 import { PhotoCollage } from '~/components/ui/PhotoCollage'
 import { SanityImage } from '~/components/ui/SanityImage'
-import { RichText, cleanBlocks } from '~/components/portable-text/RichText'
+import { FaqAccordion, RichText, cleanBlocks } from '~/components/portable-text/RichText'
 
 export type PageSectionData = {
   _key: string
@@ -13,6 +13,7 @@ export type PageSectionData = {
   images?: SanityImageSource[] | null
   background?: string | null
   photoLayout?: string | null
+  accordion?: boolean | null
 }
 
 /** Sanity page sections: text with an optional photo collage, alternating sides. */
@@ -51,7 +52,7 @@ export function PageSections({ sections }: { sections: PageSectionData[] | null 
                     {clean(section.heading)}
                   </h2>
                 )}
-                <RichText value={section.content} />
+                {section.accordion ? <FaqAccordion value={section.content} /> : <RichText value={section.content} />}
               </div>
             </div>
           </section>

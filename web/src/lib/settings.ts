@@ -33,7 +33,7 @@ export function resolveSettings(settings: Settings | null | undefined, lang: Lan
     contacts: f?.contacts ?? [],
     usefulLinks: f?.usefulLinks?.length ? f.usefulLinks : defaultUsefulLinks(t),
     nibaBlurb: f?.nibaBlurb,
-    nibaLink: f?.nibaButton ?? { label: t.registerForNiba, href: '/niba/registration/' },
+    nibaLink: f?.nibaButton ?? { label: t.registerForNiba, href: '/niba/#register' },
     socialLinks: f?.socialLinks ?? [],
   }
   return { lang, siteName, logo: s.logo ?? null, menu, footer, seo: s.seo ?? null }

@@ -6,7 +6,7 @@ export function validHref(value: string | undefined) {
   if (!value) return true
   if (/^\/[^\s]*$/.test(value)) return true
   if (/^(https?:\/\/|mailto:|tel:)[^\s]+$/.test(value)) return true
-  return 'Use a site path that starts with "/" (like /niba/registration/) or a full link that starts with https://'
+  return 'Use a site path that starts with "/" (like /niba/) or a full link that starts with https://'
 }
 
 export const link = defineType({

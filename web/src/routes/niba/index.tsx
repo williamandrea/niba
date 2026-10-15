@@ -5,7 +5,6 @@ import { langDeps, useT } from '~/lib/i18n'
 import { PageHeader } from '~/components/ui/PageHeader'
 import { PageSections } from '~/components/page/PageSections'
 import { NibaProgram } from '~/components/page/NibaProgram'
-import { ButtonLink } from '~/components/ui/Button'
 
 export const Route = createFileRoute('/niba/')({
   loaderDeps: langDeps,
@@ -29,14 +28,16 @@ function NibaPage() {
   const { page, program } = Route.useLoaderData()
   const { footer } = useLoaderData({ from: '__root__' })
   const t = useT()
+  const body = page?.body ?? []
+  // Class times go just above the parents' FAQ (section key "faq"), or last if there is none.
+  const faqIndex = body.findIndex((s) => s._key === 'faq')
+  const split = faqIndex === -1 ? body.length : faqIndex
   return (
     <>
       <PageHeader eyebrow="NIBA" title={page?.title || t.aboutNiba} intro={page?.intro || program?.shortDescription} />
-      <PageSections sections={page?.body} />
+      <PageSections sections={body.slice(0, split)} />
       <NibaProgram program={program} fallbackContacts={footer.contacts} />
-      <div className="mx-auto max-w-site px-4 py-12 text-center sm:px-6">
-        <ButtonLink href="/niba/registration/">{t.howToRegister}</ButtonLink>
-      </div>
+      <PageSections sections={body.slice(split)} />
     </>
   )
 }

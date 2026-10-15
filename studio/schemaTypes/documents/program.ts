@@ -63,7 +63,7 @@ export const program = defineType({
       name: 'button',
       title: 'Button',
       type: 'link',
-      description: 'Optional, e.g. "Register" → /niba/registration/',
+      description: 'Optional, e.g. "Register" → /niba/#register',
     }),
     defineField({
       name: 'registrationForm',

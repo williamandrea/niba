@@ -11,7 +11,6 @@ const STATIC_PATHS = [
   '/teachers/',
   '/residing-venerables/',
   '/niba/',
-  '/niba/registration/',
   '/programs/',
   '/events/',
   '/events/past/',

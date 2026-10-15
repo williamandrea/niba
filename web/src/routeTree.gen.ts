@@ -28,7 +28,6 @@ import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as EventsSlugRouteImport } from './routes/events/$slug'
 import { Route as EventsPastRouteImport } from './routes/events/past'
 import { Route as NibaIndexRouteImport } from './routes/niba/index'
-import { Route as NibaRegistrationRouteImport } from './routes/niba/registration'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -125,11 +124,6 @@ const NibaIndexRoute = NibaIndexRouteImport.update({
   path: '/niba/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NibaRegistrationRoute = NibaRegistrationRouteImport.update({
-  id: '/niba/registration',
-  path: '/niba/registration',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -147,7 +141,6 @@ export interface FileRoutesByFullPath {
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
-  '/niba/registration': typeof NibaRegistrationRoute
   '/blog/': typeof BlogIndexRoute
   '/chanting/': typeof ChantingIndexRoute
   '/events/': typeof EventsIndexRoute
@@ -169,7 +162,6 @@ export interface FileRoutesByTo {
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
-  '/niba/registration': typeof NibaRegistrationRoute
   '/blog': typeof BlogIndexRoute
   '/chanting': typeof ChantingIndexRoute
   '/events': typeof EventsIndexRoute
@@ -192,7 +184,6 @@ export interface FileRoutesById {
   '/chanting/$slug': typeof ChantingSlugRoute
   '/events/$slug': typeof EventsSlugRoute
   '/events/past': typeof EventsPastRoute
-  '/niba/registration': typeof NibaRegistrationRoute
   '/blog/': typeof BlogIndexRoute
   '/chanting/': typeof ChantingIndexRoute
   '/events/': typeof EventsIndexRoute
@@ -216,7 +207,6 @@ export interface FileRouteTypes {
     | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
-    | '/niba/registration'
     | '/blog/'
     | '/chanting/'
     | '/events/'
@@ -238,7 +228,6 @@ export interface FileRouteTypes {
     | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
-    | '/niba/registration'
     | '/blog'
     | '/chanting'
     | '/events'
@@ -260,7 +249,6 @@ export interface FileRouteTypes {
     | '/chanting/$slug'
     | '/events/$slug'
     | '/events/past'
-    | '/niba/registration'
     | '/blog/'
     | '/chanting/'
     | '/events/'
@@ -283,7 +271,6 @@ export interface RootRouteChildren {
   ChantingSlugRoute: typeof ChantingSlugRoute
   EventsSlugRoute: typeof EventsSlugRoute
   EventsPastRoute: typeof EventsPastRoute
-  NibaRegistrationRoute: typeof NibaRegistrationRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ChantingIndexRoute: typeof ChantingIndexRoute
   EventsIndexRoute: typeof EventsIndexRoute
@@ -425,13 +412,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NibaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/niba/registration': {
-      id: '/niba/registration'
-      path: '/niba/registration'
-      fullPath: '/niba/registration'
-      preLoaderRoute: typeof NibaRegistrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -451,7 +431,6 @@ const rootRouteChildren: RootRouteChildren = {
   ChantingSlugRoute: ChantingSlugRoute,
   EventsSlugRoute: EventsSlugRoute,
   EventsPastRoute: EventsPastRoute,
-  NibaRegistrationRoute: NibaRegistrationRoute,
   BlogIndexRoute: BlogIndexRoute,
   ChantingIndexRoute: ChantingIndexRoute,
   EventsIndexRoute: EventsIndexRoute,

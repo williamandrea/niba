@@ -68,13 +68,7 @@ const en = {
 
   // NIBA
   aboutNiba: 'About NIBA',
-  nibaRegistrationTitle: 'NIBA Registration',
-  registration: 'Registration',
-  howToRegister: 'How to register',
-  nibaRegistrationDescription: 'Register your child for NIBA, our Sunday Dhamma school, through WhatsApp.',
-  nibaRegistrationIntro: 'Register your child through WhatsApp.',
   classTimes: 'Class times',
-  whenWeMeet: 'When we meet',
   askSchedule: 'Please message us for the class schedule.',
   registerWhatsApp: 'Register through WhatsApp',
   registerHelp: (program?: string) =>
@@ -222,7 +216,6 @@ const en = {
   menuTeachers: 'Our Teachers',
   menuVenerables: 'Residing Venerables',
   menuAboutNiba: 'About NIBA',
-  menuRegistration: 'Registration',
   menuPrograms: 'Programs',
   menuEvents: 'Events',
   menuUpcoming: 'Upcoming',
@@ -298,13 +291,7 @@ const id: Messages = {
   comingSoon: 'Halaman ini sedang kami siapkan. Silakan kembali lagi nanti, atau hubungi kami lewat WhatsApp.',
 
   aboutNiba: 'Tentang NIBA',
-  nibaRegistrationTitle: 'Pendaftaran NIBA',
-  registration: 'Pendaftaran',
-  howToRegister: 'Cara mendaftar',
-  nibaRegistrationDescription: 'Daftarkan anak Anda ke NIBA, sekolah Minggu Dhamma kami, lewat WhatsApp.',
-  nibaRegistrationIntro: 'Daftarkan anak Anda lewat WhatsApp.',
   classTimes: 'Jadwal kelas',
-  whenWeMeet: 'Waktu pertemuan',
   askSchedule: 'Silakan hubungi kami untuk jadwal kelas.',
   registerWhatsApp: 'Daftar lewat WhatsApp',
   registerHelp: (program) =>
@@ -446,7 +433,6 @@ const id: Messages = {
   menuTeachers: 'Guru Kami',
   menuVenerables: 'Bhante yang Berdiam',
   menuAboutNiba: 'Tentang NIBA',
-  menuRegistration: 'Pendaftaran',
   menuPrograms: 'Program',
   menuEvents: 'Kegiatan',
   menuUpcoming: 'Mendatang',

@@ -19,14 +19,7 @@ export function defaultMenu(t: Messages): MenuItem[] {
         { label: t.menuVenerables, href: '/residing-venerables/' },
       ],
     },
-    {
-      label: 'NIBA',
-      href: '/niba/',
-      children: [
-        { label: t.menuAboutNiba, href: '/niba/' },
-        { label: t.menuRegistration, href: '/niba/registration/' },
-      ],
-    },
+    { label: 'NIBA', href: '/niba/' },
     { label: t.menuPrograms, href: '/programs/' },
     {
       label: t.menuEvents,

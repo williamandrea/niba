@@ -8,24 +8,25 @@ import { ButtonLink } from '~/components/ui/Button'
 type Program = NonNullable<Awaited<ReturnType<typeof getNiba>>['program']>
 type Contact = { name: string | null; whatsapp: string | null }
 
-/** Class times and WhatsApp buttons for NIBA. Falls back to the site's contacts. */
+/**
+ * Class times and how to register for NIBA. Falls back to the site's contacts.
+ * Links to /niba/#register land here.
+ */
 export function NibaProgram({
   program,
   fallbackContacts,
-  heading,
 }: {
   program: Program | null | undefined
   fallbackContacts: Contact[]
-  heading?: string
 }) {
   const t = useT()
   const contacts = program?.contacts?.length ? program.contacts : fallbackContacts
   const form = program?.registrationForm?.href ? program.registrationForm : null
   return (
-    <section aria-labelledby="niba-times" className="bg-cream-100 py-section">
+    <section id="register" aria-labelledby="niba-times" className="bg-cream-100 py-section">
       <div className="mx-auto grid max-w-site gap-8 px-4 sm:px-6 md:grid-cols-2">
         <div>
-          <h2 id="niba-times">{heading ?? t.classTimes}</h2>
+          <h2 id="niba-times">{t.classTimes}</h2>
           {program ? (
             <div className="mt-5 space-y-4">
               <ScheduleList schedule={program.schedule} note={program.scheduleNote} />

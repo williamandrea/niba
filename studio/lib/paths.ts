@@ -6,7 +6,6 @@
 export const PAGE_SLUG_PATHS: Record<string, string> = {
   about: '/about/',
   niba: '/niba/',
-  'niba-registration': '/niba/registration/',
   books: '/books/',
   chanting: '/chanting/',
   videos: '/videos/',

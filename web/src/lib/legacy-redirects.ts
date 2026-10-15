@@ -33,6 +33,8 @@ const PATHS: [RegExp, (m: RegExpExecArray) => string][] = [
   [/^\/about-teachers\/?$/, () => '/teachers/'],
   [/^\/about-us\/?$/, () => '/about/'],
   [/^\/upcoming-event\/?$/, () => '/events/'],
+  // Removed from this site: registration now lives on the NIBA page.
+  [/^\/(id\/)?niba\/registration\/?$/, (m) => `/${m[1] ?? ''}niba/#register`],
 ]
 
 /** Returns the new path for an old WordPress URL, or null. */

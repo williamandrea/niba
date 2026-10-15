@@ -128,6 +128,21 @@ export const pageSection = defineType({
       validation: (rule) => rule.max(5),
     }),
     defineField({
+      name: 'photoLayout',
+      title: 'Photo style',
+      type: 'string',
+      initialValue: 'collage',
+      description: 'Use "Whole image" for posters and flyers, so their text is not cut off.',
+      options: {
+        list: [
+          { title: 'Collage (cropped)', value: 'collage' },
+          { title: 'Whole image', value: 'whole' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+    }),
+    defineField({
       name: 'background',
       title: 'Background',
       type: 'string',

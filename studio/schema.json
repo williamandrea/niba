@@ -126,6 +126,23 @@
           },
           "optional": true
         },
+        "photoLayout": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "collage"
+              },
+              {
+                "type": "string",
+                "value": "whole"
+              }
+            ]
+          },
+          "optional": true
+        },
         "background": {
           "type": "objectAttribute",
           "value": {

@@ -35,6 +35,7 @@ export type PageSection = {
     _type: 'photo'
     _key: string
   }>
+  photoLayout?: 'collage' | 'whole'
   background?: 'light' | 'warm'
 }
 
@@ -920,7 +921,7 @@ export type POST_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: EVENTS_QUERY
-// Query: {  "upcoming": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc){    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "past": *[_type == "event" && coalesce(endDate, startDate) < $today] | order(startDate desc){    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "upcoming": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc){    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "past": *[_type == "event" && coalesce(endDate, startDate) < $today] | order(startDate desc){    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,    "sessions": sessions[]{ label, start, end },    "guide": coalesce(guidedBy->fullName, guidedByText)  },  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }}
 export type EVENTS_QUERY_RESULT = {
   upcoming: Array<{
     _id: string
@@ -985,6 +986,7 @@ export type EVENTS_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1028,7 +1030,7 @@ export type EVENT_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: PROGRAMS_QUERY
-// Query: {  "programs": *[_type == "program"] | order(order asc, name.en asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "programs": *[_type == "program"] | order(order asc, name.en asc){    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }  },  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }}
 export type PROGRAMS_QUERY_RESULT = {
   programs: Array<{
     _id: string
@@ -1078,6 +1080,7 @@ export type PROGRAMS_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1085,7 +1088,7 @@ export type PROGRAMS_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: TEACHERS_QUERY
-// Query: {  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, bio  },  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, bio  },  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }}
 export type TEACHERS_QUERY_RESULT = {
   teachers: Array<{
     _id: string
@@ -1119,6 +1122,7 @@ export type TEACHERS_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1126,7 +1130,7 @@ export type TEACHERS_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: VENERABLES_QUERY
-// Query: {  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd  },  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd  },  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }}
 export type VENERABLES_QUERY_RESULT = {
   venerables: Array<{
     _id: string
@@ -1162,6 +1166,7 @@ export type VENERABLES_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1169,7 +1174,7 @@ export type VENERABLES_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _updatedAt,  title,  "slug": slug.current,  intro,  body[]{ _key, heading, content, images, background },  seo}
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id,  _updatedAt,  title,  "slug": slug.current,  intro,  body[]{ _key, heading, content, images, background, photoLayout },  seo}
 export type PAGE_QUERY_RESULT = {
   _id: string
   _updatedAt: string
@@ -1190,6 +1195,7 @@ export type PAGE_QUERY_RESULT = {
       _key: string
     }> | null
     background: 'light' | 'warm' | null
+    photoLayout: 'collage' | 'whole' | null
   }> | null
   seo: Seo | null
 } | null
@@ -1219,7 +1225,7 @@ export type CHANTING_PAGE_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: VIDEOS_QUERY
-// Query: {  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){    _id, title, driveUrl,    "article": article->{ "slug": slug.current, "category": category->slug.current }  },  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }}
+// Query: {  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){    _id, title, driveUrl,    "article": article->{ "slug": slug.current, "category": category->slug.current }  },  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }}
 export type VIDEOS_QUERY_RESULT = {
   videos: Array<{
     _id: string
@@ -1247,6 +1253,7 @@ export type VIDEOS_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1254,7 +1261,7 @@ export type VIDEOS_QUERY_RESULT = {
 
 // Source: ../web/src/lib/sanity/queries.ts
 // Variable: NIBA_QUERY
-// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
+// Query: {  "page": *[_type == "page" && slug.current == $slug][0]{    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo  },  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }  }}
 export type NIBA_QUERY_RESULT = {
   page: {
     _id: string
@@ -1275,6 +1282,7 @@ export type NIBA_QUERY_RESULT = {
         _key: string
       }> | null
       background: 'light' | 'warm' | null
+      photoLayout: 'collage' | 'whole' | null
     }> | null
     seo: Seo | null
   } | null
@@ -1332,15 +1340,15 @@ declare global {
     '{\n  "home": *[_type == "homepage" && _id == "homepage"][0]{\n    hero{ image, heading, paliVerse, meaning, tagline, button{ label, href } },\n    intro{ heading, text, images, buttons[]{ label, href } },\n    teacherQuote{ quote, teacher->{ fullName, shortName, photo, "slug": slug.current } },\n    programsIntro,\n    venerablesIntro,\n    instagram{ feedUrl, heading }\n  },\n  "featured": *[_type == "post" && category->slug.current == "dhammapada" && count(body.en[_type == "verse"]) > 0]\n    | order(publishedAt desc)[0]{\n      title,\n      "slug": slug.current,\n      "category": category->slug.current,\n      "verseEn": body.en[_type == "verse"][0]{ pali, meaning, reference },\n      "verseId": body.id[_type == "verse"][0]{ pali, meaning, reference }\n    },\n  "programs": *[_type == "program"] | order(order asc, name.en asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "events": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc)[0...6]{\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "hasPastEvents": count(*[_type == "event" && coalesce(endDate, startDate) < $today]) > 0,\n  "venerables": *[_type == "teacher" && role == "resident" && residencyStart <= $today\n      && (!defined(residencyEnd) || residencyEnd >= $today)] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, residencyStart, residencyEnd\n  },\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "articles": *[_type == "post" && defined(category)] | order(publishedAt desc)[0...3]{\n    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n  }\n}': HOME_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(category)\n      && ($category == "" || category->slug.current == $category)\n      && ($search == "" || [title.en, title.id, excerpt.en, excerpt.id, pt::text(body.en), pt::text(body.id)] match $terms)]\n    | order(publishedAt desc){\n      _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n    },\n  "categories": *[_type == "category" && count(*[_type == "post" && references(^._id)]) > 0] | order(title.en asc){\n    title, "slug": slug.current\n  },\n  "page": *[_type == "page" && slug.current == "blog"][0]{ title, intro, seo }\n}': POST_LIST_QUERY_RESULT
     '*[_type == "post" && slug.current == $slug && category->slug.current == $category][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  "category": category->{ title, "slug": slug.current },\n  coverImage,\n  excerpt,\n  publishedAt,\n  body,\n  seo,\n  "related": *[_type == "post" && category._ref == ^.category._ref && _id != ^._id] | order(publishedAt desc)[0...3]{\n    _id, title, "slug": slug.current, "category": category->{ title, "slug": slug.current }, coverImage, excerpt, publishedAt\n  }\n}': POST_QUERY_RESULT
-    '{\n  "upcoming": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "past": *[_type == "event" && coalesce(endDate, startDate) < $today] | order(startDate desc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': EVENTS_QUERY_RESULT
+    '{\n  "upcoming": *[_type == "event" && coalesce(endDate, startDate) >= $today] | order(startDate asc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "past": *[_type == "event" && coalesce(endDate, startDate) < $today] | order(startDate desc){\n    _id, title, "slug": slug.current, type, startDate, endDate, audience, image,\n    "sessions": sessions[]{ label, start, end },\n    "guide": coalesce(guidedBy->fullName, guidedByText)\n  },\n  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }\n}': EVENTS_QUERY_RESULT
     '*[_type == "event" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  type,\n  startDate,\n  endDate,\n  "sessions": sessions[]{ _key, label, start, end },\n  "guide": coalesce(guidedBy->fullName, guidedByText),\n  "guideSlug": guidedBy->slug.current,\n  audience,\n  image,\n  description,\n  "contacts": contacts[]->{ name, whatsapp },\n  seo\n}': EVENT_QUERY_RESULT
-    '{\n  "programs": *[_type == "program"] | order(order asc, name.en asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': PROGRAMS_QUERY_RESULT
-    '{\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': TEACHERS_QUERY_RESULT
-    '{\n  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd\n  },\n  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VENERABLES_QUERY_RESULT
-    '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background },\n  seo\n}': PAGE_QUERY_RESULT
+    '{\n  "programs": *[_type == "program"] | order(order asc, name.en asc){\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  },\n  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }\n}': PROGRAMS_QUERY_RESULT
+    '{\n  "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio\n  },\n  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }\n}': TEACHERS_QUERY_RESULT
+    '{\n  "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){\n    _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd\n  },\n  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }\n}': VENERABLES_QUERY_RESULT
+    '*[_type == "page" && slug.current == $slug][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content, images, background, photoLayout },\n  seo\n}': PAGE_QUERY_RESULT
     '*[_type == "page" && slug.current == $slug && string::startsWith(slug.current, $prefix)][0]{\n  _id,\n  _updatedAt,\n  title,\n  "slug": slug.current,\n  intro,\n  body[]{ _key, heading, content },\n  seo,\n  "related": *[_type == "page" && string::startsWith(slug.current, $prefix) && _id != ^._id] | order(title.en asc)[0...3]{\n    _id, title, "slug": slug.current, intro\n  }\n}': CHANTING_PAGE_QUERY_RESULT
-    '{\n  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){\n    _id, title, driveUrl,\n    "article": article->{ "slug": slug.current, "category": category->slug.current }\n  },\n  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }\n}': VIDEOS_QUERY_RESULT
-    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
+    '{\n  "videos": *[_type == "video" && defined(driveUrl)] | order(order asc, title.en asc){\n    _id, title, driveUrl,\n    "article": article->{ "slug": slug.current, "category": category->slug.current }\n  },\n  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }\n}': VIDEOS_QUERY_RESULT
+    '{\n  "page": *[_type == "page" && slug.current == $slug][0]{\n    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo\n  },\n  "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{\n    _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,\n    audience, button{ label, href }, registrationForm{ label, href }, "contacts": contacts[]->{ name, whatsapp }\n  }\n}': NIBA_QUERY_RESULT
     '{\n  "posts": *[_type == "post" && defined(slug.current) && defined(category)]{\n    "slug": slug.current, "category": category->slug.current, _updatedAt\n  },\n  "events": *[_type == "event" && defined(slug.current)]{ "slug": slug.current, _updatedAt },\n  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }\n}': SITEMAP_QUERY_RESULT
   }
 }

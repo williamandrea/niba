@@ -1,8 +1,9 @@
-import type { SanityImageSource } from '~/lib/sanity/image'
+import { hasImage, type SanityImageSource } from '~/lib/sanity/image'
 import type { BlockContent } from '~/lib/sanity/sanity.types'
 import { clean } from '~/lib/text'
 import { useT } from '~/lib/i18n'
 import { PhotoCollage } from '~/components/ui/PhotoCollage'
+import { SanityImage } from '~/components/ui/SanityImage'
 import { RichText, cleanBlocks } from '~/components/portable-text/RichText'
 
 export type PageSectionData = {
@@ -11,6 +12,7 @@ export type PageSectionData = {
   content?: BlockContent | null
   images?: SanityImageSource[] | null
   background?: string | null
+  photoLayout?: string | null
 }
 
 /** Sanity page sections: text with an optional photo collage, alternating sides. */
@@ -36,7 +38,11 @@ export function PageSections({ sections }: { sections: PageSectionData[] | null 
             >
               {hasPhotos && (
                 <div className={`fade-in ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <PhotoCollage images={section.images ?? []} />
+                  {section.photoLayout === 'whole' ? (
+                    <WholePhotos images={section.images ?? []} />
+                  ) : (
+                    <PhotoCollage images={section.images ?? []} />
+                  )}
                 </div>
               )}
               <div>
@@ -52,6 +58,22 @@ export function PageSections({ sections }: { sections: PageSectionData[] | null 
         )
       })}
     </>
+  )
+}
+
+/** Posters and flyers, shown uncropped so their text stays readable. */
+function WholePhotos({ images }: { images: (SanityImageSource | null | undefined)[] }) {
+  return (
+    <div className="space-y-4">
+      {images.filter(hasImage).map((image, i) => (
+        <SanityImage
+          key={image.asset?._ref ?? i}
+          image={image}
+          sizes="(min-width: 1024px) 34rem, 100vw"
+          className="w-full rounded-card shadow-md"
+        />
+      ))}
+    </div>
   )
 }
 

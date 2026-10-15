@@ -109,7 +109,7 @@ export const EVENTS_QUERY = defineQuery(`{
     "sessions": sessions[]{ label, start, end },
     "guide": coalesce(guidedBy->fullName, guidedByText)
   },
-  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+  "page": *[_type == "page" && slug.current == "events"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }
 }`)
 
 export const EVENT_QUERY = defineQuery(`*[_type == "event" && slug.current == $slug][0]{
@@ -135,21 +135,21 @@ export const PROGRAMS_QUERY = defineQuery(`{
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,
     audience, images, button{ label, href }, "contacts": contacts[]->{ name, whatsapp }
   },
-  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+  "page": *[_type == "page" && slug.current == "programs"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }
 }`)
 
 export const TEACHERS_QUERY = defineQuery(`{
   "teachers": *[_type == "teacher" && role == "teacher"] | order(order asc, fullName asc){
     _id, fullName, shortName, "slug": slug.current, photo, bio
   },
-  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+  "page": *[_type == "page" && slug.current == "teachers"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }
 }`)
 
 export const VENERABLES_QUERY = defineQuery(`{
   "venerables": *[_type == "teacher" && role == "resident"] | order(residencyStart desc, order asc, fullName asc){
     _id, fullName, shortName, "slug": slug.current, photo, bio, residencyStart, residencyEnd
   },
-  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+  "page": *[_type == "page" && slug.current == "residing-venerables"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }
 }`)
 
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug][0]{
@@ -158,7 +158,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   title,
   "slug": slug.current,
   intro,
-  body[]{ _key, heading, content, images, background },
+  body[]{ _key, heading, content, images, background, photoLayout },
   seo
 }`)
 
@@ -181,12 +181,12 @@ export const VIDEOS_QUERY = defineQuery(`{
     _id, title, driveUrl,
     "article": article->{ "slug": slug.current, "category": category->slug.current }
   },
-  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background }, seo }
+  "page": *[_type == "page" && slug.current == "videos"][0]{ title, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo }
 }`)
 
 export const NIBA_QUERY = defineQuery(`{
   "page": *[_type == "page" && slug.current == $slug][0]{
-    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background }, seo
+    _id, title, "slug": slug.current, intro, body[]{ _key, heading, content, images, background, photoLayout }, seo
   },
   "program": *[_type == "program" && (slug.current match "niba*" || name.en match "NIBA")] | order(order asc)[0]{
     _id, name, "slug": slug.current, icon, shortDescription, schedule[]{ day, startTime, endTime }, scheduleNote,

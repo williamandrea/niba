@@ -44,10 +44,12 @@ export const Route = createFileRoute('/sitemap.xml')({
         const urls = [...entries]
           .flatMap(([path, updated]) => {
             const lastmod = updated ? `<lastmod>${updated.slice(0, 10)}</lastmod>` : ''
-            const alternates = LANGS.map(
-              (l) =>
-                `<xhtml:link rel="alternate" hreflang="${LANG_TAGS[l].html}" href="${escapeXml(absoluteUrl(path, l))}"/>`,
-            ).join('')
+            const alternates = [
+              ...LANGS.map((l) => [LANG_TAGS[l].html, absoluteUrl(path, l)]),
+              ['x-default', absoluteUrl(path)],
+            ]
+              .map(([tag, href]) => `<xhtml:link rel="alternate" hreflang="${tag}" href="${escapeXml(href)}"/>`)
+              .join('')
             return LANGS.map(
               (lang) => `  <url><loc>${escapeXml(absoluteUrl(path, lang))}</loc>${lastmod}${alternates}</url>`,
             )

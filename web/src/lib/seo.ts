@@ -163,6 +163,24 @@ export function organizationJsonLd(settings: ResolvedSettings) {
   }
 }
 
+/** schema.org EducationalOrganization for NIBA, the temple's Sunday Dhamma school. */
+export function nibaJsonLd(settings: ResolvedSettings, description?: string | null) {
+  const address = postalAddress(settings.footer.address)
+  const sameAs = settings.footer.socialLinks.map((s) => s.url).filter((url) => url && /niba/i.test(url))
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    '@id': `${absoluteUrl('/niba/')}#niba`,
+    name: 'Na Uyana International Buddhist Association',
+    alternateName: 'NIBA',
+    url: absoluteUrl('/niba/', settings.lang),
+    ...(clean(description) ? { description: clean(description) } : {}),
+    parentOrganization: { '@id': `${absoluteUrl('/')}#organization` },
+    ...(address ? { address } : {}),
+    ...(sameAs.length ? { sameAs } : {}),
+  }
+}
+
 /** schema.org WebSite for the homepage, so Google shows the site's name in results. */
 export function websiteJsonLd(settings: ResolvedSettings | undefined) {
   const lang = settings?.lang ?? DEFAULT_LANG

@@ -1,5 +1,5 @@
 import { createFileRoute, useLoaderData } from '@tanstack/react-router'
-import { buildHead, breadcrumbs, headContext } from '~/lib/seo'
+import { buildHead, breadcrumbs, headContext, nibaJsonLd } from '~/lib/seo'
 import { getNiba } from '~/lib/sanity/api'
 import { langDeps, useT } from '~/lib/i18n'
 import { PageHeader } from '~/components/ui/PageHeader'
@@ -18,7 +18,10 @@ export const Route = createFileRoute('/niba/')({
       image: loaderData?.page?.body?.[0]?.images?.[0],
       path: '/niba/',
       settings,
-      jsonLd: [breadcrumbs([['NIBA', '/niba/']], lang)],
+      jsonLd: [
+        breadcrumbs([['NIBA', '/niba/']], lang),
+        ...(settings ? [nibaJsonLd(settings, loaderData?.page?.intro || loaderData?.program?.shortDescription)] : []),
+      ],
     })
   },
   component: NibaPage,
